@@ -1,0 +1,26 @@
+#ifndef MINISHELL_H
+#define MINISHELL_H
+
+#define CLOSE "\033[0m"                 // Закрыть все свойства
+#define BLOD  "\033[1m"                 // Подчеркнуть, жирным шрифтом, выделить
+#define BEGIN(x,y) "\033["#x";"#y"m"    // x: background, y: foreground
+
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/signal.h>
+# include <errno.h>
+# include <string.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
+
+# include "/Users/nenvoy/.brew/Cellar/\
+readline/8.1.2/include/readline/readline.h"
+# include "/Users/nenvoy/.brew/Cellar/\
+readline/8.1.2/include/readline/history.h"
+#endif
