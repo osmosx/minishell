@@ -1,6 +1,7 @@
 HEADER = minishell.h
 #
-SRC = main.c
+SRC = main.c signal.c env_utils.c\
+	  env.c pwd.c
 #
 OBJ = $(SRC:.c=.o)
 #
@@ -8,22 +9,29 @@ FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline
 #
 NAME = minishell
 #
-all: $(NAME)
-	@stty -ctlecho
+.PHONY: all clean fclean re libft
+#
+all: libft $(NAME)
+		@stty -ctlecho
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
-	@$(CC) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline  $(FLAGS) $(OBJ) -o $@
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
 	@echo "\033[32m\033[1m[minishell compiled]"
 #
 %.o: %.c
-	@$(CC) $(FLAGS) -c $<
+	@$(CC) $(FLAGS) -c $< -o $@
+#
+libft :
+	@make -C libft
 #
 clean:
-	@rm -rf $(OBJ)
+	@make -C libft clean
+	@$(RM) $(OBJ)
 	@echo "\033[31m\033[1m[all clean]"
 #
 fclean: clean
-	@rm -rf $(NAME)
+	@$(RM) $(NAME)
+	@$(RM) libft/libft.a
 #
 re: fclean all
 #

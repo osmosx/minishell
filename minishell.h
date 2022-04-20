@@ -16,6 +16,8 @@
 # include <sys/signal.h>
 # include <errno.h>
 # include <string.h>
+# include <limits.h>
+# include "./libft/libft.h"
 //# include <readline/readline.h>
 //# include <readline/history.h>
 
@@ -23,4 +25,21 @@
 readline/8.1.2/include/readline/readline.h"
 # include "/Users/nenvoy/.brew/Cellar/\
 readline/8.1.2/include/readline/history.h"
+
+typedef struct s_env
+{
+	char **cp_env;
+	char **cp_path;
+}			   t_env;
+// env utils
+t_env	*init_env(void);
+char	**copy_env(char **envp);
+
+// signal utils
+void	ctrl_c(int signal);
+
+//built-in functions
+void	m_env(t_env *envm);
+int		m_pwd(void);
+
 #endif

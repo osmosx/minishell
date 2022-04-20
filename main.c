@@ -2,23 +2,17 @@
 
 int	g_status;
 
-void	ctrl_c(int signal)
-{
-	(void)signal;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 int	main(int argc, char **argv, char **envp)
 {
+	t_env	*envm;
 	char	*cmd;
 
 	(void)argv;
-	(void)envp;
 	(void)argc;
 	g_status = 0;
+	envm = init_env();
+	envm->cp_path = ft_split(getenv("PATH"), ':');
+	envm->cp_env = copy_env(envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (42)
