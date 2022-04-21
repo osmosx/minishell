@@ -1,7 +1,7 @@
 HEADER = minishell.h
 #
 SRC = main.c signal.c env_utils.c\
-	  env.c pwd.c
+	  env.c pwd.c echo.c
 #
 OBJ = $(SRC:.c=.o)
 #

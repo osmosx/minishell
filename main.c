@@ -1,24 +1,22 @@
 #include "minishell.h"
-#include <stdio.h>
-#include <string.h>
 
 int	g_status;
 
-static void	test(t_env	*envm, char *cmd)
+static void	test(t_env	*env, char *cmd, char **cmd2)
 {
 	if (ft_strcmp("env", cmd))
-		m_env(envm);
+		m_env(env);
 	if (ft_strcmp("pwd", cmd))
 		m_pwd();
-//	if (ft_strcmp("echo", cmd))
-//		m_echo(envm);
+	if (ft_strcmp("echo", cmd2[0]))
+		m_echo(cmd2);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envm;
 	char	*cmd;
+	char	**cmd2;
 
 	(void)argc;
 	(void)argv;
@@ -32,7 +30,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		cmd = readline(BEGIN(49, 31)"hellshell$> "CLOSE);
 		add_history(cmd);
-		test(envm, cmd);
-		printf("%s", cmd + 5);
+		cmd2 = ft_split(cmd, ' ');
+		test(envm, cmd, cmd2);
 	}
 }

@@ -20,7 +20,6 @@
 # include "./libft/libft.h"
 //# include <readline/readline.h>
 //# include <readline/history.h>
-
 # include "/Users/nenvoy/.brew/Cellar/\
 readline/8.1.2/include/readline/readline.h"
 # include "/Users/nenvoy/.brew/Cellar/\
@@ -41,5 +40,6 @@ void	ctrl_c(int signal);
 //built-in functions
 void	m_env(t_env *envm);
 int		m_pwd(void);
+void	m_echo(char **cmd2);
 
 #endif
