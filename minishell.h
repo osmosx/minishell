@@ -41,5 +41,6 @@ void	ctrl_c(int signal);
 void	m_env(t_env *envm);
 int		m_pwd(void);
 void	m_echo(char **cmd2);
+void	m_exit(t_env *envm);
 
 #endif

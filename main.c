@@ -2,14 +2,16 @@
 
 int	g_status;
 
-static void	test(t_env	*env, char *cmd, char **cmd2)
+static void	test(t_env	*env, char **cmd2)
 {
-	if (ft_strcmp("env", cmd))
+	if (ft_strcmp("env", cmd2[0]))
 		m_env(env);
-	if (ft_strcmp("pwd", cmd))
+	if (ft_strcmp("pwd", cmd2[0]))
 		m_pwd();
 	if (ft_strcmp("echo", cmd2[0]))
 		m_echo(cmd2);
+	if (ft_strcmp("exit", cmd2[0]))
+		m_exit(env);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -31,6 +33,6 @@ int	main(int argc, char **argv, char **envp)
 		cmd = readline(BEGIN(49, 31)"hellshell$> "CLOSE);
 		add_history(cmd);
 		cmd2 = ft_split(cmd, ' ');
-		test(envm, cmd, cmd2);
+		test(envm, cmd2);
 	}
 }

@@ -1,42 +1,73 @@
 #include "minishell.h"
 
-void	m_echo(char **cmd2)
+static int	echo_check(char *arg)
 {
-	int	i;
-	int	j;
 	int	flag;
+	int	i;
 
 	flag = 0;
-	if (ft_strcmp("-n", cmd2[1]))
-		flag = 1;
+	i = 1;
+	if (arg[0] == '-')
+	{
+		while (arg[i])
+		{
+			if (arg[i] == 'n')
+				flag = 1;
+			if (arg[i] != 'n')
+			{
+				flag = 0;
+				break ;
+			}
+			i++;
+		}
+	}
+	return (flag);
+}
+
+static void	echo_print_base(char **cmd2)
+{
+	int	i;
+
+	i = 1;
+	while (cmd2[i])
+	{
+		printf("%s", cmd2[i]);
+		if (cmd2[i + 1] != NULL)
+			printf(" ");
+		i++;
+	}
+	printf("\n");
+}
+
+static void	echo_print_flag(char **cmd2)
+{
+	int	j;
+	int	i;
+
+	j = 0;
+	i = 1;
+	while (cmd2[j])
+	{
+		if (echo_check(cmd2[j]))
+			i++;
+		j++;
+	}
+	while (cmd2[i])
+	{
+		printf("%s", cmd2[i]);
+		if (cmd2[i + 1] != NULL)
+			printf(" ");
+		i++;
+	}
+}
+
+void	m_echo(char **cmd2)
+{
+	int	flag;
+
+	flag = echo_check(cmd2[1]);
 	if (flag == 0)
-	{
-		i = 1;
-		while (cmd2[i])
-		{
-			printf("%s", cmd2[i]);
-			if (cmd2[i + 1] != NULL)
-				printf(" ");
-			i++;
-		}
-		printf("\n");
-	}
+		echo_print_base(cmd2);
 	if (flag == 1)
-	{
-		i = 1;
-		j = 0;
-		while (cmd2[j])
-		{
-			if (ft_strcmp("-n", cmd2[j]))
-				i++;
-			j++;
-		}
-		while (cmd2[i])
-		{
-			printf("%s", cmd2[i]);
-			if (cmd2[i + 1] != NULL)
-				printf(" ");
-			i++;
-		}
-	}
+		echo_print_flag(cmd2);
 }
