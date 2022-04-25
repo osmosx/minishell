@@ -1,48 +1,35 @@
 #include "minishell.h"
 
-static int	ft_strcmp2(const char *s1, const char *s2)
-{
-	while (*s1 == *s2)
-	{
-		if (*s1 == '\0')
-			return (0);
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
-}
-
-
 void	m_export(t_env	*envm)
 {
 	int		i;
 	int		j;
 	char	**buf;
-	int		n;
-	int		noSwap;
+	int		flag;
 
-	j = 0;
 	i = 0;
 	while (envm->cp_env[i])
 		i++;
-	n = i;
 	buf = malloc(sizeof(char *) * (i));
-	i = 0;
-	for (int i = n - 1; i >= 0; i--)
+	i = i - 1;
+	while (i >= 0)
 	{
-		noSwap = 1;
-		for (int j = 0; j < i; j++)
+		flag = 1;
+		j = 0;
+		while (j < i)
 		{
-			if (ft_strcmp2(envm->cp_env[j], envm->cp_env[j + 1]) > 0)
+			if (ft_strcmp(envm->cp_env[j], envm->cp_env[j + 1]) > 0)
 			{
 				buf[0] = envm->cp_env[j];
 				envm->cp_env[j] = envm->cp_env[j + 1];
 				envm->cp_env[j + 1] = buf[0];
-				noSwap = 0;
+				flag = 0;
 			}
+			j++;
 		}
-		if (noSwap == 1)
+		if (flag == 1)
 			break ;
+		i--;
 	}
 	i = 0;
 	while (envm->cp_env[i])

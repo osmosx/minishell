@@ -5,7 +5,7 @@ SRC = main.c signal.c env_utils.c\
 #
 OBJ = $(SRC:.c=.o)
 #
-FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
+FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
 #
 NAME = minishell
 #
@@ -15,7 +15,7 @@ all: libft $(NAME)
 		@stty -ctlecho
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L//usr/local/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
 	@echo "\033[32m\033[1m[minishell compiled]"
 #
 %.o: %.c
