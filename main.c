@@ -4,14 +4,18 @@ int	g_status;
 
 static void	test(t_env	*env, char **cmd2)
 {
-	if (ft_strcmp("env", cmd2[0]))
+	if (ft_strcmp("env", cmd2[0]) == 0)
 		m_env(env);
-	if (ft_strcmp("pwd", cmd2[0]))
+	if (ft_strcmp("pwd", cmd2[0]) == 0)
 		m_pwd();
-	if (ft_strcmp("echo", cmd2[0]))
+	if (ft_strcmp("echo", cmd2[0]) == 0)
 		m_echo(cmd2);
-	if (ft_strcmp("exit", cmd2[0]))
+	if (ft_strcmp("exit", cmd2[0]) == 0)
 		m_exit(env);
+	if (ft_strcmp("export", cmd2[0]) == 0)
+		m_export(env);
+	else
+		return ;
 }
 
 int	main(int argc, char **argv, char **envp)
