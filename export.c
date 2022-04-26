@@ -1,16 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/26 15:50:47 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:50:48 by nenvoy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	m_export(t_env	*envm)
+static char	**export_sort(char **buf, int i)
 {
-	int		i;
 	int		j;
-	char	**buf;
 	int		flag;
+	char	*tmp;
 
-	i = 0;
-	while (envm->cp_env[i])
-		i++;
-	buf = malloc(sizeof(char *) * (i));
 	i = i - 1;
 	while (i >= 0)
 	{
@@ -18,11 +25,11 @@ void	m_export(t_env	*envm)
 		j = 0;
 		while (j < i)
 		{
-			if (ft_strcmp(envm->cp_env[j], envm->cp_env[j + 1]) > 0)
+			if (ft_strcmp(buf[j], buf[j + 1]) > 0)
 			{
-				buf[0] = envm->cp_env[j];
-				envm->cp_env[j] = envm->cp_env[j + 1];
-				envm->cp_env[j + 1] = buf[0];
+				tmp = buf[j];
+				buf[j] = buf[j + 1];
+				buf[j + 1] = tmp;
 				flag = 0;
 			}
 			j++;
@@ -31,18 +38,26 @@ void	m_export(t_env	*envm)
 			break ;
 		i--;
 	}
-	i = 0;
-	while (envm->cp_env[i])
-		printf("%s\n", envm->cp_env[i++]);
-
-//	while (envm->cp_env[i])
-//	{
-//		buf[j] = NULL;
-//		i++;
-//		j++;
-//	}
-//	j = 0;
-//	while (buf[j])
-//		printf("%s\n", buf[j++]);
+	return (buf);
 }
 
+void	m_export(t_env	*envm)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	**buf;
+
+	len = 0;
+	j = 0;
+	i = 0;
+	while (envm->cp_env[len])
+		len++;
+	buf = malloc(sizeof(char *) * (len));
+	while (envm->cp_env[i])
+		buf[j++] = envm->cp_env[i++];
+	buf = export_sort(buf, len);
+	i = 0;
+	while (buf[i])
+		printf("declare -x %s\n", buf[i++]);
+}

@@ -1,9 +1,17 @@
-#ifndef MINISHELL_H
-#define MINISHELL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:55:31 by nenvoy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define CLOSE "\033[0m"                 // Закрыть все свойства
-#define BLOD  "\033[1m"                 // Подчеркнуть, жирным шрифтом, выделить
-#define BEGIN(x,y) "\033["#x";"#y"m"    // x: background, y: foreground
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -20,15 +28,19 @@
 # include "./libft/libft.h"
 //# include <readline/readline.h>
 //# include <readline/history.h>
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 
+# include "/Users/nenvoy/.brew/Cellar/\
+readline/8.1.2/include/readline/readline.h"
+# include "/Users/nenvoy/.brew/Cellar/\
+readline/8.1.2/include/readline/history.h"
 
 typedef struct s_env
 {
-	char **cp_env;
-	char **cp_path;
-}			   t_env;
+	char	**cp_env;
+	char	**cp_path;
+}				t_env;
 // env utils
 t_env	*init_env(void);
 char	**copy_env(char **envp);

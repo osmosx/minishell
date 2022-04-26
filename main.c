@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:50:04 by nenvoy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	g_status;
@@ -34,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (42)
 	{
-		cmd = readline(BEGIN(49, 31)"hellshell$> "CLOSE);
+		cmd = readline("\001\033[31m\002hellshell$>\001\033[0m\002 ");
 		add_history(cmd);
 		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
