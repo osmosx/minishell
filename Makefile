@@ -13,7 +13,7 @@
 HEADER = minishell.h
 #
 SRC = main.c signal.c env_utils.c\
-	  env.c pwd.c echo.c exit.c export.c
+	  env.c pwd.c echo.c exit.c export.c unset.c
 #
 OBJ = $(SRC:.c=.o)
 #

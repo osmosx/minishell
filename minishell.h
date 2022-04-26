@@ -26,8 +26,10 @@
 # include <string.h>
 # include <limits.h>
 # include "./libft/libft.h"
+
 //# include <readline/readline.h>
 //# include <readline/history.h>
+
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 
@@ -49,10 +51,11 @@ char	**copy_env(char **envp);
 void	ctrl_c(int signal);
 
 //built-in functions
-void	m_env(t_env *envm);
 int		m_pwd(void);
+void	m_env(t_env *envm);
 void	m_echo(char **cmd2);
 void	m_exit(t_env *envm);
 void	m_export(t_env	*envm);
+void	m_unset(t_env *envm, char **cmd2);
 
 #endif
