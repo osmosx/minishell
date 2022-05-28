@@ -27,16 +27,18 @@
 # include <limits.h>
 # include "./libft/libft.h"
 
-//# include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
-
-# include "/Users/nenvoy/.brew/Cellar/\
-readline/8.1.2/include/readline/readline.h"
-# include "/Users/nenvoy/.brew/Cellar/\
-readline/8.1.2/include/readline/history.h"
+//
+//# include "/Users/nenvoy/.brew/Cellar/\
+//readline/8.1.2/include/readline/readline.h"
+//# include "/Users/nenvoy/.brew/Cellar/\
+//readline/8.1.2/include/readline/history.h"
+int	g_error;
+int	g_status;
 
 typedef struct s_env
 {
@@ -57,5 +59,7 @@ void	m_echo(char **cmd2);
 void	m_exit(t_env *envm);
 void	m_export(t_env	*envm);
 void	m_unset(t_env *envm, char **cmd2);
+
+char	**ft_pipe_separator(char *str);
 
 #endif

@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int	g_status;
-
 static void	test(t_env	*env, char **cmd2)
 {
 	if (ft_strcmp("env", cmd2[0]) == 0)

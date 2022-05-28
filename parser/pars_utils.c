@@ -1,3 +1,5 @@
+#include "../minishell.h"
+
 int	ft_quotes_identifier(char *str, int *quote_type)
 {
 	//функция определяет текущие активные ковычки
@@ -15,7 +17,7 @@ int	ft_quotes_identifier(char *str, int *quote_type)
 		else if (*quote_type == 2)
 			*quote_type = 0;
 	}
-	return(*quote_type);
+	return (*quote_type);
 }
 
 int	ft_quotes_checker(char *str)
@@ -36,7 +38,7 @@ int	ft_quotes_checker(char *str)
 
 int	ft_tokens_checker(char *str)
 {
-	//функция проверяет, есть ли пайпы, перед которыми после предыдущего <,<<,>>,;,|,& только пробелы
+	//функция проверяет, есть ли пайпы, перед которыми после предыдущего <,<<,>>,| только пробелы
 	//та же ошибка если ничего перед & и ; после
 	//короче нужно проверить, есть ли пустые токены после токенизации
 	}
@@ -56,21 +58,21 @@ char	**ft_fillcmds(char *str, char **cmds)
 
 	quote_type = 0;
 	cmd_start = str;
-	quote_type = ft_quotes_identifier(*str);
+	quote_type = ft_quotes_identifier(str, &quote_type);
 	while (*(str++))
 	{
-		//str++;
-		quote_type = ft_quotes_identifier(*str);
+		quote_type = ft_quotes_identifier(str, &quote_type);
 		if (!(*str) || (!quote_type && *str == '|'))
 		{
-			if (*(str - 1) == '|')
+			if (*(str - 1) == '|' || *cmd_start == '|')
 			{
 				//здесь можно сделать умнее, если оставить это токенами
-				write(2, "minishell: syntax error near unexpected token `|\'\n", 50);
-				exit (258);
+				write(2, "minishell: syntax error near unexpected token `|\'\n",50);
+				g_error = 258;
+				return (0);
 			}
-			*cmds = (char *)malloc(sizeof(char) * (str - cmd_start + 1));//проверить длину
-			(*cmds)[str - cmd_start] = NULL;
+			*cmds = (char *)malloc(sizeof(char) * (str - cmd_start + 1));
+			(*cmds)[str - cmd_start] = '\0';
 			i = 0;
 			while (cmd_start != str)
 				(*cmds)[i++] = *(cmd_start++);
@@ -87,23 +89,6 @@ char	**ft_fillcmds(char *str, char **cmds)
 	return (cmds);//наверное цмдс -1
 
 }
-
-char	**ft_pipe_separator(*str)
-{
-	//нам не нужно разделять команды по тчкзпт
-	//функция разделяет команды по |
-	//и если есть пустые, то выходит с ошьбкой около '|'
-	char	**cmds;
-	int		n_of_cmds;
-
-	n_of_cmds = ft_count_tokens(str, '|') + 1;
-	cmds = (char **)malloc(sizeof(char *) * (n_of_cmds + 1));
-	cmds[n_of_cmds] = NULL;
-	cmds = ft_fillcmds(str, cmds)
-	return (cmds);
-	//вероятно логичнее создать лист команд, на котором помимо самой команды будет храниться лист токенов команды
-}
-
 int	ft_count_tokens(char *str, char symb)
 {
 	//считает количество символов в строке с пропуском всех ковычек
@@ -115,12 +100,28 @@ int	ft_count_tokens(char *str, char symb)
 	quote_type = 0;
 	while (*str)
 	{
-		quote_type = ft_quotes_identifier(*str);
+		quote_type = ft_quotes_identifier(str, &quote_type);
 		if (!quote_type && *str == symb)
 			counter += 1;
 		str++;
 	}
 	return (counter);
+}
+
+char	**ft_pipe_separator(char *str)
+{
+	//нам не нужно разделять команды по тчкзпт
+	//функция разделяет команды по |
+	//и если есть пустые, то выходит с ошьбкой около '|'
+	char	**cmds;
+	int		n_of_cmds;
+
+	n_of_cmds = ft_count_tokens(str, '|') + 1;
+	cmds = (char **)malloc(sizeof(char *) * (n_of_cmds + 1));
+	cmds[n_of_cmds] = NULL;
+	ft_fillcmds(str, cmds);
+	return (cmds);
+	//вероятно логичнее создать лист команд, на котором помимо самой команды будет храниться лист токенов команды
 }
 
 int	ft_command_tokenizer(t_cmd *cmd, t_tkn **tkn_begin)
@@ -138,3 +139,4 @@ int	ft_command_tokenizer(t_cmd *cmd, t_tkn **tkn_begin)
 //далее функция, которая проверяет на пустые типы и выдаёт нужную нам ошибку
 
 //дальше если у токена есть содержимое, мы его модифицируем по $
+
