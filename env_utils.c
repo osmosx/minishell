@@ -32,7 +32,7 @@ char	**copy_env(char **env)
 	i = 0;
 	while (env[i++])
 		len++;
-	envm = (char **)malloc(sizeof(char *) * (len + 2));
+	envm = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!envm)
 		return (NULL);
 	i = 0;

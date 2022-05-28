@@ -24,6 +24,8 @@ static void	test(t_env	*env, char **cmd2)
 		m_exit(env);
 	if (ft_strcmp("export", cmd2[0]) == 0)
 		m_export(env);
+	if (ft_strcmp("unset", cmd2[0]) == 0)
+		m_unset(env, cmd2);
 	else
 		return ;
 }
