@@ -41,9 +41,10 @@ int	ft_tokens_checker(char *str)
 	//функция проверяет, есть ли пайпы, перед которыми после предыдущего <,<<,>>,| только пробелы
 	//та же ошибка если ничего перед & и ; после
 	//короче нужно проверить, есть ли пустые токены после токенизации
-	}
-		write(2, "minishell: syntax error near unexpected token `|\'\n", 50);
-		exit (258);
+	{
+		printf("minishell: syntax error near unexpected token `|\'\n");
+		g_error = 258;
+		return (0);
 	}
 	return (0);
 }
@@ -67,7 +68,7 @@ char	**ft_fillcmds(char *str, char **cmds)
 			if (*(str - 1) == '|' || *cmd_start == '|')
 			{
 				//здесь можно сделать умнее, если оставить это токенами
-				write(2, "minishell: syntax error near unexpected token `|\'\n",50);
+				printf("minishell: syntax error near unexpected token `|\'\n");
 				g_error = 258;
 				return (0);
 			}
