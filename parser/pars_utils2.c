@@ -205,5 +205,5 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 
 //дальше если у токена есть содержимое, мы его модифицируем по $
 
-tkn_begin = ft_tkn_add_back(ft_symb_tkn_init('0', 0), tkn_begin);//инициализация первого псевдотокена
+tkn_begin = ft_tkn_add_back(ft_symb_tkn_init('0', 0), tkn_begin);//инициализация первого псевдотокена. не забыть удалить
 tkn_begin = ft_tkn_add_back(ft_symb_tkn_init('|', 1), tkn_begin);//токен между пайпами
