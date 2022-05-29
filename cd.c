@@ -35,6 +35,8 @@ void	m_cd(t_env *envm, char *path)
 {
 	char	c[PATH_MAX];
 
+	getcwd(c, sizeof(c));
+	new_path("OLDPWD=", c, envm);
 	if (chdir(path) == 0)
 	{
 		getcwd(c, sizeof(c));
