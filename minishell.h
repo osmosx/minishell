@@ -27,16 +27,18 @@
 # include <limits.h>
 # include "./libft/libft.h"
 
-# include <readline/readline.h>
-# include <readline/history.h>
+//Для школы
+//# include <readline/readline.h>
+//# include <readline/history.h>
 
-//# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
-//# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
-//
-//# include "/Users/nenvoy/.brew/Cellar/\
-//readline/8.1.2/include/readline/readline.h"
-//# include "/Users/nenvoy/.brew/Cellar/\
-//readline/8.1.2/include/readline/history.h"
+//Для дома
+# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
+# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
+
+//Вариант для Brew
+//# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
+//# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
+
 int	g_error;
 int	g_status;
 
