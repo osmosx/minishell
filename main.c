@@ -53,5 +53,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(cmd);
 		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
+		ft_free(cmd2);
+		free(cmd);
 	}
 }

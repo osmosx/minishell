@@ -85,12 +85,37 @@ void	export_nocmd(t_env	*envm)
 		printf("declare -x %s\n", buf[i++]);
 }
 
+static char	*ms_get_env(char **env, char *arg)
+{
+	int		i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strcmp(env[i], arg) == 0)
+			break ;
+		else
+			i++;
+	}
+	if (env[i] == NULL)
+		return (NULL);
+	return (env[i]);
+}
+
+static void	export_valid_arg(char *cmd, t_env *envm)
+{
+	if (ft_strchr(cmd, '=') == NULL)
+	{
+		if (ms_get_env(envm->export, cmd) == NULL)
+			envm->export = add_line(envm->export, cmd);
+	}
+}
+
 void	m_export(t_env	*envm, char **cmd2)
 {
 	int		i;
-	char	**str;
 
-	i = 0;
+	i = 1;
 	while (cmd2[i])
 	{
 		if (check_export_arg(cmd2[i]) != 0)
@@ -98,8 +123,7 @@ void	m_export(t_env	*envm, char **cmd2)
 			i++;
 			continue ;
 		}
-		str = ft_split(cmd2[i], '=');
-		ft_free_tab(str);
+		export_valid_arg(cmd2[i], envm);
 		i++;
 	}
 	if (cmd2[1] == NULL)

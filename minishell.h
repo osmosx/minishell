@@ -28,12 +28,12 @@
 # include "./libft/libft.h"
 
 //Для школы
-//# include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 //Для дома
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 
 //Вариант для Brew
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
@@ -69,6 +69,7 @@ void	m_cd(t_env *envm, char *path);
 char	**ft_pipe_separator(char *str);
 
 //utils
-void	ft_free_tab(char **tabs);
+char	**ft_free(char **arr);
+char	**add_line(char **arr, char *new_line);
 
 #endif
