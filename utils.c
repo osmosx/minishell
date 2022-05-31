@@ -1,47 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:50:31 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:50:32 by nenvoy           ###   ########.fr       */
+/*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:50:04 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*init_env(void)
+void	ft_free_tab(char **tabs)
 {
-	t_env	*envm;
+	int	i;
 
-	envm = (t_env *)malloc(sizeof(t_env));
-	envm->cp_env = NULL;
-	envm->cp_path = NULL;
-	envm->export = NULL;
-	return (envm);
-}
-
-char	**copy_env(char **env)
-{
-	char	**envm;
-	int		i;
-	int		len;
-
-	len = 0;
 	i = 0;
-	while (env[i++])
-		len++;
-	envm = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!envm)
-		return (NULL);
-	i = 0;
-	while (env[i])
+	while (tabs[i])
 	{
-		envm[i] = ft_strdup(env[i]);
+		free(tabs[i]);
 		i++;
 	}
-	envm[i] = NULL;
-	return (envm);
+	free(tabs);
 }
+

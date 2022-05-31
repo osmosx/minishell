@@ -44,6 +44,7 @@ typedef struct s_env
 {
 	char	**cp_env;
 	char	**cp_path;
+	char	**export;
 }				t_env;
 
 // env utils
@@ -58,11 +59,14 @@ int		m_pwd(void);
 void	m_env(t_env *envm);
 void	m_echo(char **cmd2);
 void	m_exit(t_env *envm);
-void	m_export(t_env	*envm);
+void	m_export(t_env	*envm, char **cmd2);
 void	m_unset(t_env *envm, char **cmd2);
 void	m_cd(t_env *envm, char *path);
 
 //parser utils
 char	**ft_pipe_separator(char *str);
+
+//utils
+void	ft_free_tab(char **tabs);
 
 #endif

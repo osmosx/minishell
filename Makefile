@@ -14,7 +14,7 @@ HEADER = minishell.h
 #
 SRC = main.c signal.c env_utils.c \
 	  env.c pwd.c echo.c exit.c export.c \
-	  unset.c cd.c
+	  unset.c cd.c utils.c
 #	  	  ./parser/pars_utils.c
 
 
