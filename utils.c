@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:50:31 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:50:32 by nenvoy           ###   ########.fr       */
+/*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:50:04 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*init_env(void)
+char	**ft_free(char **arr)
 {
-	t_env	*envm;
+	size_t	i;
 
-	envm = (t_env *)malloc(sizeof(t_env));
-	envm->cp_env = NULL;
-	envm->cp_path = NULL;
-	envm->export = NULL;
-	return (envm);
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free (arr);
+	return (NULL);
 }
 
-char	**copy_env(char **env)
+char	**add_line(char **arr, char *new_line)
 {
-	char	**envm;
 	int		i;
-	int		len;
+	char	**new_arr;
 
-	len = 0;
 	i = 0;
-	while (env[i++])
-		len++;
-	envm = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!envm)
+	while (arr[i])
+		i++;
+	new_arr = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!new_arr)
 		return (NULL);
 	i = 0;
-	while (env[i])
+	while (arr[i])
 	{
-		envm[i] = ft_strdup(env[i]);
+		new_arr[i] = ft_strdup(arr[i]);
 		i++;
 	}
-	envm[i] = NULL;
-	return (envm);
+	new_arr[i++] = ft_strdup(new_line);
+	new_arr[i] = NULL;
+	ft_free(arr);
+	return (new_arr);
 }
