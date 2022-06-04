@@ -1,5 +1,3 @@
-#include "../minishell.h"
-
 typedef struct	s_tkn
 {
 	int		type;
@@ -7,6 +5,8 @@ typedef struct	s_tkn
 	t_tkn	*next;
 //	t_tkn	*prev;
 }				t_tkn;
+
+#include "../minishell.h"
 
 int	ft_quotes_identifier(char *str, int *quote_type)
 {
@@ -41,41 +41,56 @@ int	ft_tokens_checker(char *str)
 	return (0);
 }
 
-t_tkn	**ft_free_tkn(t_tkn **begin_tkn)
+viod	ft_free_tkn(t_tkn	*tkn)
 {
-	t_tkn	active;
-	t_tkn	prev;
+	if (tkn->value)
+		free(tkn->value);
+	free(tkn);
+}
 
-	active = *begin_tkn
+t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
+{
+	//проверяет, передали ли начало и если да, то фришит строки и токены
+	t_tkn	*active;
+	t_tkn	*prev;
+
+	if (!*begin_tkn)
+		return (NULL);
+	active = *begin_tkn;
 	prev = active;
 	while (active->next)
 	{
-		if (active->value)
-			free(active->value);
 		active = active->next;
-		free(prev);
+		ft_free_tkn(prev);
 		prev = active;
 	}
-	free(active);
+	ft_free_tkn(active);
 	*begin_tkn = NULL;
 	return (NULL);
 }
 
 t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 {
+	//проверяет, передали ли новый и если начало не 0, добавляет его в конец, а если 0 - возвращает новый как начало
 	t_tkn	*last;
 
 	if (!new_tkn)
-		return (ft_free_tkn(begin_tkn));
-	last = *begin_tkn
-	while (current->next)
-		last = current->next;
+		return (ft_free_tkn_list(begin_tkn));
+	last = *begin_tkn;
+	if (!last)
+	{
+		begin_tkn = &new_tkn;
+		return (begin_tkn);
+	}
+	while (last->next)
+		last = last->next;
 	last->next = new_tkn;
 	return (begin_tkn)
 }
 
 int ft_def_token_type(char symb, int count)
 {
+	//определяет тип полученного символа для присвоения индекса токену
 	int type;
 
 	if (count == 1)
@@ -103,6 +118,7 @@ int ft_def_token_type(char symb, int count)
 
 t_tkn	*ft_symb_tkn_init(char symb, int count)
 {
+	//инициализирует токен символа, заполняя нужные значения и возвращает его адрес
 	t_tkn	*new_tkn;
 
 	new_tkn = (tkn *)malloc(sizeof(t_tkn));
@@ -116,12 +132,16 @@ t_tkn	*ft_symb_tkn_init(char symb, int count)
 
 char	*ft_cmd_value_init(char **cmd)
 {
+	//заполняет значение токена текста и возвращает его адрес.
+	//Также двигает строку до конца строки, токена символа или пробела c учетом ковычек
 	char	*cmd_value;
 	char	*start;
+	int		quote_type;
 
+	quote_type = 0;
 	start = *cmd;
-	while (!ft_is_symb_token(**cmd) && !ft_isspace(**cmd))
-		(*cmd)++;
+	while (!quote_type && !ft_is_symb_token(**cmd) && !ft_isspace(**cmd) && **cmd)
+		quote_type = ft_quotes_identifier((*cmd)++, &quote_type);
 	cmd_value = (char *)malloc(sizeof(char) * (*cmd - start + 1));
 	if (!cmd_value)
 		return (NULL)
@@ -129,8 +149,10 @@ char	*ft_cmd_value_init(char **cmd)
 	return (cmd_value);
 }
 
-t_tkn	*ft_cmd_tkn_init(char *cmd)
+t_tkn	*ft_cmd_tkn_init(char **cmd)
 {
+	//инициализирует токен текста, заполняя нужные значения и возвращает его адрес.
+	//Также двигает строку до конца строки, токена символа или пробела
 	t_tkn	*new_tkn;
 
 	new_tkn = (tkn *)malloc(sizeof(t_tkn));
@@ -149,6 +171,7 @@ t_tkn	*ft_cmd_tkn_init(char *cmd)
 
 t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen)
 {
+	//проверяет, являются ли символы строки токеном symb и если да, создаёт соответствующий токен и двигает строку
 	int		count;
 
 	count = 0;
@@ -169,15 +192,12 @@ int	ft_is_symb_token(char c)
 
 t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 {
-
-	char	arr;
-	int		count;
-
-	while (*cmd && tkn_begin)
+	//идёт по строке cmd и токенизирует пробелы, стрелки и строки пока не закончится строка
+	while (*cmd && *tkn_begin)
 	{
 		if (ft_isspace(*cmd))
 		{
-			if (!ft_tkn_add_back(ft_symb_tkn_init(' ', 1), tkn_begin))//что если между " " или $SPACE
+			if (!ft_tkn_add_back(ft_symb_tkn_init(' ', 1), tkn_begin))
 				return (NULL);
 			while (ft_isspace(*cmd))
 				cmd++;
@@ -186,11 +206,9 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 			!ft_tkn(&cmd, tkn_begin, '<', 2))
 			return (NULL);
 		if (!ft_is_symb_token(*cmd) && !ft_isspace(*cmd))
-			tkn_begin = ft_tkn_add_back(ft_cmd_tkn_init(&cmd), tkn_begin);
+			if (!ft_tkn_add_back(ft_cmd_tkn_init(&cmd), tkn_begin))
+				return (NULL);
 	}
-	//функция создаёт токены из существующей строчной команды
-	if (!tkn_begin)
-		g_error = -1;
 	return (tkn_begin)
 	//???и возвращает код ошибки (-1 на малок и 1 если есть ошибка в коде токена например)???
 }
@@ -205,5 +223,16 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 
 //дальше если у токена есть содержимое, мы его модифицируем по $
 
-tkn_begin = ft_tkn_add_back(ft_symb_tkn_init('0', 0), tkn_begin);//инициализация первого псевдотокена. не забыть удалить
-tkn_begin = ft_tkn_add_back(ft_symb_tkn_init('|', 1), tkn_begin);//токен между пайпами
+main
+{
+	t_tkn	*tkn_begin;
+
+	g_error = 0
+	if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
+	|| !ft_line_tokenizer(char *cmd, &tkn_begin))//инициализация первого псевдотокена. не забыть удалить
+		if (!g_error)
+		{
+			g_error = -1;
+			printf("Malloc didn't give memory. Try again\n");
+			return (???);
+		}
