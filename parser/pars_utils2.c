@@ -3,7 +3,7 @@ typedef struct	s_tkn
 	int		type;
 	char	*value;
 	t_tkn	*next;
-//	t_tkn	*prev;
+	t_tkn	*prev;
 }				t_tkn;
 
 #include "../minishell.h"
@@ -88,6 +88,17 @@ t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 	return (begin_tkn)
 }
 
+/*
+заглушка - 0
+текст - 1
+пайп - 2
+< - 3
+> - 4
+<< - 5
+>> - 6
+пробел - 7
+*/
+
 int ft_def_token_type(char symb, int count)
 {
 	//определяет тип полученного символа для присвоения индекса токену
@@ -127,6 +138,7 @@ t_tkn	*ft_symb_tkn_init(char symb, int count)
 	new_tkn->type = ft_def_token_type(symb, count);
 	new_tkn->value = NULL;
 	new_tkn->next = NULL;
+	new_tkn->prev = NULL;
 	return (new_tkn);
 }
 
@@ -229,7 +241,7 @@ main
 
 	g_error = 0
 	if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
-	|| !ft_line_tokenizer(char *cmd, &tkn_begin))//инициализация первого псевдотокена. не забыть удалить
+	|| !ft_line_tokenizer(char *cmd, &tkn_begin, , char **env))//инициализация первого псевдотокена. не забыть удалить
 		if (!g_error)
 		{
 			g_error = -1;
