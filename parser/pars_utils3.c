@@ -471,6 +471,24 @@ t_file	**ft_dequote_file_list(t_file **redir_begin, char **env)
 
 //////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+t_tkn	**ft_dequote_tkn_list(t_tkn	**tkn_begin, char **env)
+{
+//раскроет скобки в оставшихся командах как ft_dequote_file_list
+}
+
+char	**ft_list_to_tab(t_tkn	**tkn_begin, char ***cmd)
+{
+//функция для заполнения **cmd для отработки команды
+//1 - посчитать количество токенов слов
+//2 - выделить память под таблицу и обнулить
+	if(!*cmd)
+		return(ft_free_tkn_list(tkn_begin));
+//3 - пока есть сл слово пропуская пробелы копируем слова в таблицу
+//4 - фришим о обнуляем токен
+	ft_free_tkn_list(tkn_begin);
+	return (*cmd);
+}
+
 t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 {
 	//функция должна наполнять токен команды (и токен редиректа) полноценным содержимым
@@ -489,12 +507,14 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 		tkn = tkn->next;
 	}
 	if (ft_is_redir(tkn->type))
-			if (!ft_file_add_back(ft_file_init(ft_filename(tkn, tkn_begin), tkn->type), &redir_begin))
-				return (ft_free_tkn_list(tkn_begin));
+		if (!ft_file_add_back(ft_file_init(ft_filename(tkn, tkn_begin), tkn->type), &redir_begin))
+			return (ft_free_tkn_list(tkn_begin));
 	if (!ft_dequote_file_list(&redir_begin, env))
 		return (ft_free_tkn_list(tkn_begin));
-	//тут нужна функция, которая раскроет скобки в оставшихся командах как деквот на пр строке
-	//и функция для заполнения **cmd для отработки команды
+	if (!ft_dequote_tkn_list(&tkn_begin, env))//надо написать (скопипастить ft_dequote_file_list и поправить)
+		return (ft_free_file_list(&redir_begin));
+	if (!ft_list_to_tab(&tkn_begin, &cmd))
+		return (ft_free_file_list(&redir_begin));
 	cmdt = ft_cmd_init(redir_begin, cmd);
 	if (!cmdt);
 		return (NULL);

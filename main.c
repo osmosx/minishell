@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+
+
 static void	test(t_env	*env, char **cmd2)
 {
 	if (ft_strcmp("env", cmd2[0]) == 0)
@@ -23,7 +25,8 @@ static void	test(t_env	*env, char **cmd2)
 	if (ft_strcmp("exit", cmd2[0]) == 0)
 		m_exit(env);
 	if (ft_strcmp("export", cmd2[0]) == 0)
-		m_export(env, cmd2);
+		if(!m_export(env, cmd2))
+			printf("malloc error");//текст можно подправить
 	if (ft_strcmp("unset", cmd2[0]) == 0)
 		m_unset(env, cmd2);
 	if (ft_strcmp("cd", cmd2[0]) == 0)

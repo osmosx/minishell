@@ -213,7 +213,7 @@ static t_env	*export_valid_arg(t_env *envm, char *new_arg)
 	return (envm);
 }
 
-void	m_export(t_env *envm, char **cmd2)
+t_env	*m_export(t_env *envm, char **cmd2)
 {
 	int	i;
 
@@ -227,7 +227,9 @@ void	m_export(t_env *envm, char **cmd2)
 			i++;
 			continue ;
 		}
-		export_valid_arg(envm, cmd2[i]);
+		if (!export_valid_arg(envm, cmd2[i]))
+			return (NULL);
 		i++;
 	}
+	return (envm);
 }
