@@ -102,33 +102,33 @@ char	**export_nocmd(t_env *envm)
 	return (envm->cp_env);
 }
 
-static int	find_cmd_env(char **env, char *arg)
+char	**add_line(char **arr, char *new_line)
 {
 	int		i;
-	int		len;
+	char	**new_arr;
 
-	len = ft_strlen(arg);
 	i = 0;
-	while (env[i])
+	while (arr[i])
+		i++;
+	new_arr = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!new_arr)
+		return (NULL);
+	i = 0;
+	while (arr[i])
 	{
-		if (ft_strncmp(env[i], arg, len) == 0
-			&& ((env[i][len] == '=') || (env[i][len] == '\0')))
-			break ;
-		else
-			i++;
+		new_arr[i] = ft_strdup(arr[i]);
+		if (!new_arr[i++])
+			return (ft_free(new_arr));
 	}
-	if (env[i] == NULL)
-		return (-1);
-	return (i);
+	new_arr[i] = ft_strdup(new_line);
+	if (!new_arr[i++])
+		return (ft_free(new_arr));
+	new_arr[i] = NULL;
+	ft_free(arr);
+	return (new_arr);
 }
 
-static void	new_value_str(char **tab, char *new_str, int i)
-{
-	free(tab[i]);
-	tab[i] = new_str;
-}
-
-static char	**del_line(char **arr, int j)
+static char	**del_line(char **arr, int pos)
 {
 	int		i;
 	int		k;
@@ -137,49 +137,79 @@ static char	**del_line(char **arr, int j)
 	i = 0;
 	while (arr[i])
 		i++;
-	new_arr = (char **)malloc(sizeof(char *) * (i));
+	new_arr = (char **)malloc(sizeof(char *) * i);
 	if (!new_arr)
 		return (NULL);
 	i = 0;
 	k = 0;
 	while (arr[i])
 	{
-		if (i != j)
-			new_arr[k++] = ft_strdup(arr[i]);
-		i++;
-//		if (!new_arr[k - 1])
-//			return (ft_free(new_arr));
+		if (i != pos)
+		{
+			new_arr[k] = ft_strdup(arr[i++]);
+			if (!new_arr[k++])
+				return (ft_free(new_arr));
+		}
+		else
+			i++;
 	}
 	new_arr[k] = NULL;
-//	ft_free(arr);
+	ft_free(arr);
 	return (new_arr);
 }
 
-static t_env	*export_valid_arg(t_env *envm, char *cmd)
+static int	find_line_in_tab(char **env, char *arg)
 {
-	int	str;
+	int		i;
+	int		len;
 
-	if (ft_strchr(cmd, '=') == NULL)
+	len = 0;
+	while (arg[len] != '\0' && arg[len] != '=')
+		len++;
+	i = 0;
+	while (env[i])
 	{
-		if (find_cmd_env(envm->cp_env, cmd) == -1)
-			if ((find_cmd_env(envm->export, cmd) == -1))
-				envm->export = add_line(envm->export, cmd);
+		if (!ft_strncmp(env[i], arg, len) && ((env[i][len] == '=')
+			|| (env[i][len] == '\0')))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static void	change_line_value(char **tab, char *new_str, int i)
+{
+	free(tab[i]);
+	tab[i] = new_str;
+}
+
+static t_env	*export_valid_arg(t_env *envm, char *new_arg)
+{
+	int	pos;
+
+	if (!ft_strchr(new_arg, '='))
+	{
+		if (find_line_in_tab(envm->cp_env, new_arg) < 0)
+			if (find_line_in_tab(envm->export, new_arg) < 0)
+				envm->export = add_line(envm->export, new_arg);
 	}
 	else
 	{
-		str = find_cmd_env(envm->cp_env, cmd);
-		if (str == -1)
+		pos = find_line_in_tab(envm->cp_env, new_arg);
+		if (pos < 0)
 		{
-			str = find_cmd_env(envm->export, cmd);
-			envm->cp_env = add_line(envm->cp_env, cmd);
+			envm->cp_env = add_line(envm->cp_env, new_arg);
 			if (!envm->cp_env)
 				return (NULL);
-			if (str)
-				del_line(envm->export, str);
+			pos = find_line_in_tab(envm->export, new_arg);
+			if (pos >= 0)
+				del_line(envm->export, pos);
 		}
 		else
-			new_value_str(envm->cp_env, cmd, str);
+			change_line_value(envm->cp_env, new_arg, pos);
 	}
+	if (!envm->export)
+		return (NULL);
 	return (envm);
 }
 
