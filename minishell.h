@@ -61,7 +61,7 @@ int		m_pwd(void);
 void	m_env(t_env *envm);
 void	m_echo(char **cmd2);
 void	m_exit(t_env *envm);
-void	m_export(t_env	*envm, char **cmd2);
+t_env	*m_export(t_env	*envm, char **cmd2);
 void	m_unset(t_env *envm, char **cmd2);
 void	m_cd(t_env *envm, char *path);
 
