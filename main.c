@@ -41,10 +41,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	g_status = 0;
-	envm = init_env();
-	envm->cp_path = ft_split(getenv("PATH"), ':');
-	envm->cp_env = copy_env(envp);
-	envm->export = copy_env(envp);
+	envm = NULL;
+	envm = init_env(envm, envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 	while (42)

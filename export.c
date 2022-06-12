@@ -35,13 +35,14 @@ int	check_export_arg(char *cmd)
 	return (0);
 }
 
-static char	**export_sort(char **buf, int i)
+static void	export_sort(char **buf)
 {
+	int		i;
 	int		j;
 	int		flag;
 	char	*tmp;
 
-	i = i - 1;
+	i = tablen(buf) - 1;
 	while (i >= 0)
 	{
 		flag = 1;
@@ -61,61 +62,134 @@ static char	**export_sort(char **buf, int i)
 			break ;
 		i--;
 	}
-	return (buf);
 }
 
-void	export_nocmd(t_env	*envm)
+char	**con_twotab(char **tab, char **tab2)
 {
 	int		i;
 	int		j;
 	int		len;
 	char	**buf;
 
-	len = 0;
+	len = tablen(tab) + tablen(tab2);
+	buf = malloc(sizeof(char *) * (len + 1));
+	if (!buf)
+		return (0);
+	i = 0;
 	j = 0;
-	i = 0;
-	while (envm->export[len])
-		len++;
-	buf = malloc(sizeof(char *) * (len));
-	while (envm->export[i])
-		buf[j++] = envm->export[i++];
-	buf = export_sort(buf, len);
-	i = 0;
-	while (buf[i])
-		printf("declare -x %s\n", buf[i++]);
+	while (tab && tab[j])
+		buf[i++] = tab[j++];
+	j = 0;
+	while (tab2 && tab2[j])
+		buf[i++] = tab2[j++];
+	buf[i] = NULL;
+	return (buf);
 }
 
-static char	*ms_get_env(char **env, char *arg)
+char	**export_nocmd(t_env *envm)
 {
 	int		i;
+	char	**buf;
 
+	i = 0;
+	buf = con_twotab(envm->cp_env, envm->export);
+	if (!buf)
+		return (NULL);
+	export_sort(buf);
+	while (buf[i])
+		printf("declare -x %s\n", buf[i++]);
+	free(buf);
+	return (envm->cp_env);
+}
+
+static int	find_cmd_env(char **env, char *arg)
+{
+	int		i;
+	int		len;
+
+	len = ft_strlen(arg);
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strcmp(env[i], arg) == 0)
+		if (ft_strncmp(env[i], arg, len) == 0
+			&& ((env[i][len] == '=') || (env[i][len] == '\0')))
 			break ;
 		else
 			i++;
 	}
 	if (env[i] == NULL)
-		return (NULL);
-	return (env[i]);
+		return (-1);
+	return (i);
 }
 
-static void	export_valid_arg(char *cmd, t_env *envm)
+static void	new_value_str(char **tab, char *new_str, int i)
 {
-	if (ft_strchr(cmd, '=') == NULL)
-	{
-		if (ms_get_env(envm->export, cmd) == NULL)
-			envm->export = add_line(envm->export, cmd);
-	}
+	free(tab[i]);
+	tab[i] = new_str;
 }
 
-void	m_export(t_env	*envm, char **cmd2)
+static char	**del_line(char **arr, int j)
 {
 	int		i;
+	int		k;
+	char	**new_arr;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	new_arr = (char **)malloc(sizeof(char *) * (i));
+	if (!new_arr)
+		return (NULL);
+	i = 0;
+	k = 0;
+	while (arr[i])
+	{
+		if (i != j)
+			new_arr[k++] = ft_strdup(arr[i]);
+		i++;
+//		if (!new_arr[k - 1])
+//			return (ft_free(new_arr));
+	}
+	new_arr[k] = NULL;
+//	ft_free(arr);
+	return (new_arr);
+}
+
+static t_env	*export_valid_arg(t_env *envm, char *cmd)
+{
+	int	str;
+
+	if (ft_strchr(cmd, '=') == NULL)
+	{
+		if (find_cmd_env(envm->cp_env, cmd) == -1)
+			if ((find_cmd_env(envm->export, cmd) == -1))
+				envm->export = add_line(envm->export, cmd);
+	}
+	else
+	{
+		str = find_cmd_env(envm->cp_env, cmd);
+		if (str == -1)
+		{
+			str = find_cmd_env(envm->export, cmd);
+			envm->cp_env = add_line(envm->cp_env, cmd);
+			if (!envm->cp_env)
+				return (NULL);
+			if (str)
+				del_line(envm->export, str);
+		}
+		else
+			new_value_str(envm->cp_env, cmd, str);
+	}
+	return (envm);
+}
+
+void	m_export(t_env *envm, char **cmd2)
+{
+	int	i;
 
 	i = 1;
+	if (cmd2[1] == NULL)
+		export_nocmd(envm);
 	while (cmd2[i])
 	{
 		if (check_export_arg(cmd2[i]) != 0)
@@ -123,9 +197,7 @@ void	m_export(t_env	*envm, char **cmd2)
 			i++;
 			continue ;
 		}
-		export_valid_arg(cmd2[i], envm);
+		export_valid_arg(envm, cmd2[i]);
 		i++;
 	}
-	if (cmd2[1] == NULL)
-		export_nocmd(envm);
 }

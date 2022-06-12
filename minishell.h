@@ -50,8 +50,8 @@ typedef struct s_env
 }				t_env;
 
 // env utils
-t_env	*init_env(void);
-char	**copy_env(char **envp);
+t_env	*init_env(t_env *envm, char **envp);
+char	**copy_env(t_env *envm, char **env);
 
 // signal utils
 void	ctrl_c(int signal);
@@ -71,5 +71,6 @@ char	**ft_pipe_separator(char *str);
 //utils
 char	**ft_free(char **arr);
 char	**add_line(char **arr, char *new_line);
+int		tablen(char **tab);
 
 #endif

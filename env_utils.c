@@ -12,20 +12,22 @@
 
 #include "minishell.h"
 
-t_env	*init_env(void)
+t_env	*init_env(t_env *envm, char **envp)
 {
-	t_env	*envm;
-
 	envm = (t_env *)malloc(sizeof(t_env));
 	envm->cp_env = NULL;
-	envm->cp_path = NULL;
-	envm->export = NULL;
+	envm->cp_path = ft_split(getenv("PATH"), ':');
+	if (!copy_env(envm, envp))
+		return (NULL);
+	envm->export = (char **)malloc(sizeof (char *));
+	if (!envm->export)
+		return (NULL);
+	*(envm->export) = 0;
 	return (envm);
 }
 
-char	**copy_env(char **env)
+char	**copy_env(t_env *envm, char **env)
 {
-	char	**envm;
 	int		i;
 	int		len;
 
@@ -33,15 +35,15 @@ char	**copy_env(char **env)
 	i = 0;
 	while (env[i++])
 		len++;
-	envm = (char **)malloc(sizeof(char *) * (len + 1));
-	if (!envm)
+	envm->cp_env = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!envm->cp_env)
 		return (NULL);
 	i = 0;
 	while (env[i])
 	{
-		envm[i] = ft_strdup(env[i]);
+		envm->cp_env[i] = ft_strdup(env[i]);
 		i++;
 	}
-	envm[i] = NULL;
-	return (envm);
+	envm->cp_env[i] = NULL;
+	return (envm->cp_env);
 }

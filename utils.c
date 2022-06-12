@@ -38,10 +38,27 @@ char	**add_line(char **arr, char *new_line)
 	while (arr[i])
 	{
 		new_arr[i] = ft_strdup(arr[i]);
+//		if (!new_arr[i++])
+//			return (ft_free(new_arr));
 		i++;
 	}
-	new_arr[i++] = ft_strdup(new_line);
+	new_arr[i] = ft_strdup(new_line);
+//	if (!new_arr[i++])
+//		return (ft_free(new_arr));
+	i++;
 	new_arr[i] = NULL;
-	ft_free(arr);
+//	ft_free(arr);
 	return (new_arr);
+}
+
+int	tablen(char **tab)
+{
+	int	i;
+
+	i = 0;
+	if (!tab)
+		return (0);
+	while (*tab++)
+		i++;
+	return (i);
 }
