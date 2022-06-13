@@ -52,6 +52,7 @@ typedef struct s_env
 // env utils
 t_env	*init_env(t_env *envm, char **envp);
 char	**copy_env(t_env *envm, char **env);
+char	**unset_remove(t_env *envm, char *cmd);
 
 // signal utils
 void	ctrl_c(int signal);

@@ -35,7 +35,7 @@ static int	check_unset_cmd(char *cmd)
 	return (0);
 }
 
-static char	**unset_remove(t_env *envm, char *cmd)
+char	**unset_remove(t_env *envm, char *cmd)
 {
 	char	**new_env;
 	int		i;

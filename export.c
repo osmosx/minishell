@@ -89,6 +89,7 @@ char	**con_twotab(char **tab, char **tab2)
 char	**export_nocmd(t_env *envm)
 {
 	int		i;
+	int		j;
 	char	**buf;
 
 	i = 0;
@@ -97,7 +98,22 @@ char	**export_nocmd(t_env *envm)
 		return (NULL);
 	export_sort(buf);
 	while (buf[i])
-		printf("declare -x %s\n", buf[i++]);
+	{
+		if (ft_strchr(buf[i], '='))
+		{
+			write(1, "declare -x ", 11);
+			j = 0;
+			write(1, &(buf[i][j++]), 1);
+			while (buf[i][j - 1] != '=')
+				ft_putchar_fd(buf[i][j++], 1);
+			ft_putchar_fd('"', 1);
+			if (buf[i][j])
+				printf("%s\"\n", buf[i] + j);
+			i++;
+		}
+		else
+			printf("declare -x ,%s\n", buf[i++]);
+	}
 	free(buf);
 	return (envm->cp_env);
 }
@@ -144,14 +160,12 @@ static char	**del_line(char **arr, int pos)
 	k = 0;
 	while (arr[i])
 	{
-		if (i != pos)
+		if (i++ != pos)
 		{
-			new_arr[k] = ft_strdup(arr[i++]);
+			new_arr[k] = ft_strdup(arr[i - 1]);
 			if (!new_arr[k++])
 				return (ft_free(new_arr));
 		}
-		else
-			i++;
 	}
 	new_arr[k] = NULL;
 	ft_free(arr);
@@ -180,7 +194,7 @@ static int	find_line_in_tab(char **env, char *arg)
 static void	change_line_value(char **tab, char *new_str, int i)
 {
 	free(tab[i]);
-	tab[i] = new_str;
+	tab[i] = ft_strdup(new_str);
 }
 
 static t_env	*export_valid_arg(t_env *envm, char *new_arg)
@@ -203,7 +217,8 @@ static t_env	*export_valid_arg(t_env *envm, char *new_arg)
 				return (NULL);
 			pos = find_line_in_tab(envm->export, new_arg);
 			if (pos >= 0)
-				del_line(envm->export, pos);
+				envm->export = del_line(envm->export, pos);
+//				envm->export = unset_remove(envm, new_arg);
 		}
 		else
 			change_line_value(envm->cp_env, new_arg, pos);
