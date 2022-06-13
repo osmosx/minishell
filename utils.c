@@ -23,33 +23,28 @@ char	**ft_free(char **arr)
 	return (NULL);
 }
 
-// char	**add_line(char **arr, char *new_line)
-// {
-// 	int		i;
-// 	char	**new_arr;
+int	check_export_arg(char *cmd)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (arr[i])
-// 		i++;
-// 	new_arr = (char **)malloc(sizeof(char *) * (i + 2));
-// 	if (!new_arr)
-// 		return (NULL);
-// 	i = 0;
-// 	while (arr[i])
-// 	{
-// 		new_arr[i] = ft_strdup(arr[i]);
-// //		if (!new_arr[i++])
-// //			return (ft_free(new_arr));
-// 		i++;
-// 	}
-// 	new_arr[i] = ft_strdup(new_line);
-// //	if (!new_arr[i++])
-// //		return (ft_free(new_arr));
-// 	i++;
-// 	new_arr[i] = NULL;
-// //	ft_free(arr);
-// 	return (new_arr);
-// }
+	i = 0;
+	if (ft_isalpha(cmd[i]) == 0 && cmd[i] != '_')
+	{
+		printf("export: '%s': not a valid identifier\n", cmd);
+		return (1);
+	}
+	i++;
+	while (cmd[i] && cmd[i] != '=')
+	{
+		if (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_')
+		{
+			printf("export: '%s': not a valid identifier\n", cmd);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	tablen(char **tab)
 {

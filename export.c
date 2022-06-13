@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-int	check_export_arg(char *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isalpha(cmd[i]) == 0 && cmd[i] != '_')
-	{
-		printf("export: '%s': not a valid identifier\n", cmd);
-		return (1);
-	}
-	i++;
-	while (cmd[i] && cmd[i] != '=')
-	{
-		if (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_')
-		{
-			printf("export: '%s': not a valid identifier\n", cmd);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 static void	export_sort(char **buf)
 {
 	int		i;
@@ -64,39 +41,12 @@ static void	export_sort(char **buf)
 	}
 }
 
-char	**con_twotab(char **tab, char **tab2)
+static void	print_export(char **buf)
 {
 	int		i;
 	int		j;
-	int		len;
-	char	**buf;
-
-	len = tablen(tab) + tablen(tab2);
-	buf = malloc(sizeof(char *) * (len + 1));
-	if (!buf)
-		return (0);
-	i = 0;
-	j = 0;
-	while (tab && tab[j])
-		buf[i++] = tab[j++];
-	j = 0;
-	while (tab2 && tab2[j])
-		buf[i++] = tab2[j++];
-	buf[i] = NULL;
-	return (buf);
-}
-
-char	**export_nocmd(t_env *envm)
-{
-	int		i;
-	int		j;
-	char	**buf;
 
 	i = 0;
-	buf = con_twotab(envm->cp_env, envm->export);
-	if (!buf)
-		return (NULL);
-	export_sort(buf);
 	while (buf[i])
 	{
 		if (ft_strchr(buf[i], '='))
@@ -114,90 +64,22 @@ char	**export_nocmd(t_env *envm)
 		else
 			printf("declare -x ,%s\n", buf[i++]);
 	}
+}
+
+static char	**export_nocmd(t_env *envm)
+{
+	char	**buf;
+
+	buf = con_twotab(envm->cp_env, envm->export);
+	if (!buf)
+		return (NULL);
+	export_sort(buf);
+	print_export(buf);
 	free(buf);
 	return (envm->cp_env);
 }
 
-char	**add_line(char **arr, char *new_line)
-{
-	int		i;
-	char	**new_arr;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	new_arr = (char **)malloc(sizeof(char *) * (i + 2));
-	if (!new_arr)
-		return (NULL);
-	i = 0;
-	while (arr[i])
-	{
-		new_arr[i] = ft_strdup(arr[i]);
-		if (!new_arr[i++])
-			return (ft_free(new_arr));
-	}
-	new_arr[i] = ft_strdup(new_line);
-	if (!new_arr[i++])
-		return (ft_free(new_arr));
-	new_arr[i] = NULL;
-	ft_free(arr);
-	return (new_arr);
-}
-
-static char	**del_line(char **arr, int pos)
-{
-	int		i;
-	int		k;
-	char	**new_arr;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	new_arr = (char **)malloc(sizeof(char *) * i);
-	if (!new_arr)
-		return (NULL);
-	i = 0;
-	k = 0;
-	while (arr[i])
-	{
-		if (i++ != pos)
-		{
-			new_arr[k] = ft_strdup(arr[i - 1]);
-			if (!new_arr[k++])
-				return (ft_free(new_arr));
-		}
-	}
-	new_arr[k] = NULL;
-	ft_free(arr);
-	return (new_arr);
-}
-
-static int	find_line_in_tab(char **env, char *arg)
-{
-	int		i;
-	int		len;
-
-	len = 0;
-	while (arg[len] != '\0' && arg[len] != '=')
-		len++;
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], arg, len) && ((env[i][len] == '=')
-			|| (env[i][len] == '\0')))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-static void	change_line_value(char **tab, char *new_str, int i)
-{
-	free(tab[i]);
-	tab[i] = ft_strdup(new_str);
-}
-
-static t_env	*export_valid_arg(t_env *envm, char *new_arg)
+static char	**export_valid_arg(t_env *envm, char *new_arg)
 {
 	int	pos;
 
@@ -218,14 +100,11 @@ static t_env	*export_valid_arg(t_env *envm, char *new_arg)
 			pos = find_line_in_tab(envm->export, new_arg);
 			if (pos >= 0)
 				envm->export = del_line(envm->export, pos);
-//				envm->export = unset_remove(envm, new_arg);
 		}
 		else
 			change_line_value(envm->cp_env, new_arg, pos);
 	}
-	if (!envm->export)
-		return (NULL);
-	return (envm);
+	return (envm->export);
 }
 
 t_env	*m_export(t_env *envm, char **cmd2)
