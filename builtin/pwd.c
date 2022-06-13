@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:51:15 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:51:16 by nenvoy           ###   ########.fr       */
+/*   Created: 2022/04/26 15:51:09 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:51:10 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ctrl_c(int signal)
+int	m_pwd(void)
 {
-	(void)signal;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+	char	pwd[PATH_MAX];
 
-void	ctrl_d(char *line, t_env *envm)
-{
-	printf("exit\n");
-	free(line);
-	free(envm);
-	exit(0);
+	if (getcwd(pwd, sizeof(pwd)) == NULL)
+		return (1);
+	printf("%s\n", pwd);
+	return (0);
 }

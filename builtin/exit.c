@@ -1,30 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:51:15 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:51:16 by nenvoy           ###   ########.fr       */
+/*   Created: 2022/04/26 15:50:41 by nenvoy            #+#    #+#             */
+/*   Updated: 2022/04/26 15:50:42 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ctrl_c(int signal)
+static void	all_free(t_env *envm)
 {
-	(void)signal;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (envm->cp_env[i])
+	{
+		free(envm->cp_env[i]);
+		i++;
+	}
+	free(envm->cp_env);
+	while (envm->cp_path[j])
+	{
+		free(envm->cp_path[j]);
+		j++;
+	}
+	free(envm->cp_path);
+	free(envm);
 }
 
-void	ctrl_d(char *line, t_env *envm)
+void	m_exit(t_env *envm)
 {
+	all_free(envm);
 	printf("exit\n");
-	free(line);
-	free(envm);
+	rl_clear_history();
 	exit(0);
 }

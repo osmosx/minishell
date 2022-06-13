@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,21 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ctrl_c(int signal)
+static void	new_path(char *s, char *c, t_env *envm)
 {
-	(void)signal;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	int		i;
+	char	*string;
+
+	i = 0;
+	string = ft_strjoin(s, c);
+	while (envm->cp_env[i])
+	{
+		if (!ft_strncmp(envm->cp_env[i], s, ft_strlen(s)))
+		{
+			free(envm->cp_env[i]);
+			envm->cp_env[i] = string;
+			break ;
+		}
+		i++;
+	}
 }
 
-void	ctrl_d(char *line, t_env *envm)
+void	m_cd(t_env *envm, char *path)
 {
-	printf("exit\n");
-	free(line);
-	free(envm);
-	exit(0);
+	char	c[PATH_MAX];
+
+	getcwd(c, sizeof(c));
+	new_path("OLDPWD=", c, envm);
+	if (chdir(path) == 0)
+	{
+		getcwd(c, sizeof(c));
+		new_path("PWD=", c, envm);
+	}
+	else
+	{
+		write(2, "cd: no such file or directory: ", 31);
+		write(2, path, ft_strlen(path));
+		write(2, "\n", 1);
+	}
 }

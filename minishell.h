@@ -49,21 +49,52 @@ typedef struct s_env
 	char	**export;
 }				t_env;
 
+typedef struct s_tkn
+{
+	int				type;
+	char			*value;
+	struct s_tkn	*next;
+	struct s_tkn	*prev;
+}				t_tkn;
+
+typedef struct s_file
+{
+	char			*name;
+	int				type;
+	struct s_file	*next;
+}				t_file;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	t_file			*begin_redirs;
+	struct s_cmd	*next;
+//	t_tkn	*prev;
+}				t_cmd;
+
 // env utils
 t_env	*init_env(t_env *envm, char **envp);
 char	**copy_env(t_env *envm, char **env);
+char	**unset_remove(t_env *envm, char *cmd);
 
 // signal utils
 void	ctrl_c(int signal);
+void	ctrl_d(char *line, t_env *envm);
 
 //built-in functions
 int		m_pwd(void);
 void	m_env(t_env *envm);
 void	m_echo(char **cmd2);
 void	m_exit(t_env *envm);
-t_env	*m_export(t_env	*envm, char **cmd2);
 void	m_unset(t_env *envm, char **cmd2);
 void	m_cd(t_env *envm, char *path);
+t_env	*m_export(t_env	*envm, char **cmd2);
+//export utils
+void	change_line_value(char **tab, char *new_str, int i);
+int		find_line_in_tab(char **env, char *arg);
+char	**add_line(char **arr, char *new_line);
+char	**del_line(char **arr, int pos);
+char	**con_twotab(char **tab, char **tab2);
 
 //parser utils
 char	**ft_pipe_separator(char *str);
@@ -72,5 +103,6 @@ char	**ft_pipe_separator(char *str);
 char	**ft_free(char **arr);
 char	**add_line(char **arr, char *new_line);
 int		tablen(char **tab);
+int		check_export_arg(char *cmd);
 
 #endif

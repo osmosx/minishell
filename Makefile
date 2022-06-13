@@ -12,9 +12,10 @@
 
 HEADER = minishell.h
 #
-SRC = main.c signal.c env_utils.c \
-	  env.c pwd.c echo.c exit.c export.c \
-	  unset.c cd.c utils.c
+SRC = main.c \
+	builtin/env.c builtin/pwd.c builtin/echo.c builtin/exit.c builtin/export.c builtin/unset.c builtin/cd.c \
+	builtin/signal.c builtin/utils.c builtin/export_utils.c builtin/env_utils.c
+
 #	  	  ./parser/pars_utils.c
 
 
