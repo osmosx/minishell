@@ -36,6 +36,8 @@ static void	test(t_env	*env, char **cmd2)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envm;
+	t_tkn	*tkn_begin = NULL;
+	t_cmd	*cmd_begin = NULL;
 	char	*cmd;
 	char	**cmd2;
 
@@ -52,6 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		add_history(cmd);
 		if (!cmd)
 			ctrl_d(cmd, envm);
+		if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
+ 				|| !ft_line_tokenizer(cmd, &cmd_begin, envm->cp_env))
 		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
 		ft_free(cmd2);

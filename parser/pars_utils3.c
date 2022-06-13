@@ -1,32 +1,5 @@
 #include "../minishell.h"
 
-//redirect implementation
-typedef struct	s_tkn
-{
-	int		type;
-	char	*value;
-	t_tkn	*next;
-	t_tkn	*prev;
-}				t_tkn;
-
-//1 - собираем все токены в один лист
-//cmds = ft_pipe_separator(str);
-
-typedef struct	s_file
-{
-	char	*name;
-	int		type; //<-3 <<-5 >-4 >>-6
-	t_file	*next;
-}				t_file;
-
-typedef struct	s_cmd
-{
-	char	**cmd;
-	t_file	*begin_redirs;
-	t_cmd	*next;
-//	t_tkn	*prev;
-}				t_cmd;
-
 t_file	*ft_file_init(char *name, int type)//передаваемое имя уже замаллочено как надо
 {
 	//инициализирует файл с атрибутами, заполняет нужные значения и возвращает его адрес

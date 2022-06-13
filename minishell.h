@@ -98,6 +98,9 @@ char	**con_twotab(char **tab, char **tab2);
 
 //parser utils
 char	**ft_pipe_separator(char *str);
+char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
+t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn);
+t_tkn	*ft_symb_tkn_init(char symb, int count);
 
 //utils
 char	**ft_free(char **arr);
