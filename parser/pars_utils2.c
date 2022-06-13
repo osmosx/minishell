@@ -41,7 +41,7 @@ int	ft_tokens_checker(char *str)
 	return (0);
 }
 
-viod	ft_free_tkn(t_tkn	*tkn)
+void	ft_free_tkn(t_tkn	*tkn)
 {
 	if (tkn->value)
 		free(tkn->value);
@@ -85,7 +85,7 @@ t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 	while (last->next)
 		last = last->next;
 	last->next = new_tkn;
-	return (begin_tkn)
+	return (begin_tkn);
 }
 
 /*
@@ -132,7 +132,7 @@ t_tkn	*ft_symb_tkn_init(char symb, int count)
 	//инициализирует токен символа, заполняя нужные значения и возвращает его адрес
 	t_tkn	*new_tkn;
 
-	new_tkn = (tkn *)malloc(sizeof(t_tkn));
+	new_tkn = (t_tkn *)malloc(sizeof(t_tkn));
 	if (!new_tkn)
 		return (NULL);
 	new_tkn->type = ft_def_token_type(symb, count);
@@ -156,7 +156,7 @@ char	*ft_cmd_value_init(char **cmd)
 		quote_type = ft_quotes_identifier((*cmd)++, &quote_type);
 	cmd_value = (char *)malloc(sizeof(char) * (*cmd - start + 1));
 	if (!cmd_value)
-		return (NULL)
+		return (NULL);
 	ft_strlcpy(cmd_value, start, *cmd - start + 1);
 	return (cmd_value);
 }
@@ -167,7 +167,7 @@ t_tkn	*ft_cmd_tkn_init(char **cmd)
 	//Также двигает строку до конца строки, токена символа или пробела
 	t_tkn	*new_tkn;
 
-	new_tkn = (tkn *)malloc(sizeof(t_tkn));
+	new_tkn = (t_tkn *)malloc(sizeof(t_tkn));
 	if (!new_tkn)
 		return (NULL);
 	new_tkn->type = 1;
@@ -221,7 +221,7 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 			if (!ft_tkn_add_back(ft_cmd_tkn_init(&cmd), tkn_begin))
 				return (NULL);
 	}
-	return (tkn_begin)
+	return (tkn_begin);
 	//???и возвращает код ошибки (-1 на малок и 1 если есть ошибка в коде токена например)???
 }
 // должна быть функция, которая пропускает пробелы и собирает стрелки в токены.
@@ -235,16 +235,17 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 
 //дальше если у токена есть содержимое, мы его модифицируем по $
 
-main
-{
-	t_tkn	*tkn_begin;
+// main
+// {
+// 	t_tkn	*tkn_begin;
 
-	g_error = 0
-	if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
-	|| !ft_line_tokenizer(char *cmd, &tkn_begin, , char **env))//инициализация первого псевдотокена. не забыть удалить
-		if (!g_error)
-		{
-			g_error = -1;
-			printf("Malloc didn't give memory. Try again\n");
-			return (???);
-		}
+// 	g_error = 0
+// 	if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
+// 	|| !ft_line_tokenizer(char *cmd, &tkn_begin, , char **env))//инициализация первого псевдотокена. не забыть удалить
+// 		if (!g_error)
+// 		{
+// 			g_error = -1;
+// 			printf("Malloc didn't give memory. Try again\n");
+// 			return (???);
+// 		}
+// }
