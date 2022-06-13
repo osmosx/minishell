@@ -134,24 +134,25 @@ char	**ft_pipe_separator(char *str)
 }
 
 //	Эта функция не будет использоваться
-int	ft_line_tokenizer(char *cmd, t_tkn **tkn_begin)
-{
-	//функция создаёт токены из существующего строчного инпута
-	char	**cmds;
+// int	ft_line_tokenizer(char *cmd, t_tkn **tkn_begin)
+// {
+// 	//функция создаёт токены из существующего строчного инпута
+// 	char	**cmds;
 
-	cmds = ft_pipe_separator(str);
-	while (*cmds)
-	{
-		if (!ft_command_tokenizer(*cmds++, tkn_begin))
-			return (NULL);
-		if (*cmds)
-			if (!ft_tkn_add_back(ft_symb_tkn_init('|', 1), tkn_begin))
-				return (NULL);
-	}
-	return (tkn_begin)
+// 	cmds = ft_pipe_separator(str);
+// 	while (*cmds)
+// 	{
+// 		if (!ft_command_tokenizer(*cmds++, tkn_begin))
+// 			return (NULL);
+// 		if (*cmds)
+// 			if (!ft_tkn_add_back(ft_symb_tkn_init('|', 1), tkn_begin))
+// 				return (NULL);
+// 	}
+// 	return (tkn_begin)
+
 
 	//и возвращает код ошибки (-1 на малок и 1 если есть ошибка в коде токена например)
-}
+
 // должна быть функция, которая пропускает пробелы и собирает стрелки в токены.
 //в остальные токены собирается всё, что разделено пробелами или <> (|?, ||, &&)
 //все токены добавляются в лист токенов

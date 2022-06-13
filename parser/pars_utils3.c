@@ -1,3 +1,5 @@
+#include "../minishell.h"
+
 //redirect implementation
 typedef struct	s_tkn
 {
@@ -6,10 +8,9 @@ typedef struct	s_tkn
 	t_tkn	*next;
 	t_tkn	*prev;
 }				t_tkn;
-#include "../minishell.h"
 
 //1 - собираем все токены в один лист
-cmds = ft_pipe_separator(str);
+//cmds = ft_pipe_separator(str);
 
 typedef struct	s_file
 {
@@ -56,7 +57,7 @@ t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd)
 	return (new_cmd);
 }
 
-viod	ft_free_cmd(t_cmd	*tkn)
+void	ft_free_cmd(t_cmd	*tkn)
 {
 	if (tkn->cmd)
 		ft_free_tab(tkn->cmd);
@@ -65,7 +66,7 @@ viod	ft_free_cmd(t_cmd	*tkn)
 	free(tkn);
 }
 
-viod	ft_free_file(t_cmd	*tkn)
+void	ft_free_file(t_file	*tkn)
 {
 	if (tkn->name)
 		free(tkn->name);
@@ -155,10 +156,10 @@ t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd)
 }
 
 
-	t_cmd	*cmd_begin;
+//	t_cmd	*cmd_begin;
 
-	if (!ft_cmd_add_back(ft_cmd_init('0', 0), &cmd_begin));//инициализация первого псевдотокена. не забыть удалить
-		return (NULL);
+//	if (!ft_cmd_add_back(ft_cmd_init('0', 0), &cmd_begin));//инициализация первого псевдотокена. не забыть удалить
+//		return (NULL);
 
 
 t_cmd	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
@@ -188,15 +189,15 @@ t_cmd	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
 	ft_free_tab(first_cmd);
 }
 
-int	ft_cmd_is_null(t_cmd *cmd)
-{
-	int	flag;
+// int	ft_cmd_is_null(t_cmd *cmd)
+// {
+// 	int	flag;
 
-	flag == 1;
-	flag *= cmd->?? == NULL;
-	//...
-	return (flag);
-}
+// 	flag == 1;
+// 	flag *= cmd->?? == NULL;
+// 	//...
+// 	return (flag);
+// }
 
 //--также нужна функция для обработки $с буквами в переменную, а с ? - в код последней ошибки, $$ - pid??
 
@@ -265,19 +266,19 @@ char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn)
 		return (NULL);
 	ft_strlcpy(name, tkn_ptr->value, len + 1);
 	ft_tkn_del(tkn_ptr, begin_tkn);
-	return (name)
+	return (name);
 }
 
-ft_tkn_prev_setter(t_tkn tkn_begin)
+ft_tkn_prev_setter(t_tkn **tkn_begin)
 {
 	//проставляет файлам значение поле "предыдущий"
 	t_tkn	*prev;
 
-	while (tkn_begin && tkn_begin->next)
+	while (*tkn_begin && (*tkn_begin)->next)
 	{
 		prev = tkn_begin;
-		tkn_begin = tkn_begin->next;
-		tkn_begin->prev = prev;
+		tkn_begin = (*tkn_begin)->next;
+		(*tkn_begin)->prev = prev;
 	}
 }
 
@@ -333,7 +334,7 @@ int ft_is_opening_or_closing_quote(char c, int qt)
 		return 0;
 }
 
-int	ft_file_len_counter(t_file file, char **env)
+int	ft_file_len_counter(t_file *file, char **env)
 {
 	//считает длину строки, которая получится для имени файла после раскрытия ковычек
 	char	*str;
@@ -407,7 +408,7 @@ char	*ft_fill_var_value(char **str, char *name, char **env)
 	return (name);
 }
 
-char	*ft_dequote_file_name(t_file file, char *name, char **env)
+char	*ft_dequote_file_name(t_file *file, char *name, char **env)
 {
 	//раскрывает скобки в названии файла в заранее замало ченную переменную нужного размера
 	char	*str;
@@ -440,7 +441,7 @@ t_file	*ft_file_dequoter(t_file *file, char **env)
 
 	if (file->name)
 	{
-		len = ft_file_len_counter(file, env);//написать
+		len = ft_file_len_counter(file, env);
 		name = (char *)malloc((len + 1) * sizeof(char));
 		if (!name)
 			return (NULL);
@@ -449,7 +450,7 @@ t_file	*ft_file_dequoter(t_file *file, char **env)
 		free(file->name);
 		file->name = name;
 	}
-	return (file)
+	return (file);
 }
 
 t_file	**ft_dequote_file_list(t_file **redir_begin, char **env)
@@ -471,21 +472,156 @@ t_file	**ft_dequote_file_list(t_file **redir_begin, char **env)
 
 //////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-t_tkn	**ft_dequote_tkn_list(t_tkn	**tkn_begin, char **env)
+int	ft_tkn_len_counter(t_tkn *tkn, char **env)
 {
-//раскроет скобки в оставшихся командах как ft_dequote_file_list
+	//считает длину строки, которая получится для имени файла после раскрытия ковычек
+	char	*str;
+	int		len;
+	int		quote_type;
+
+	quote_type = 0;
+	len = 0;
+	str = tkn->value;
+	while (str && *str)
+	{
+		if (ft_is_opening_or_closing_quote(*str, quote_type))
+			quote_type = ft_quotes_identifier(str++, quote_type);
+		else if (*str == '$' && (!quote_type || !quote_type == 2) && tkn->type != 5)
+		{
+			if (*(++str) == '?')
+			{
+				len += ft_numlen(g_error);
+				str++;
+			}
+			else
+				len += ft_var_len(&(str), env);
+		}
+		else
+			len++;
+	}
+	return (len);
+}
+
+char	*ft_dequote_file_name(t_tkn *tkn, char *value, char **env)
+{
+	//раскрывает скобки в названии файла в заранее замало ченную переменную нужного размера
+	char	*str;
+	int		quote_type;
+
+	quote_type = 0;
+	str = tkn->value;
+	while (str && *str)
+	{
+		if (ft_is_opening_or_closing_quote(*str, quote_type))
+			quote_type = ft_quotes_identifier(str++, quote_type);
+		else if (*str == '$' && (!quote_type || !quote_type == 2) && tkn->value != 5)
+		{
+			if (*(++str) == '?')
+				value = ft_fill_last_err(value, &str);
+			else
+				value = ft_fill_var_value(&str, value, env);
+		}
+		else
+			*(value++) = *(str++);
+	}
+	return (value);
+}
+
+t_tkn	*ft_tkn_dequoter(t_tkn *tkn, char **env)
+{
+	//раскрывает скобки в названии файла
+	int		len;
+	char	*value;
+
+	if (tkn->value)
+	{
+		len = ft_tkn_len_counter(tkn, env);
+		value = (char *)malloc((len + 1) * sizeof(char));
+		if (!value)
+			return (NULL);
+		value[len] = '\0';
+		value = ft_dequote_tkn_value(tkn, value, env);
+		free(tkn->value);
+		tkn->value = value;
+	}
+	return (tkn);
+}
+
+t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env)
+{
+	//раскроетывает скобки в оставшихся командах
+	t_tkn	*tkn;
+	t_tkn	*res;
+
+	tkn = *tkn_begin;
+	while (tkn->next)
+	{
+		while (tkn->type == 7 && tkn->next)
+		{
+			res = tkn;
+			tkn = tkn->next;
+			ft_tkn_del(res, tkn_begin);
+		}
+		if (tkn->type != 1)
+			printf("Something other than vords token left in list");//<<<=========
+		if (!ft_tkn_dequoter(tkn, env))
+			return (ft_free_tkn_list(tkn_begin));
+		tkn = tkn->next;
+	}
+	if (!ft_tkn_dequoter(tkn, env))
+		return (ft_free_tkn_list(tkn_begin));
+	return (tkn_begin);
+}
+
+char	**ft_init_tab(char ***cmd, int i, t_tkn **tkn_begin)
+{
+	int	n;
+	int	len;
+	t_tkn	*tkn;
+
+	n = 0;
+	tkn = *tkn_begin;
+	*cmd = (char **)malloc(sizeof(char*) * (i + 1));
+	if(!*cmd)
+		return(NULL);
+	(*cmd)[i] = NULL;
+	while (n < i)
+	{
+		if (tkn->type = 1)
+		{
+			len = ft_strlen(tkn->value);
+			(*cmd[n]) = ft_strdup(tkn->value);
+			if(!(*cmd)[n++])
+				return(ft_free(*cmd));
+		}
+		if (tkn->next)
+			tkn = tkn->next;
+	}
+	return (*cmd);
 }
 
 char	**ft_list_to_tab(t_tkn	**tkn_begin, char ***cmd)
 {
 //функция для заполнения **cmd для отработки команды
+	int		i;
+	t_tkn	*tkn;
 //1 - посчитать количество токенов слов
-//2 - выделить память под таблицу и обнулить
-	if(!*cmd)
+	tkn = *tkn_begin;
+	if (tkn)
+		i = 1;
+	else
+		i = 0;
+	while (tkn && tkn->next)
+	{
+		if (tkn->type == 1)
+			i++;
+		tkn = tkn->next;
+	}
+//2 - выделить память под таблицу и окопируем слова в таблицу
+	*cmd = ft_init_tab(cmd, i, tkn_begin);
+	if (!*cmd)
 		return(ft_free_tkn_list(tkn_begin));
-//3 - пока есть сл слово пропуская пробелы копируем слова в таблицу
 //4 - фришим о обнуляем токен
-	ft_free_tkn_list(tkn_begin);
 	return (*cmd);
 }
 
@@ -511,7 +647,7 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 			return (ft_free_tkn_list(tkn_begin));
 	if (!ft_dequote_file_list(&redir_begin, env))
 		return (ft_free_tkn_list(tkn_begin));
-	if (!ft_dequote_tkn_list(&tkn_begin, env))//надо написать (скопипастить ft_dequote_file_list и поправить)
+	if (!ft_dequote_tkn_list(&tkn_begin, env))
 		return (ft_free_file_list(&redir_begin));
 	if (!ft_list_to_tab(&tkn_begin, &cmd))
 		return (ft_free_file_list(&redir_begin));
@@ -520,6 +656,7 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 		return (NULL);
 	return (cmdt);
 }
+
 
 // *предполагаем, что ошибка двух последовательных токенов пайпа уже проверена
 
