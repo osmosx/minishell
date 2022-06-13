@@ -20,3 +20,11 @@ void	ctrl_c(int signal)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
+void	ctrl_d(char *line, t_env *envm)
+{
+	printf("exit\n");
+	free(line);
+	free(envm);
+	exit(0);
+}

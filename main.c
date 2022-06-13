@@ -50,6 +50,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		cmd = readline("\001\033[31m\002hellshell$>\001\033[0m\002 ");
 		add_history(cmd);
+		if (!cmd)
+			ctrl_d(cmd, envm);
 		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
 		ft_free(cmd2);

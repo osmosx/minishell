@@ -49,6 +49,29 @@ typedef struct s_env
 	char	**export;
 }				t_env;
 
+typedef struct s_tkn
+{
+	int				type;
+	char			*value;
+	struct s_tkn	*next;
+	struct s_tkn	*prev;
+}				t_tkn;
+
+typedef struct s_file
+{
+	char			*name;
+	int				type;
+	struct s_file	*next;
+}				t_file;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	t_file			*begin_redirs;
+	struct s_cmd	*next;
+//	t_tkn	*prev;
+}				t_cmd;
+
 // env utils
 t_env	*init_env(t_env *envm, char **envp);
 char	**copy_env(t_env *envm, char **env);
@@ -56,6 +79,7 @@ char	**unset_remove(t_env *envm, char *cmd);
 
 // signal utils
 void	ctrl_c(int signal);
+void	ctrl_d(char *line, t_env *envm);
 
 //built-in functions
 int		m_pwd(void);
