@@ -97,15 +97,31 @@ char	**del_line(char **arr, int pos);
 char	**con_twotab(char **tab, char **tab2);
 
 //parser utils
+char	**ft_fillcmds(char *str, char **cmds);
+int		ft_quotes_identifier(char *str, int *quote_type);
+t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin);
+char	**ft_pipe_separator(char *str);
 char	**ft_pipe_separator(char *str);
 char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
 t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn);
 t_tkn	*ft_symb_tkn_init(char symb, int count);
+
+//tkns
+t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen);
+t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn);
+int ft_def_token_type(char symb, int count);
+int	ft_isspace(char c);
+int	ft_is_symb_token(char c);
+t_tkn	*ft_cmd_tkn_init(char **cmd);
+
 
 //utils
 char	**ft_free(char **arr);
 char	**add_line(char **arr, char *new_line);
 int		tablen(char **tab);
 int		check_export_arg(char *cmd);
+
+//tester
+void	ft_print_tkn(t_tkn *tkn_begin);
 
 #endif

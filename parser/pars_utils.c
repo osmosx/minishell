@@ -88,8 +88,8 @@ char	**ft_fillcmds(char *str, char **cmds)
 		}   ---если сверху делать токенизацию и готовить под или(||)*/
 	}
 	return (cmds);//наверное цмдс -1
-
 }
+
 int	ft_count_tokens(char *str, char symb)
 {
 	//считает количество символов в строке с пропуском всех ковычек
@@ -219,6 +219,7 @@ int ft_def_token_type(char symb, int count)
 	//определяет тип полученного символа для присвоения индекса токену
 	int	type;
 
+	type = 0; //это заглушка
 	if (count == 1)
 	{
 		if (symb == '|')
@@ -229,8 +230,6 @@ int ft_def_token_type(char symb, int count)
 			type = 4;
 		else if (symb == ' ')
 			type = 7;
-		else
-			type = 0;
 	}
 	else if (count == 2)
 	{
@@ -238,11 +237,7 @@ int ft_def_token_type(char symb, int count)
 			type = 5;
 		else if (symb == '>')
 			type = 6;
-		else
-			type = 0;
 	}
-	else
-		type = 0; //это заглушка
 	return (type);
 }
 
@@ -328,6 +323,7 @@ t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen)
 	return (tkn_begin);
 }
 
+
 t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 {
 	//идёт по строке cmd и токенизирует пробелы, стрелки и строки пока не закончится строка
@@ -376,6 +372,7 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 // 		}
 // }
 
+//------------------------------------------------------------------------------------
 t_file	*ft_file_init(char *name, int type)//передаваемое имя уже замаллочено как надо
 {
 	//инициализирует файл с атрибутами, заполняет нужные значения и возвращает его адрес
