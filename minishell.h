@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:55:31 by nenvoy           ###   ########.fr       */
+/*   Updated: 2022/07/11 00:37:53 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,61 @@ char	**del_line(char **arr, int pos);
 char	**con_twotab(char **tab, char **tab2);
 
 //parser utils
+char	**ft_fillcmds(char *str, char **cmds);
+int		ft_quotes_identifier(char *str, int *quote_type);
+t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin);
+char	**ft_pipe_separator(char *str);
 char	**ft_pipe_separator(char *str);
 char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
 t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn);
 t_tkn	*ft_symb_tkn_init(char symb, int count);
+char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
+
+//tkns
+t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen);
+t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn);
+int	ft_def_token_type(char symb, int count);
+int	ft_isspace(char c);
+int	ft_is_symb_token(char c);
+t_tkn	*ft_cmd_tkn_init(char **cmd);
+void	ft_tkn_prev_setter(t_tkn **tkn_begin);
+t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env);
+void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
+int	ft_tkn_len_counter(t_tkn *tkn, char **env);
+
+
+//cmds
+t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env);
+t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd);
+t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd);
+
+//files
+t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file);
+t_file	*ft_file_init(char *name, int type);
+char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn);
+t_file	**ft_dequote_file_list(t_file **redir_begin, char **env);
+t_file	**ft_free_file_list(t_file **begin_file);
+char *ft_fill_last_err(char *name, char **str);
+char	*ft_fill_var_value(char **str, char *name, char **env);
+int	ft_file_len_counter(t_file *file, char **env);
+
 
 //utils
 char	**ft_free(char **arr);
 char	**add_line(char **arr, char *new_line);
 int		tablen(char **tab);
 int		check_export_arg(char *cmd);
+int		ft_is_redir(int type);
+int ft_is_opening_or_closing_quote(char c, int qt);
+int	ft_numlen(int n);
+int	ft_var_len(char **str, char **env);
+
+
+
+//tester
+void	ft_print_tkn(t_tkn *tkn_begin);
+void	ft_print_file2(t_file *file_begin);
+void	ft_print_cmd(t_cmd *cmd);
+void	ft_printtab(char **cmds);
 
 #endif
