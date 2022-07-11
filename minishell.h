@@ -89,6 +89,7 @@ void	m_exit(t_env *envm);
 void	m_unset(t_env *envm, char **cmd2);
 void	m_cd(t_env *envm, char *path);
 t_env	*m_export(t_env	*envm, char **cmd2);
+
 //export utils
 void	change_line_value(char **tab, char *new_str, int i);
 int		find_line_in_tab(char **env, char *arg);
@@ -110,15 +111,14 @@ char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
 //tkns
 t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen);
 t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn);
-int	ft_def_token_type(char symb, int count);
-int	ft_isspace(char c);
-int	ft_is_symb_token(char c);
+int		ft_def_token_type(char symb, int count);
+int		ft_isspace(char c);
+int		ft_is_symb_token(char c);
 t_tkn	*ft_cmd_tkn_init(char **cmd);
 void	ft_tkn_prev_setter(t_tkn **tkn_begin);
 t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env);
 void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
-int	ft_tkn_len_counter(t_tkn *tkn, char **env);
-
+int		ft_tkn_len_counter(t_tkn *tkn, char **env);
 
 //cmds
 t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env);
@@ -131,10 +131,9 @@ t_file	*ft_file_init(char *name, int type);
 char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn);
 t_file	**ft_dequote_file_list(t_file **redir_begin, char **env);
 t_file	**ft_free_file_list(t_file **begin_file);
-char *ft_fill_last_err(char *name, char **str);
+char	*ft_fill_last_err(char *name, char **str);
 char	*ft_fill_var_value(char **str, char *name, char **env);
-int	ft_file_len_counter(t_file *file, char **env);
-
+int		ft_file_len_counter(t_file *file, char **env);
 
 //utils
 char	**ft_free(char **arr);
@@ -142,11 +141,9 @@ char	**add_line(char **arr, char *new_line);
 int		tablen(char **tab);
 int		check_export_arg(char *cmd);
 int		ft_is_redir(int type);
-int ft_is_opening_or_closing_quote(char c, int qt);
-int	ft_numlen(int n);
-int	ft_var_len(char **str, char **env);
-
-
+int		ft_is_opening_or_closing_quote(char c, int qt);
+int		ft_numlen(int n);
+int		ft_var_len(char **str, char **env);
 
 //tester
 void	ft_print_tkn(t_tkn *tkn_begin);
