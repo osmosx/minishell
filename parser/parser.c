@@ -154,7 +154,7 @@ char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
 	cmds = ft_pipe_separator(str);
 	first_cmd = cmds;
 	tkn_begin = NULL;
-	ft_printtab(cmds);
+//	ft_printtab(cmds);
 	while (*cmds)
 	{
 		if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)

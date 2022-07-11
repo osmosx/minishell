@@ -101,15 +101,15 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 			return (NULL);
 		}
 	}
-	write(1, "\ntkn\n", 5);//=======================
-	ft_print_tkn(*tkn_begin);
-	write(1, "\n\n", 2);//=======================
+//	write(1, "\ntkn\n", 5);//=======================
+//	ft_print_tkn(*tkn_begin);
+//	write(1, "\n\n", 2);//=======================
 	if (!ft_dequote_tkn_list(tkn_begin, env))
 	{
 		ft_free_file_list(&redir_begin);
 		return (NULL);
 	}
-	ft_print_file2(redir_begin);
+//	ft_print_file2(redir_begin);
 //	ft_print_cmd(cmd);
 	if (!ft_list_to_tab(tkn_begin, &cmd))
 	{

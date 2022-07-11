@@ -54,10 +54,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!cmd)
 			ctrl_d(cmd, envm);
 		cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
-		if (!cmd2)
-		{
-			ft_free_cmd_list(cmd_begin);//и ошибку поставить
-		}
+//		if (!cmd2)
+//		{
+//			ft_free_cmd_list(cmd_begin);//и ошибку поставить
+//		}
 //		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
 //		ft_free_cmd_list(&cmd_begin)//нужно написать, пока комментим (чистит файловые списки, таблицы команд и список команд)

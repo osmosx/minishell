@@ -64,8 +64,8 @@ t_file	**ft_dequote_file_list(t_file **redir_begin, char **env)
 			return (ft_free_file_list(redir_begin));
 		file = file->next;
 	}
-	ft_print_file2(*redir_begin);//=====================
-//	write(1, "here!-\n", 5);//=======================
+//	ft_print_file2(*redir_begin);
+//	write(1, "here!-\n", 5);
 	if (!ft_file_dequoter(file, env))
 		return (ft_free_file_list(redir_begin));
 	return (redir_begin);
