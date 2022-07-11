@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:50:04 by nenvoy           ###   ########.fr       */
+/*   Updated: 2022/07/11 13:50:46 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	test(t_env	*env, char **cmd2)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envm;
-	t_tkn	*tkn_begin = NULL;
 	t_cmd	*cmd_begin = NULL;
 	char	*cmd;
 	char	**cmd2;
@@ -54,11 +53,15 @@ int	main(int argc, char **argv, char **envp)
 		add_history(cmd);
 		if (!cmd)
 			ctrl_d(cmd, envm);
-		if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
- 				|| !ft_line_tokenizer(cmd, &cmd_begin, envm->cp_env))
-		cmd2 = ft_split(cmd, ' ');
+		cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
+		if (!cmd2)
+		{
+			ft_free_cmd_list(cmd_begin);//и ошибку поставить
+		}
+//		cmd2 = ft_split(cmd, ' ');
 		test(envm, cmd2);
-		ft_free(cmd2);
+//		ft_free_cmd_list(&cmd_begin)//нужно написать, пока комментим (чистит файловые списки, таблицы команд и список команд)
+		ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
 		free(cmd);
 	}
 }

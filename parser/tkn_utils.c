@@ -28,6 +28,40 @@ t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
 	return (NULL);
 }
 
+void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)//надо написать удаление текста из токенов. похоже нужно будет поле предыдущий в токенах
+{
+	t_tkn	*prev;
+	t_tkn	*next;
+
+	prev = tkn->prev;
+	next = tkn->next;
+	if (prev)
+		prev->next = next;
+	else
+	{
+		if (next)
+			*begin_tkn = tkn->next;
+		else
+			*begin_tkn = NULL;
+	}
+	if (next)
+		next->prev = prev;
+	ft_free_tkn(tkn);
+}
+
+void ft_tkn_prev_setter(t_tkn **tkn_begin)
+{
+//проставляет файлам значение поле "предыдущий"
+	t_tkn	*prev;
+
+	while (*tkn_begin && (*tkn_begin)->next)
+	{
+		prev = *tkn_begin;
+		tkn_begin = &(*tkn_begin)->next;
+		(*tkn_begin)->prev = prev;
+	}
+}
+
 /*
 заглушка - 0
 текст - 1
@@ -75,4 +109,37 @@ int	ft_isspace(char c)
 int	ft_is_symb_token(char c)
 {
 	return (c == '<' || c == '>' || c == '|');
+}
+
+int	ft_tkn_len_counter(t_tkn *tkn, char **env)
+{
+	//считает длину строки, которая получится для имени файла после раскрытия ковычек
+	char	*str;
+	int		len;
+	int		quote_type;
+
+	quote_type = 0;
+	len = 0;
+	str = tkn->value;
+	while (str && *str)
+	{
+		if (ft_is_opening_or_closing_quote(*str, quote_type))
+			quote_type = ft_quotes_identifier(str++, &quote_type);
+		else if (*str == '$' && (!quote_type || !(quote_type == 2)) && tkn->type != 5)
+		{
+			if (*(++str) == '?')
+			{
+				len += ft_numlen(g_error);
+				str++;
+			}
+			else
+				len += ft_var_len(&(str), env);
+		}
+		else
+		{
+			len++;
+			str++;
+		}
+	}
+	return (len);
 }

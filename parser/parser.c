@@ -103,11 +103,11 @@ int	ft_count_tokens(char *str, char symb)
 	return (counter);
 }
 
+//нам не нужно разделять команды по тчкзпт
+//функция разделяет команды по |
+//и если есть пустые, то выходит с ошьбкой около '|'
 char	**ft_pipe_separator(char *str)
 {
-	//нам не нужно разделять команды по тчкзпт
-	//функция разделяет команды по |
-	//и если есть пустые, то выходит с ошьбкой около '|'
 	char	**cmds;
 	int		n_of_cmds;
 
@@ -119,9 +119,9 @@ char	**ft_pipe_separator(char *str)
 	//вероятно логичнее создать лист команд, на котором помимо самой команды будет храниться лист токенов команды
 }
 
+//идёт по строке cmd и токенизирует пробелы, стрелки и строки пока не закончится строка
 t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 {
-	//идёт по строке cmd и токенизирует пробелы, стрелки и строки пока не закончится строка
 	while (*cmd)// && *tkn_begin)
 	{
 		if (ft_isspace(*cmd))
@@ -140,3 +140,44 @@ t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin)
 	}
 	return (tkn_begin);
 }
+
+char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
+{
+	//перед вызовом этой функции проверить, что строка не пустая
+	//функция создаёт токены команд в список из существующего строчного инпута
+	//сначала разбивает по пайпам, а потом обрабатывает каждую область отдельно
+	t_tkn	*tkn_begin;
+//	t_tkn	*tkn_blanc;
+	char	**cmds;
+	char	**first_cmd;
+
+	cmds = ft_pipe_separator(str);
+	first_cmd = cmds;
+	tkn_begin = NULL;
+	ft_printtab(cmds);
+	while (*cmds)
+	{
+		if (!ft_tkn_add_back(ft_symb_tkn_init('0', 0), &tkn_begin)
+			|| !ft_command_tokenizer(*(cmds++), &tkn_begin))//инициализация первого псевдотокена. не забыть удалить
+			return (ft_free(first_cmd));
+//		tkn_blanc = tkn_begin;
+//		tkn_begin = tkn_begin->next;
+		ft_tkn_del(tkn_begin, &tkn_begin);//удаление псевдотокена
+		// write(1, "tkn\n",4);
+		// ft_print_tkn(tkn_begin);
+		if(!ft_cmd_add_back(ft_cmd_filler(&tkn_begin, env), cmd_begin))
+			return (NULL);
+		// write(1, "tkn:\n", 5);
+		// ft_print_tkn(tkn_begin);
+		ft_free_tkn_list(&tkn_begin);//освобождение листа токенов
+	// write(1, *cmds, 6);
+	}
+//	ft_free(first_cmd);
+	return (first_cmd);
+}
+// *предполагаем, что ошибка двух последовательных токенов пайпа уже проверена
+
+//3 - получаем список t_cmd   если звёздочка не раскрыта, то тут можно проверить на абсолютно пустой цмд
+
+//4 - исполняем пайп
+//4.1 - реализуем перенаправления
