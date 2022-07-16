@@ -9,9 +9,9 @@ void	ft_free_cmd(t_cmd	*tkn)
 	free(tkn);
 }
 
+//проверяет, передали ли начало и если да, то фришит строки и токены
 t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd)
 {
-	//проверяет, передали ли начало и если да, то фришит строки и токены
 	t_cmd	*active;
 	t_cmd	*prev;
 
@@ -30,9 +30,10 @@ t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd)
 	return (NULL);
 }
 
+//инициализирует команду с атрибутами, заполняет нужные значения и возвращает её
+// адрес
 t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd)
 {
-	//инициализирует команду с атрибутами, заполняет нужные значения и возвращает её адрес
 	t_cmd	*new_cmd;
 
 	new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
@@ -44,12 +45,12 @@ t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd)
 	return (new_cmd);
 }
 
+//функция проверяет, передали ли новый и если начало не 0,
+// добавляет его в конец, а если 0 - возвращает новый как начало
 t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd)
 {
-	//функция проверяет, передали ли новый и если начало не 0, добавляет его в конец, а если 0 - возвращает новый как начало
 	t_cmd	*last;
 
-//	ft_print_cmd(new_cmd);
 	if (!new_cmd)
 		return (ft_free_cmd_list(begin_cmd));
 	last = *begin_cmd;
