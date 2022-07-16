@@ -38,6 +38,5 @@ void	m_exit(t_env *envm)
 {
 	all_free(envm);
 	printf("exit\n");
-	rl_clear_history();
 	exit(0);
 }

@@ -12,6 +12,52 @@
 
 #include "../minishell.h"
 
+char	*shlvl_create(char *ptr)
+{
+	int		len;
+	char	*shlvl;
+	int		lvl;
+	char	*num;
+
+	lvl = ft_atoi(ptr);
+	lvl++;
+	num = ft_itoa(lvl);
+	len = ft_numlen(lvl);
+	shlvl = malloc(7 + len);
+	ft_strlcpy(shlvl, "SHLVL=", 7);
+	ft_strlcpy(shlvl + 6, num, len + 1);
+	free (num);
+	return (shlvl);
+}
+
+void	check_shlvl(t_env *envm)
+{
+	int		i;
+	char	*ptr;
+	char	*shlvl;
+
+	i = 0;
+	ptr = NULL;
+	while (envm->cp_env[i])
+	{
+		if (!ft_strncmp(envm->cp_env[i], "SHLVL=", 6))
+		{
+			ptr = envm->cp_env[i] + 6;
+			break ;
+		}
+		i++;
+	}
+	if (!ptr)
+		envm->cp_env = add_line(envm->cp_env, "SHLVL=1");
+	else
+	{
+		shlvl = shlvl_create(ptr);
+		envm->cp_env = del_line(envm->cp_env, i);
+		envm->cp_env = add_line(envm->cp_env, shlvl);
+		free(shlvl);
+	}
+}
+
 t_env	*init_env(t_env *envm, char **envp)
 {
 	envm = (t_env *)malloc(sizeof(t_env));
@@ -19,6 +65,7 @@ t_env	*init_env(t_env *envm, char **envp)
 	envm->cp_path = ft_split(getenv("PATH"), ':');
 	if (!copy_env(envm, envp))
 		return (NULL);
+	check_shlvl(envm);
 	envm->export = (char **)malloc(sizeof (char *));
 	if (!envm->export)
 		return (NULL);

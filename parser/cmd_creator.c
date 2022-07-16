@@ -49,7 +49,6 @@ t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd)
 	//функция проверяет, передали ли новый и если начало не 0, добавляет его в конец, а если 0 - возвращает новый как начало
 	t_cmd	*last;
 
-	write(1,"new cmd\n", 8);
 //	ft_print_cmd(new_cmd);
 	if (!new_cmd)
 		return (ft_free_cmd_list(begin_cmd));

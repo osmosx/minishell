@@ -33,6 +33,17 @@ static void	test(t_env	*env, char **cmd2)
 		return ;
 }
 
+
+void	ft_printtab(char **cmds)
+{
+	if (!cmds)
+		printf("No cmds tab");
+	else
+		while (*cmds)
+			printf("%s\n", *(cmds++));
+}
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envm;
@@ -53,15 +64,14 @@ int	main(int argc, char **argv, char **envp)
 		add_history(cmd);
 		if (!cmd)
 			ctrl_d(cmd, envm);
-		cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
-//		if (!cmd2)
-//		{
-//			ft_free_cmd_list(cmd_begin);//и ошибку поставить
-//		}
-//		cmd2 = ft_split(cmd, ' ');
-		test(envm, cmd2);
-//		ft_free_cmd_list(&cmd_begin)//нужно написать, пока комментим (чистит файловые списки, таблицы команд и список команд)
-		ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
+		if (*cmd)
+		{
+			cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
+			test(envm, cmd_begin->cmd);
+			ft_free_cmd_list(&cmd_begin);
+			// файловые списки, таблицы команд и список команд)
+			ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
+		}
 		free(cmd);
 	}
 }

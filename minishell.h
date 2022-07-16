@@ -44,6 +44,7 @@ int	g_status;
 
 typedef struct s_env
 {
+	int		shlvl;
 	char	**cp_env;
 	char	**cp_path;
 	char	**export;
@@ -121,6 +122,7 @@ void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
 int		ft_tkn_len_counter(t_tkn *tkn, char **env);
 
 //cmds
+t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd);
 t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env);
 t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd);
 t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd);

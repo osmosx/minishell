@@ -65,9 +65,9 @@ t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file)
 	return (begin_file);
 }
 
-int ft_is_redir(int type)
+int	ft_is_redir(int type)
 {
-	return (type == 3 || type == 4 || type == 5|| type == 6);
+	return (type == 3 || type == 4 || type == 5 || type == 6);
 }
 
 //функция копирует поле имя для файлов из токена в новый маллок
