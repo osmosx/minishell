@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 16:01:09 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 16:08:18 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ int	check_heredoc(char **redir, int stdin_fd, t_cmd *cmd, t_env *env)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_newline(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_error = 130;
 }
 
 int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)

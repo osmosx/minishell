@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/11 00:37:53 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 16:16:49 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ typedef struct s_file
 typedef struct s_cmd
 {
 	char			**cmd;
+	int				pid;
+	int				fd[2];
 	t_file			*begin_redirs;
 	struct s_cmd	*next;
-//	t_tkn	*prev;
+	struct s_cmd	*prev;
 }				t_cmd;
 
 // env utils
