@@ -12,9 +12,10 @@
 
 #include "../minishell.h"
 
+//проверяет, передали ли новый и если начало не 0,
+// добавляет его в конец, а если 0 - возвращает новый как начало
 t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 {
-	//проверяет, передали ли новый и если начало не 0, добавляет его в конец, а если 0 - возвращает новый как начало
 	t_tkn	*last;
 
 	if (!new_tkn)
@@ -23,8 +24,6 @@ t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 	if (!last)
 	{
 		*begin_tkn = new_tkn;
-		// ft_print_tkn(*begin_tkn);
-		// write (1, "her1\n", 5);
 		return (begin_tkn);
 	}
 	while (last->next)
@@ -35,11 +34,10 @@ t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn)
 	return (begin_tkn);
 }
 
+//инициализирует токен символа, заполняя нужные значения и возвращает его адрес
 t_tkn	*ft_symb_tkn_init(char symb, int count)
 {
-	//инициализирует токен символа, заполняя нужные значения и возвращает его адрес
 	t_tkn	*new_tkn;
-	// char c;
 
 	new_tkn = (t_tkn *)malloc(sizeof(t_tkn));
 	if (!new_tkn)
@@ -48,27 +46,22 @@ t_tkn	*ft_symb_tkn_init(char symb, int count)
 	new_tkn->value = NULL;
 	new_tkn->next = NULL;
 	new_tkn->prev = NULL;
-	// c = new_tkn->type + '0';
-	// write (1, &c, 1);
-	// write (1, "\n", 1);
 	return (new_tkn);
 }
 
+//заполняет значение токена текста и возвращает его адрес.
+//Также двигает строку до конца строки,
+// токена символа или пробела c учетом ковычек
 char	*ft_cmd_value_init(char **cmd)
 {
-	//заполняет значение токена текста и возвращает его адрес.
-	//Также двигает строку до конца строки, токена символа или пробела c учетом ковычек
 	char	*cmd_value;
 	char	*start;
 	int		quote_type;
 
 	quote_type = 0;
 	start = *cmd;
-	// quote_type = ft_quotes_identifier(*cmd, &quote_type);
-	// if (quote_type)
-	// 	cmd++;
-	while (quote_type || (!ft_is_symb_token(**cmd) && !ft_isspace(**cmd) &&
-	**cmd))
+	while (quote_type || (!ft_is_symb_token(**cmd) && !ft_isspace(**cmd)
+			&& **cmd))
 		quote_type = ft_quotes_identifier((*cmd)++, &quote_type);
 	cmd_value = (char *)malloc(sizeof(char) * (*cmd - start + 1));
 	if (!cmd_value)
@@ -77,10 +70,10 @@ char	*ft_cmd_value_init(char **cmd)
 	return (cmd_value);
 }
 
+//инициализирует токен текста, заполняя нужные значения и возвращает его адрес.
+//Также двигает строку до конца строки, токена символа или пробела
 t_tkn	*ft_cmd_tkn_init(char **cmd)
 {
-	//инициализирует токен текста, заполняя нужные значения и возвращает его адрес.
-	//Также двигает строку до конца строки, токена символа или пробела
 	t_tkn	*new_tkn;
 
 	new_tkn = (t_tkn *)malloc(sizeof(t_tkn));
@@ -97,9 +90,10 @@ t_tkn	*ft_cmd_tkn_init(char **cmd)
 	return (new_tkn);
 }
 
+//проверяет, являются ли символы строки токеном symb и если да,
+// создаёт соответствующий токен и двигает строку
 t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen)
 {
-	//проверяет, являются ли символы строки токеном symb и если да, создаёт соответствующий токен и двигает строку
 	int		count;
 
 	count = 0;
@@ -107,9 +101,7 @@ t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen)
 	{
 		count++;
 		(*cmd)++;
-		// write (1, "here\n", 5);
 	}
-	// printf("%d", count);
 	if (count > 0)
 		tkn_begin = ft_tkn_add_back(ft_symb_tkn_init(symb, count), tkn_begin);
 	return (tkn_begin);
