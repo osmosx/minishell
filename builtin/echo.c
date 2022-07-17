@@ -77,10 +77,13 @@ int	m_echo(char **cmd2)
 {
 	int	flag;
 
-	flag = echo_check(cmd2[1]);
-	if (flag == 0)
-		echo_print_base(cmd2);
-	if (flag == 1)
-		echo_print_flag(cmd2);
+	if (cmd2[1])
+	{
+		flag = echo_check(cmd2[1]);
+		if (flag == 0)
+			echo_print_base(cmd2);
+		if (flag == 1)
+			echo_print_flag(cmd2);
+	}
 	return (0);
 }
