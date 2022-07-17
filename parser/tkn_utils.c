@@ -19,9 +19,9 @@ void	ft_free_tkn(t_tkn	*tkn)
 	free(tkn);
 }
 
+//проверяет, передали ли начало и если да, то фришит строки и токены
 t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
 {
-	//проверяет, передали ли начало и если да, то фришит строки и токены
 	t_tkn	*active;
 	t_tkn	*prev;
 
@@ -40,7 +40,8 @@ t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
 	return (NULL);
 }
 
-void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)//надо написать удаление текста из токенов. похоже нужно будет поле предыдущий в токенах
+//удаление текста из токенов.
+void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
 {
 	t_tkn	*prev;
 	t_tkn	*next;
@@ -61,9 +62,9 @@ void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)//надо написать уда
 	ft_free_tkn(tkn);
 }
 
-void ft_tkn_prev_setter(t_tkn **tkn_begin)
-{
 //проставляет файлам значение поле "предыдущий"
+void	ft_tkn_prev_setter(t_tkn **tkn_begin)
+{
 	t_tkn	*prev;
 
 	while (*tkn_begin && (*tkn_begin)->next)
@@ -84,13 +85,13 @@ void ft_tkn_prev_setter(t_tkn **tkn_begin)
 >> - 6
 пробел - 7
 */
+//определяет тип полученного символа для присвоения индекса токену
 
-int ft_def_token_type(char symb, int count)
+int	ft_def_token_type(char symb, int count)
 {
-	//определяет тип полученного символа для присвоения индекса токену
 	int	type;
 
-	type = 0; //это заглушка
+	type = 0;
 	if (count == 1)
 	{
 		if (symb == '|')
@@ -110,48 +111,4 @@ int ft_def_token_type(char symb, int count)
 			type = 6;
 	}
 	return (type);
-}
-
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\r' || c == '\f');
-}
-
-int	ft_is_symb_token(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
-}
-
-int	ft_tkn_len_counter(t_tkn *tkn, char **env)
-{
-	//считает длину строки, которая получится для имени файла после раскрытия ковычек
-	char	*str;
-	int		len;
-	int		quote_type;
-
-	quote_type = 0;
-	len = 0;
-	str = tkn->value;
-	while (str && *str)
-	{
-		if (ft_is_opening_or_closing_quote(*str, quote_type))
-			quote_type = ft_quotes_identifier(str++, &quote_type);
-		else if (*str == '$' && (!quote_type || !(quote_type == 2)) && tkn->type != 5)
-		{
-			if (*(++str) == '?')
-			{
-				len += ft_numlen(g_error);
-				str++;
-			}
-			else
-				len += ft_var_len(&(str), env);
-		}
-		else
-		{
-			len++;
-			str++;
-		}
-	}
-	return (len);
 }

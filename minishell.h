@@ -146,6 +146,7 @@ int		ft_is_redir(int type);
 int		ft_is_opening_or_closing_quote(char c, int qt);
 int		ft_numlen(int n);
 int		ft_var_len(char **str, char **env);
+void	*error_print(int err_num, char *err_char);
 
 //tester
 void	ft_print_tkn(t_tkn *tkn_begin);
