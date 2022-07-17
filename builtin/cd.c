@@ -46,8 +46,9 @@ int	m_cd(t_env *envm, char *path)
 		}
 		else
 		{
-			write(2, "cd: No such file or directory: ", 31);
-			error_print(1, path);
+			write(2, "cd: ", 4);
+			perror(path);
+			g_error = 1;
 		}
 	}
 	return (0);
