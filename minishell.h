@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/17 16:16:49 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 17:04:52 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		ft_def_token_type(char symb, int count);
 int		ft_isspace(char c);
 int		ft_is_symb_token(char c);
 t_tkn	*ft_cmd_tkn_init(char **cmd);
-void	ft_tkn_prev_setter(t_tkn **tkn_begin);
+void	ft_tkn_prev_setter(t_tkn *tkn_begin);
 t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env);
 void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
 int		ft_tkn_len_counter(t_tkn *tkn, char **env);
@@ -128,6 +128,7 @@ t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd);
 t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env);
 t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd);
 t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd);
+void 	ft_cmd_prev_setter(t_cmd *cmd_begin);
 
 //files
 t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file);

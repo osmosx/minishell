@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:10 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:11 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 17:08:37 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
 			return (NULL);
 		ft_free_tkn_list(&tkn_begin);
 	}
+	ft_cmd_prev_setter(*cmd_begin);
 	return (first_cmd);
 }
 
