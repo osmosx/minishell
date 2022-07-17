@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_isllong.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:49:26 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:49:54 by nenvoy           ###   ########.fr       */
+/*   Created: 2021/10/19 14:36:08 by nenvoy            #+#    #+#             */
+/*   Updated: 2021/10/19 14:36:08 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	m_env(t_env *envm)
+int	ft_isllong(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (envm->cp_env[i])
-	{
-		printf("%s\n", envm->cp_env[i]);
-		i++;
-	}
+	if (str[0] == '-' && ft_strlen(str) >= 20
+		&& ft_strcmp(&str[1], "9223372036854775808") > 0)
+		return (1);
+	else if (ft_strlen(str) >= 19
+		&& ft_strcmp(str, "9223372036854775807") > 0)
+		return (1);
 	return (0);
 }
+

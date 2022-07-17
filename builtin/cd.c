@@ -31,21 +31,25 @@ static void	new_path(char *s, char *c, t_env *envm)
 	}
 }
 
-void	m_cd(t_env *envm, char *path)
+int	m_cd(t_env *envm, char *path)
 {
 	char	c[PATH_MAX];
 
-	getcwd(c, sizeof(c));
-	new_path("OLDPWD=", c, envm);
-	if (chdir(path) == 0)
+	if (path)
 	{
 		getcwd(c, sizeof(c));
-		new_path("PWD=", c, envm);
+		new_path("OLDPWD=", c, envm);
+		if (chdir(path) == 0)
+		{
+			getcwd(c, sizeof(c));
+			new_path("PWD=", c, envm);
+		}
+		else
+		{
+			write(2, "cd: ", 4);
+			perror(path);
+			g_error = 1;
+		}
 	}
-	else
-	{
-		write(2, "cd: no such file or directory: ", 31);
-		write(2, path, ft_strlen(path));
-		write(2, "\n", 1);
-	}
+	return (0);
 }
