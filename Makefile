@@ -16,7 +16,8 @@ SRC = main.c \
 	builtin/env.c builtin/pwd.c builtin/echo.c builtin/exit.c builtin/export.c builtin/unset.c builtin/cd.c \
 	builtin/signal.c builtin/utils.c builtin/export_utils.c builtin/env_utils.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
-	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c
+	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
+	parser/tkn_utils_two.c parser/quotes_two.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома

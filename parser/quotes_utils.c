@@ -32,6 +32,7 @@ int	ft_numlen(int n)
 	return (count);
 }
 
+//ф-ция считает дляну переменной, двигает строку на лен вперед и на 1 назад
 int	ft_var_len(char **str, char **env)
 {
 	int		len;
@@ -51,7 +52,7 @@ int	ft_var_len(char **str, char **env)
 			ptr = (*env) + len + 1;
 		env++;
 	}
-	(*str) += len;
+	(*(str--)) += len;
 	if (ptr)
 		return (ft_strlen(ptr));
 	else
@@ -59,16 +60,17 @@ int	ft_var_len(char **str, char **env)
 }
 
 //проверяет, является ли символ реальными открывающими или закрывающими скобками
-int ft_is_opening_or_closing_quote(char c, int qt)
+int	ft_is_opening_or_closing_quote(char c, int qt)
 {
 	if ((c == '"' && (!qt || qt == 2)) || (c == '\'' && (!qt || qt == 1)))
-		return 1;
+		return (1);
 	else
-		return 0;
+		return (0);
 }
 
-//заполняет в строку "имя" номер посл ошибки итоа и возвращает адрес первого незаполненного символа, делает (*str)++
-char *ft_fill_last_err(char *name, char **str)
+//заполняет в строку "имя" номер посл ошибки итоа и возвращает
+// адрес первого незаполненного символа, делает (*str)++
+char	*ft_fill_last_err(char *name, char **str)
 {
 	char	*num;
 	int		i;
@@ -85,7 +87,8 @@ char *ft_fill_last_err(char *name, char **str)
 	return (name);
 }
 
-//ищет перем по имени из букв до не (словоцифры или НП), заполняет имя её значением и сдвигает строку
+//ищет перем по имени из букв до не (словоцифры или НП),
+// заполняет имя её значением и сдвигает строку
 char	*ft_fill_var_value(char **str, char *name, char **env)
 {
 	int		len;
