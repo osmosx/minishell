@@ -17,14 +17,19 @@ SRC = main.c \
 	builtin/signal.c builtin/utils.c builtin/export_utils.c builtin/env_utils.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
-	parser/tkn_utils_two.c parser/quotes_two.c
+	parser/tkn_utils_two.c parser/quotes_two.c \
+	executor/main.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
-FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+#FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
-#
+# Для отладки
+FLAGS = -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+
+
+
 NAME = minishell
 #
 .PHONY: all clean fclean re libft

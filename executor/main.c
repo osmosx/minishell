@@ -12,24 +12,9 @@
 
 #include "../minishell.h"
 
-void	init_pipe(t_cmd *cmd)
+void	ft_blanc(int sig)
 {
-	while (cmd)
-	{
-		pipe(cmd->fd);
-		cmd = cmd->next;
-	}
-}
-
-int	make_heredocs(t_cmd *cmd, t_env *env)
-{
-	while (cmd != NULL)
-	{
-		if (check_heredoc(cmd->begin_redirs, cmd->fd[0], cmd, env) == 1)
-			return (1);
-		cmd = cmd->next;
-	}
-	return (0);
+	(void)sig;
 }
 
 void	stop_heredoc(int signal)
@@ -39,18 +24,24 @@ void	stop_heredoc(int signal)
 	exit(130);
 }
 
-int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
+void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 {
-	while (redir)
+	if (i == 0)
 	{
-		if (redir->type == 5)
-		{
-			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
-				return (1);
-		}
-		i++;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": command not found\n", 2);
 	}
-	return (0);
+	else if (i == 1)
+		printf("minishell: %s: No such file or directory\n", arg);
+	else if (i == 2)
+	{
+		printf("minishell: %s: is a directory\n", arg);
+//		free_exit(cmd, shell);
+		exit(126);
+	}
+//	free_exit(cmd, shell);
+	exit (127);
 }
 
 void	ft_newline(int signal)
@@ -58,9 +49,41 @@ void	ft_newline(int signal)
 	(void)signal;
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
-	rl_replace_line("", 0);
+//	rl_replace_line("", 0);
 	rl_redisplay();
 	g_error = 130;
+}
+
+void	init_pipe(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		pipe(cmd->fd);
+		cmd = cmd->next;
+	}
+}
+
+void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
+{
+	char	*line;
+
+	signal(SIGINT, stop_heredoc);
+	line = readline("> ");
+	while (line)
+	{
+		if (ft_strcmp(line, limiter) == 0)
+		{
+			close(fd[0]);
+			close(fd[1]);
+			break ;
+		}
+		ft_putendl_fd(line, fd[1]);
+		free(line);
+		line = readline("> ");
+	}
+	free(line);
+//	free_exit(cmd, env); !!!!!!!!!!! потом вернуть !!!!!!!!!!!!!
+	exit(EXIT_SUCCESS);
 }
 
 int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)
@@ -86,32 +109,28 @@ int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)
 	return (0);
 }
 
-void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
+int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
 {
-	char	*line;
-
-	signal(SIGINT, stop_heredoc);
-	line = readline("> ");
-	while (line)
+	while (redir)
 	{
-		if (ft_strcmp(line, limiter) == 0)
+		if (redir->type == 5)
 		{
-			close(fd[0]);
-			close(fd[1]);
-			break ;
+			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
+				return (1);
 		}
-		ft_putendl_fd(line, fd[1]);
-		free(line);
-		line = readline("> ");
 	}
-	free(line);
-	free_exit(cmd, env);
-	exit(EXIT_SUCCESS);
+	return (0);
 }
 
-void	ft_blanc(int sig)
+int	make_heredocs(t_cmd *cmd, t_env *env)
 {
-	(void)sig;
+	while (cmd != NULL)
+	{
+		if (check_heredoc(cmd->begin_redirs, cmd->fd[0], cmd, env) == 1)
+			return (1);
+		cmd = cmd->next;
+	}
+	return (0);
 }
 
 int	open_file(char *name, int i, int quit)
@@ -180,31 +199,43 @@ void	free_fds(t_cmd *begin_cmd)
 	}
 }
 
-int	ms_builtins(char **arg, int i, t_cmd *first, t_env *env)
+int	find_path_env(t_env *envm)
 {
-	if (arg)
+	int	i;
+
+	i = 0;
+	while (envm->cp_env[i] && ft_strnstr(envm->cp_env[i] , "PATH", 4) == 0)
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin_free_s1(char *s1, char const *s2)
+{
+	char	*tabs;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	tabs = (char *)malloc(sizeof(*tabs) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
+	if (tabs == 0)
+		return (NULL);
+	while (s1[i])
 	{
-		if (ft_strcmp(arg[0], "echo") == 0)
-			g_error = ms_echo(arg + 1);
-		else if (ft_strcmp(arg[0], "cd") == 0)
-			g_error = ms_cd(arg[1], env);
-		else if (ft_strcmp(arg[0], "pwd") == 0)
-			g_error = ms_pwd();
-		else if (ft_strcmp(arg[0], "export") == 0)
-			g_error = ms_export(arg + 1, env);
-		else if (ft_strcmp(arg[0], "unset") == 0)
-			g_error = ms_unset(arg + 1, env);
-		else if (ft_strcmp(arg[0], "env") == 0)
-			g_error = ms_env(env);
-		else if (ft_strcmp(arg[0], "exit") == 0)
-			ms_exit(arg + 1, first, env);
-		else
-			return (1);
+		tabs[i] = s1[i];
+		i++;
 	}
-	if (i == 0)
-		return (0);
-	free_exit(first, env);
-	exit(0);
+	while (s2[j])
+	{
+		tabs[i] = s2[j];
+		j++;
+		i++;
+	}
+	tabs[i] = '\0';
+	free(s1);
+	return (tabs);
 }
 
 char	*find_path(char *cmd, t_cmd *cmdl, t_env *env)
@@ -227,12 +258,12 @@ char	*find_path(char *cmd, t_cmd *cmdl, t_env *env)
 		path = ft_strjoin_free_s1(path, cmd);
 		if (access(path, F_OK) == 0)
 		{
-			ft_free_tab(paths);
+//			ft_free_tab(paths);
 			return (path);
 		}
 	}
 	free(path);
-	ft_free_tab(paths);
+//	ft_free_tab(paths);
 	return (NULL);
 }
 
@@ -276,6 +307,28 @@ static void	process(t_cmd *cmd, t_cmd *begin_cmd, t_env *env)
 	if (cmd->prev)
 		close(cmd->prev->fd[0]);
 	close(cmd->fd[1]);
+}
+
+int	check_builtins(char **arg)
+{
+	if (ft_strcmp(arg[0], "echo") == 0
+		||ft_strcmp(arg[0], "cd") == 0
+		||ft_strcmp(arg[0], "pwd") == 0
+		||ft_strcmp(arg[0], "export") == 0
+		||ft_strcmp(arg[0], "unset") == 0
+		||ft_strcmp(arg[0], "env") == 0
+		||ft_strcmp(arg[0], "exit") == 0)
+		return (0);
+	else
+		return (1);
+}
+
+void	restore_fd(int saved_stdin, int saved_stdout)
+{
+	dup2(saved_stdin, 0);
+	close(saved_stdin);
+	dup2(saved_stdout, 1);
+	close(saved_stdout);
 }
 
 int	ft_builtin(t_cmd *cmd, t_env *env)

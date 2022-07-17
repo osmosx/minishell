@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	builtins(t_env	*env, char **cmd2, t_cmd *cmd)
+int	builtins(char **cmd2, t_cmd *cmd, t_env	*env)
 {
 	if (ft_strcmp("env", cmd2[0]) == 0)
 		g_error = m_env(env);
@@ -29,9 +29,9 @@ void	builtins(t_env	*env, char **cmd2, t_cmd *cmd)
 	if (ft_strcmp("cd", cmd2[0]) == 0)
 		m_cd(env, cmd2[1]);
 	else
-		return ;
+		return (1);
+	return (0);
 }
-
 
 void	ft_printtab(char **cmds)
 {
@@ -41,7 +41,6 @@ void	ft_printtab(char **cmds)
 		while (*cmds)
 			printf("%s\n", *(cmds++));
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -66,7 +65,8 @@ int	main(int argc, char **argv, char **envp)
 		if (*cmd)
 		{
 			cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
-			builtins(envm, cmd_begin->cmd, cmd_begin);
+//			builtins(envm, cmd_begin->cmd, cmd_begin);
+			ft_exec(cmd_begin, envm);
 			ft_free_cmd_list(&cmd_begin);
 			// файловые списки, таблицы команд и список команд)
 			ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list

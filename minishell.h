@@ -85,7 +85,7 @@ void	ctrl_c(int signal);
 void	ctrl_d(char *line, t_env *envm);
 
 //built-in functions
-void	builtins(t_env	*env, char **cmd2, t_cmd *cmd);
+int		builtins(char **cmd2, t_cmd *cmd, t_env	*env);
 int		m_pwd(void);
 int		m_env(t_env *envm);
 int		m_echo(char **cmd2);
@@ -129,7 +129,7 @@ t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd);
 t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env);
 t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd);
 t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd);
-void 	ft_cmd_prev_setter(t_cmd *cmd_begin);
+void	ft_cmd_prev_setter(t_cmd *cmd_begin);
 
 //files
 t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file);
@@ -151,6 +151,9 @@ int		ft_is_opening_or_closing_quote(char c, int qt);
 int		ft_numlen(int n);
 int		ft_var_len(char **str, char **env);
 void	*error_print(int err_num, char *err_char);
+
+//executor
+void	ft_exec(t_cmd *cmd, t_env *env);
 
 //tester
 void	ft_print_tkn(t_tkn *tkn_begin);
