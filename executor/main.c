@@ -161,10 +161,8 @@ int	open_file(char *name, int i, int quit)
 int	check_redirection(t_cmd *cmd, int quit)
 {
 	int		fd[2];
-	int		i;
 	t_file	*ptr;
 
-	i = 0;
 	fd[0] = 0;
 	fd[1] = 0;
 	ptr = cmd->begin_redirs;
@@ -177,7 +175,8 @@ int	check_redirection(t_cmd *cmd, int quit)
 		else if (ptr->type == 6)
 			fd[1] = open_file(ptr->name, 0, quit);
 		else if (ptr->type == 5)
-			dup2(cmd->fd[0], STDIN_FILENO);
+//			dup2(cmd->fd[0], STDIN_FILENO);
+			fd[0] = cmd->fd[0];
 		ptr = ptr->next;
 	}
 	if (fd[0] == -1 || fd[1] == -1)
@@ -286,13 +285,13 @@ void	executor(char **argv, t_cmd *cmd, t_env *env)
 
 static void	process(t_cmd *cmd, t_cmd *begin_cmd, t_env *env)
 {
-//	signal(SIGINT, ft_blanc);
+	signal(SIGINT, ft_blanc);
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		printf("pid error");
 	if (cmd->pid == 0)
 	{
-//		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (cmd->prev)
 			dup2(cmd->prev->fd[0], STDIN_FILENO);
 		if (cmd->next)
@@ -301,7 +300,7 @@ static void	process(t_cmd *cmd, t_cmd *begin_cmd, t_env *env)
 		close(cmd->fd[0]);
 		close(cmd->fd[1]);
 		free_fds(begin_cmd);
-		if (cmd->cmd && builtins(cmd->cmd, begin_cmd, env) == 1)
+		if (cmd->cmd && builtins(cmd->cmd, begin_cmd, env, 1) == 1)
 			executor(cmd->cmd, begin_cmd, env);//заменить на из пайпекса
 	}
 	if (cmd->prev)
@@ -344,7 +343,7 @@ int	ft_builtin(t_cmd *cmd, t_env *env)
 			return (0);
 		if (check_redirection(cmd, 1) == 1)
 			return (1);
-		if (builtins(cmd->cmd, cmd, env) == 0)
+		if (builtins(cmd->cmd, cmd, env, 0) == 0)
 		{
 			restore_fd(saved_stdin, saved_stdout);
 			return (1);
@@ -362,7 +361,10 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 	begin_cmd = cmd;
 	init_pipe(begin_cmd);
 	if (make_heredocs(cmd, env) == 1 || ft_builtin(cmd, env) == 1)
+	{
+//		perror("file");
 		return ;
+	}
 	if (cmd && cmd->cmd)
 	{
 		while (cmd)
@@ -374,5 +376,5 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 			cmd = cmd->next;
 		}
 	}
-//	signal(SIGINT, ctrl_c);
+	signal(SIGINT, ctrl_c);
 }

@@ -85,7 +85,7 @@ void	ctrl_c(int signal);
 void	ctrl_d(char *line, t_env *envm);
 
 //built-in functions
-int		builtins(char **cmd2, t_cmd *cmd, t_env	*env);
+int		builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i);
 int		m_pwd(void);
 int		m_env(t_env *envm);
 int		m_echo(char **cmd2);

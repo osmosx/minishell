@@ -12,25 +12,32 @@
 
 #include "minishell.h"
 
-int	builtins(char **cmd2, t_cmd *cmd, t_env	*env)
+int	builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i)
 {
-	if (ft_strcmp("env", cmd2[0]) == 0)
-		g_error = m_env(env);
-	if (ft_strcmp("pwd", cmd2[0]) == 0)
-		g_error = m_pwd();
-	if (ft_strcmp("echo", cmd2[0]) == 0)
-		g_error = m_echo(cmd2);
-	if (ft_strcmp("exit", cmd2[0]) == 0)
-		g_error = m_exit(cmd2, cmd, env);
-	if (ft_strcmp("export", cmd2[0]) == 0)
-		g_error = m_export(env, cmd2);
-	if (ft_strcmp("unset", cmd2[0]) == 0)
-		g_error = m_unset(env, cmd2);
-	if (ft_strcmp("cd", cmd2[0]) == 0)
-		m_cd(env, cmd2[1]);
-	else
-		return (1);
-	return (0);
+	if (cmd2)
+	{
+		if (ft_strcmp("env", cmd2[0]) == 0)
+			g_error = m_env(env);
+		else if (ft_strcmp("pwd", cmd2[0]) == 0)
+			g_error = m_pwd();
+		else if (ft_strcmp("echo", cmd2[0]) == 0)
+			g_error = m_echo(cmd2);
+		else if (ft_strcmp("exit", cmd2[0]) == 0)
+			g_error = m_exit(cmd2, cmd, env);
+		else if (ft_strcmp("export", cmd2[0]) == 0)
+			g_error = m_export(env, cmd2);
+		else if (ft_strcmp("unset", cmd2[0]) == 0)
+			g_error = m_unset(env, cmd2);
+		else if (ft_strcmp("cd", cmd2[0]) == 0)
+			m_cd(env, cmd2[1]);
+		else
+			return (1);
+//		write(1, "builtins\n", 9);
+	}
+	if (i == 0)
+		return (0);
+//	free_exit(first, shell);
+	exit(0);
 }
 
 void	ft_printtab(char **cmds)
