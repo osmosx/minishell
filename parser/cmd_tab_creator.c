@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:02 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:03 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 17:04:48 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 	cmd = NULL;
 	redir_begin = NULL;
 	tkn = *tkn_begin;
-	ft_tkn_prev_setter(tkn_begin);
+	ft_tkn_prev_setter(*tkn_begin);
 	if (!ft_cmd_filler_two(tkn, tkn_begin, &redir_begin, env))
 		return (NULL);
 	if (!ft_dequote_tkn_list(tkn_begin, env))

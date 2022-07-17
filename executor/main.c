@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 16:01:09 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 18:22:03 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	make_heredocs(t_cmd *cmd, t_env *env)
 {
 	while (cmd != NULL)
 	{
-		if (check_heredoc(cmd->file, cmd->fd[0], cmd, env) == 1)
+		if (check_heredoc(cmd->begin_redirs, cmd->fd[0], cmd, env) == 1)
 			return (1);
 		cmd = cmd->next;
 	}
@@ -39,21 +39,28 @@ void	stop_heredoc(int signal)
 	exit(130);
 }
 
-int	check_heredoc(char **redir, int stdin_fd, t_cmd *cmd, t_env *env)
+int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
 {
-	int	i;
-
-	i = 0;
-	while (redir && redir[i])
+	while (redir)
 	{
-		if (ft_strcmp(redir[i], "<<") == 0)
+		if (redir->type == 5)
 		{
-			if (redir_heredoc(redir[i + 1], stdin_fd, cmd, env) == 1)
+			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
 				return (1);
 		}
 		i++;
 	}
 	return (0);
+}
+
+void	ft_newline(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_error = 130;
 }
 
 int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)
@@ -107,48 +114,52 @@ void	ft_blanc(int sig)
 	(void)sig;
 }
 
-int	open_file(char *argv, int i, int quit)
+int	open_file(char *name, int i, int quit)
 {
 	int	file;
 
 	file = 0;
 	if (i == 0)
-		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		file = open(name, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	else if (i == 1)
-		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		file = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	else if (i == 2)
-		file = open(argv, O_RDONLY, 0777);
+		file = open(name, O_RDONLY, 0777);
 	if (file == -1)
 	{
-		if (access(argv, F_OK) == 0)
-			printf("minishell: %s Is a directory\n", argv);
-		else
-			printf("minishell: no such file or directory: %s\n", argv);
+		perror(name);
+		g_error = 1;
+		// if (access(argv, F_OK) == 0)
+		// 	printf("minishell: %s Is a directory\n", argv);
+		// else
+		// 	printf("minishell: no such file or directory: %s\n", argv);
 		if (quit == 0)
 			exit(1);
 	}
 	return (file);
 }
 
-int	check_redirection(t_cmd *job, int quit)
+int	check_redirection(t_cmd *cmd, int quit)
 {
-	int	fd[2];
-	int	i;
+	int		fd[2];
+	int		i;
+	t_file	*ptr;
 
 	i = 0;
 	fd[0] = 0;
 	fd[1] = 0;
-	while (job->file && job->file[i])
+	ptr = cmd->begin_redirs;
+	while (ptr)
 	{
-		if (ft_strcmp(job->file[i], "<") == 0)
-			fd[0] = open_file(job->file[++i], 2, quit);
-		else if (ft_strcmp(job->file[i], ">") == 0)
-			fd[1] = open_file(job->file[++i], 1, quit);
-		else if (ft_strcmp(job->file[i], ">>") == 0)
-			fd[1] = open_file(job->file[++i], 0, quit);
-		else if (ft_strcmp(job->file[i], "<<") == 0)
-			dup2(job->fd[0], STDIN_FILENO);
-		i++;
+		if (ptr->type == 3)
+			fd[0] = open_file(ptr->name, 2, quit);
+		else if (ptr->type == 4)
+			fd[1] = open_file(ptr->name, 1, quit);
+		else if (ptr->type == 6)
+			fd[1] = open_file(ptr->name, 0, quit);
+		else if (ptr->type == 5)
+			dup2(cmd->fd[0], STDIN_FILENO);
+		ptr = ptr->next;
 	}
 	if (fd[0] == -1 || fd[1] == -1)
 		return (1);
@@ -255,11 +266,11 @@ static void	process(t_cmd *cmd, t_cmd *begin_cmd, t_env *env)
 			dup2(cmd->prev->fd[0], STDIN_FILENO);
 		if (cmd->next)
 			dup2(cmd->fd[1], STDOUT_FILENO);
-		check_redirection(cmd, 0);//проработать
+		check_redirection(cmd, 0);
 		close(cmd->fd[0]);
 		close(cmd->fd[1]);
 		free_fds(begin_cmd);
-		if (cmd->cmd && ms_builtins(cmd->cmd, 1, begin_cmd, env) == 1)
+		if (cmd->cmd && builtins(cmd->cmd, begin_cmd, env) == 1)
 			executor(cmd->cmd, begin_cmd, env);//заменить на из пайпекса
 	}
 	if (cmd->prev)
@@ -280,7 +291,7 @@ int	ft_builtin(t_cmd *cmd, t_env *env)
 			return (0);
 		if (check_redirection(cmd, 1) == 1)
 			return (1);
-		if (ms_builtins(cmd->cmd, 0, cmd, env) == 0)
+		if (builtins(cmd->cmd, cmd, env) == 0)
 		{
 			restore_fd(saved_stdin, saved_stdout);
 			return (1);

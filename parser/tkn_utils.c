@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:27 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:28 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/17 16:46:32 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
 }
 
 //проставляет файлам значение поле "предыдущий"
-void	ft_tkn_prev_setter(t_tkn **tkn_begin)
+void	ft_tkn_prev_setter(t_tkn *tkn_begin)
 {
 	t_tkn	*prev;
 
-	while (*tkn_begin && (*tkn_begin)->next)
+	while (tkn_begin && tkn_begin->next)
 	{
-		prev = *tkn_begin;
-		tkn_begin = &(*tkn_begin)->next;
-		(*tkn_begin)->prev = prev;
+		prev = tkn_begin;
+		tkn_begin = tkn_begin->next;
+		tkn_begin->prev = prev;
 	}
 }
 
