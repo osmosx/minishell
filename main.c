@@ -12,21 +12,20 @@
 
 #include "minishell.h"
 
-static void	test(t_env	*env, char **cmd2)
+void	builtins(t_env	*env, char **cmd2, t_cmd *cmd)
 {
 	if (ft_strcmp("env", cmd2[0]) == 0)
-		m_env(env);
+		g_error = m_env(env);
 	if (ft_strcmp("pwd", cmd2[0]) == 0)
-		m_pwd();
+		g_error = m_pwd();
 	if (ft_strcmp("echo", cmd2[0]) == 0)
-		m_echo(cmd2);
+		g_error = m_echo(cmd2);
 	if (ft_strcmp("exit", cmd2[0]) == 0)
-		m_exit(env);
+		g_error = m_exit(cmd2, cmd, env);
 	if (ft_strcmp("export", cmd2[0]) == 0)
-		if (!m_export(env, cmd2))
-			printf("malloc error");
+		g_error = m_export(env, cmd2);
 	if (ft_strcmp("unset", cmd2[0]) == 0)
-		m_unset(env, cmd2);
+		g_error = m_unset(env, cmd2);
 	if (ft_strcmp("cd", cmd2[0]) == 0)
 		m_cd(env, cmd2[1]);
 	else
@@ -67,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 		if (*cmd)
 		{
 			cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
-			test(envm, cmd_begin->cmd);
+			builtins(envm, cmd_begin->cmd, cmd_begin);
 			ft_free_cmd_list(&cmd_begin);
 			// файловые списки, таблицы команд и список команд)
 			ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list

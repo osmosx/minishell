@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 15:49:26 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:49:54 by nenvoy           ###   ########.fr       */
+/*   Created: 2021/10/19 14:36:08 by nenvoy            #+#    #+#             */
+/*   Updated: 2021/10/19 14:36:08 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	m_env(t_env *envm)
+long long	ft_atoll(const char *nptr)
 {
-	int	i;
+	long long	num;
+	int			sign;
+	int			i;
 
 	i = 0;
-	while (envm->cp_env[i])
+	sign = 1;
+	num = 0;
+	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
+		nptr++;
+	if (nptr[i] == '-')
+		sign = sign * -1;
+	if (nptr[i] == '+' || nptr[i] == '-')
+		nptr++;
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		printf("%s\n", envm->cp_env[i]);
-		i++;
+		num = (num * 10) + nptr[i] - '0';
+		nptr++;
 	}
-	return (0);
+	return (num * sign);
 }
+

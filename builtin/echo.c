@@ -73,7 +73,7 @@ static void	echo_print_flag(char **cmd2)
 	}
 }
 
-void	m_echo(char **cmd2)
+int	m_echo(char **cmd2)
 {
 	int	flag;
 
@@ -82,4 +82,5 @@ void	m_echo(char **cmd2)
 		echo_print_base(cmd2);
 	if (flag == 1)
 		echo_print_flag(cmd2);
+	return (0);
 }

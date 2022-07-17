@@ -83,13 +83,14 @@ void	ctrl_c(int signal);
 void	ctrl_d(char *line, t_env *envm);
 
 //built-in functions
+void	builtins(t_env	*env, char **cmd2, t_cmd *cmd);
 int		m_pwd(void);
-void	m_env(t_env *envm);
-void	m_echo(char **cmd2);
-void	m_exit(t_env *envm);
-void	m_unset(t_env *envm, char **cmd2);
-void	m_cd(t_env *envm, char *path);
-t_env	*m_export(t_env	*envm, char **cmd2);
+int		m_env(t_env *envm);
+int		m_echo(char **cmd2);
+int		m_exit(char **cmd, t_cmd *cmd_t, t_env *envm);
+int		m_unset(t_env *envm, char **cmd2);
+int		m_cd(t_env *envm, char *path);
+int		m_export(t_env	*envm, char **cmd2);
 
 //export utils
 void	change_line_value(char **tab, char *new_str, int i);

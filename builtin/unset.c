@@ -64,7 +64,7 @@ char	**unset_remove(t_env *envm, char *cmd)
 	return (new_env);
 }
 
-void	m_unset(t_env *envm, char **cmd2)
+int	m_unset(t_env *envm, char **cmd2)
 {
 	int		i;
 
@@ -79,4 +79,5 @@ void	m_unset(t_env *envm, char **cmd2)
 		envm->cp_env = unset_remove(envm, cmd2[i]);
 		i++;
 	}
+	return (0);
 }
