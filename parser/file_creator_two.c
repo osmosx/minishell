@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_creator_two.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:06 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:07 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 19:53:55 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn)
 	int		len;
 
 	if (!tkn->next)
-		return (error_print(1, ""));
+//	write(1, "hi!\n", 4);
+		return (error_print(1, "syntax error near unexpected token `newline'"));
 	tkn_ptr = tkn->next;
 	while (tkn_ptr->type == 7 && tkn_ptr->next)
 		tkn_ptr = tkn_ptr->next;
 	if (tkn_ptr->type == 7)
-		return (error_print(1, ""));
+		return (error_print(1, "syntax error near unexpected token `newline'"));
 	if (tkn_ptr->type != 1)
-		return (error_print(1, ""));
+		return (error_print(1, "impossible error"));
 	len = ft_strlen(tkn_ptr->value);
 	name = (char *)malloc((len + 1) * sizeof(char));
 	if (!name)

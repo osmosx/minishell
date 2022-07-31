@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 18:22:03 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 20:23:06 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_newline(int signal)
 	(void)signal;
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
-//	rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 	g_error = 130;
 }
@@ -341,8 +341,8 @@ int	ft_builtin(t_cmd *cmd, t_env *env)
 	{
 		if (cmd->cmd && check_builtins(cmd->cmd) == 1)
 			return (0);
-		if (check_redirection(cmd, 1) == 1)
-			return (1);
+		// if (check_redirection(cmd, 1) == 1)
+		// 	return (1);
 		if (builtins(cmd->cmd, cmd, env, 0) == 0)
 		{
 			restore_fd(saved_stdin, saved_stdout);
@@ -360,7 +360,7 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 	status = 0;
 	begin_cmd = cmd;
 	init_pipe(begin_cmd);
-	if (make_heredocs(cmd, env) == 1 || ft_builtin(cmd, env) == 1)
+	if (/*make_heredocs(cmd, env) == 1 ||*/ ft_builtin(cmd, env) == 1)
 	{
 //		perror("file");
 		return ;

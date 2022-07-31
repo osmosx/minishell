@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: keaton <keaton@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/26 15:50:13 by nenvoy            #+#    #+#              #
-#    Updated: 2022/06/13 22:38:10 by keaton           ###   ########.fr        #
+#    Updated: 2022/07/31 16:47:39 by keaton           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,15 +18,15 @@ SRC = main.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
 	parser/tkn_utils_two.c parser/quotes_two.c \
-	executor/main.c
+	executor/main.c parser_test.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
-FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+#FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
 # Для отладки
-#FLAGS = -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+FLAGS = -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
 
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/17 17:04:52 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 19:17:08 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		ft_is_symb_token(char c);
 t_tkn	*ft_cmd_tkn_init(char **cmd);
 void	ft_tkn_prev_setter(t_tkn *tkn_begin);
 t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env);
-void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
+t_tkn	*ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
 int		ft_tkn_len_counter(t_tkn *tkn, char **env);
 
 //cmds

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_creator.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:21:49 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 16:46:58 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 19:45:01 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd)
 	t_cmd	*active;
 	t_cmd	*prev;
 
-	if (!*begin_cmd)
+	if (!begin_cmd || !*begin_cmd)
 		return (NULL);
 	active = *begin_cmd;
 	prev = active;
