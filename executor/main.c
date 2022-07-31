@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 20:23:06 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 22:50:46 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,16 @@ int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
 
 int	make_heredocs(t_cmd *cmd, t_env *env)
 {
-	while (cmd != NULL)
+	t_file	*file;
+
+	file = NULL;
+	if (cmd)
+		file = cmd->begin_redirs;
+	while (file != NULL)
 	{
-		if (check_heredoc(cmd->begin_redirs, cmd->fd[0], cmd, env) == 1)
+		if (check_heredoc(file, cmd->fd[0], cmd, env) == 1)
 			return (1);
-		cmd = cmd->next;
+		file = file->next;
 	}
 	return (0);
 }
@@ -148,10 +153,10 @@ int	open_file(char *name, int i, int quit)
 	{
 		perror(name);
 		g_error = 1;
-		// if (access(argv, F_OK) == 0)
-		// 	printf("minishell: %s Is a directory\n", argv);
-		// else
-		// 	printf("minishell: no such file or directory: %s\n", argv);
+		if (access(name, F_OK) == 0)
+			printf("minishell: %s Is a directory\n", name);
+		else
+			printf("minishell: no such file or directory: %s\n", name);
 		if (quit == 0)
 			exit(1);
 	}
@@ -169,21 +174,37 @@ int	check_redirection(t_cmd *cmd, int quit)
 	while (ptr)
 	{
 		if (ptr->type == 3)
+		{
+			if (fd[0])
+				close(fd[0]);
 			fd[0] = open_file(ptr->name, 2, quit);
+		}
 		else if (ptr->type == 4)
+		{
+			if (fd[1])
+				close(fd[1]);
 			fd[1] = open_file(ptr->name, 1, quit);
+		}
 		else if (ptr->type == 6)
+		{
+			if (fd[1])
+				close(fd[1]);
 			fd[1] = open_file(ptr->name, 0, quit);
+		}
 		else if (ptr->type == 5)
-//			dup2(cmd->fd[0], STDIN_FILENO);
-			fd[0] = cmd->fd[0];
+			dup2(cmd->fd[0], STDIN_FILENO);
+//			fd[0] = cmd->fd[0];
 		ptr = ptr->next;
 	}
 	if (fd[0] == -1 || fd[1] == -1)
 		return (1);
 	if (fd[0])
+	{
+		cmd->fd[0] = fd[0];
 		dup2(fd[0], STDIN_FILENO);
+	}
 	if (fd[1])
+		cmd->fd[1] = fd[1];
 		dup2(fd[1], STDOUT_FILENO);
 	return (0);
 }
@@ -341,8 +362,8 @@ int	ft_builtin(t_cmd *cmd, t_env *env)
 	{
 		if (cmd->cmd && check_builtins(cmd->cmd) == 1)
 			return (0);
-		// if (check_redirection(cmd, 1) == 1)
-		// 	return (1);
+		if (check_redirection(cmd, 1) == 1)
+		 	return (1);
 		if (builtins(cmd->cmd, cmd, env, 0) == 0)
 		{
 			restore_fd(saved_stdin, saved_stdout);
@@ -360,7 +381,7 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 	status = 0;
 	begin_cmd = cmd;
 	init_pipe(begin_cmd);
-	if (/*make_heredocs(cmd, env) == 1 ||*/ ft_builtin(cmd, env) == 1)
+	if (/*make_heredocs(cmd, env) == 1 || */ft_builtin(cmd, env) == 1)
 	{
 //		perror("file");
 		return ;

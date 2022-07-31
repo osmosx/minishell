@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:21:49 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 19:45:01 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 22:42:29 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_cmd	*ft_cmd_init(t_file *begin_redirs, char **cmd)
 	new_cmd->cmd = cmd;
 	new_cmd->begin_redirs = begin_redirs;
 	new_cmd->next = NULL;
+	new_cmd->prev = NULL;
 	return (new_cmd);
 }
 
