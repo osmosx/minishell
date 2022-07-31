@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/31 19:56:23 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:39:04 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int	main(int argc, char **argv, char **envp)
 		if (*cmd)
 		{
 			if (!ft_line_tokenizer(cmd, &cmd_begin, envp))
-				continue;
+			{
+				free(cmd);
+				continue ;
+			}
 			ft_printtab(cmd_begin->cmd);
 			ft_print_file2(cmd_begin->begin_redirs);
 			ft_exec(cmd_begin, envm);
@@ -81,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 			if (cmd2)
 				ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
 		}
-		if (cmd)
-			free(cmd);
+		free(cmd);
 	}
 }

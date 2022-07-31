@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:10 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 19:49:06 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:26:25 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ char	**ft_pipe_separator(char *str)
 
 	n_of_cmds = ft_count_tokens(str, '|') + 1;
 	cmds = (char **)malloc(sizeof(char *) * (n_of_cmds + 1));
+	if (!cmds)
+		return (NULL);
 	cmds[n_of_cmds] = NULL;
-	ft_fillcmds(str, cmds);
+	if (!ft_fillcmds(str, cmds))
+		return (NULL);
 	return (cmds);
 }
 
@@ -80,6 +83,8 @@ char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
 
 	cmds = ft_pipe_separator(str);
 	first_cmd = cmds;
+	if (!first_cmd)
+		return (NULL);
 	tkn_begin = NULL;
 	while (*cmds)
 	{

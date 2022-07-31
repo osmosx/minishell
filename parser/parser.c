@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:10 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:11 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:40:10 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,10 @@ int	ft_quotes_checker(char *str)
 		quote_type = ft_quotes_identifier(str++, &quote_type);
 	if (quote_type)
 	{
-		error_print(1, "hellshell: miss quote");
+		error_print(1, "minishell: miss quote");
 		return (0);
 	}
 	return (quote_type);
-}
-
-//функция печатает ошибку, ставит код и обнуляет переданный элемент чар-памяти,
-// если он передан
-char	**ft_out(char *err, int n_err, char **tab_to_nulfin)
-{
-	error_print(n_err, err);
-	if (tab_to_nulfin)
-		*tab_to_nulfin = NULL;
-	return (NULL);
 }
 
 //функция занимается переносом последней команды в таблицу
@@ -64,11 +54,13 @@ char	**ft_fill_cmd_tab_line(char *str, char **cmds, char	**cmd_start)
 	int		i;
 
 	if (*(str - 1) == '|' || **cmd_start == '|')
-		return (ft_out("minishell: syntax error near unexpected token `|\'\n",
-				258, cmds));
+	{
+		*cmds = NULL;
+		return (error_print(258, "minishell: syntax error near unexpected token `|'"));
+	}
 	*cmds = (char *)malloc(sizeof(char) * (str - *cmd_start + 1));
 	if (!*cmds)
-		return (ft_out("minishell: malloc error\n", 1, NULL));
+		return (error_print(1, "minishell: malloc error"));
 	(*cmds)[str - *cmd_start] = '\0';
 	i = 0;
 	while (*cmd_start != str)
@@ -83,15 +75,17 @@ char	**ft_fillcmds(char *str, char **cmds)
 {
 	int		quote_type;
 	char	*cmd_start;
+	char	**cmd_ptr;
 
 	quote_type = 0;
+	cmd_ptr = cmds;
 	cmd_start = str;
 	quote_type = ft_quotes_identifier(str, &quote_type);
 	while (*(str++))
 	{
 		quote_type = ft_quotes_identifier(str, &quote_type);
 		if (!(*str) || (!quote_type && *str == '|'))
-			if (!ft_fill_cmd_tab_line(str, cmds++, &cmd_start))
+			if (!ft_fill_cmd_tab_line(str, cmd_ptr++, &cmd_start))
 				return (NULL);
 	}
 	return (cmds);

@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/31 19:17:08 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:34:54 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int		ft_is_opening_or_closing_quote(char c, int qt);
 int		ft_numlen(int n);
 int		ft_var_len(char **str, char **env);
 void	*error_print(int err_num, char *err_char);
+void	*error_near_print(int err_num, t_tkn *tkn);
 
 //executor
 void	ft_exec(t_cmd *cmd, t_env *env);

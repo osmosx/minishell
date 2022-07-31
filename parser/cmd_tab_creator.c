@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:02 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 19:54:46 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 20:53:14 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ t_tkn	**ft_cmd_filler_two(t_tkn *tkn, t_tkn **tkn_begin, t_file **redir_begin,
 			if (tkn->next)
 				tkn = tkn->next;
 	}
-	// есть предположение, что тут программа ломается
 	if (tkn && ft_is_redir(tkn->type))
 	{
 		if (!ft_file_add_back(ft_file_init(ft_filename(tkn, tkn_begin),
