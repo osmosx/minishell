@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 22:50:46 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 23:11:37 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
 	line = readline("> ");
 	while (line)
 	{
-		if (ft_strcmp(line, limiter) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(line)) == 0)
 		{
 			close(fd[0]);
 			close(fd[1]);
@@ -118,6 +118,7 @@ int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
 			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
 				return (1);
 		}
+		redir = redir->next;
 	}
 	return (0);
 }
@@ -204,8 +205,10 @@ int	check_redirection(t_cmd *cmd, int quit)
 		dup2(fd[0], STDIN_FILENO);
 	}
 	if (fd[1])
+	{
 		cmd->fd[1] = fd[1];
 		dup2(fd[1], STDOUT_FILENO);
+	}
 	return (0);
 }
 
@@ -381,7 +384,7 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 	status = 0;
 	begin_cmd = cmd;
 	init_pipe(begin_cmd);
-	if (/*make_heredocs(cmd, env) == 1 || */ft_builtin(cmd, env) == 1)
+	if (make_heredocs(cmd, env) == 1 || ft_builtin(cmd, env) == 1)
 	{
 //		perror("file");
 		return ;
