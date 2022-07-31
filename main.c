@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/11 13:50:46 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:39:04 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,18 @@ int	main(int argc, char **argv, char **envp)
 			ctrl_d(cmd, envm);
 		if (*cmd)
 		{
-			cmd2 = ft_line_tokenizer(cmd, &cmd_begin, envp);
-//			builtins(envm, cmd_begin->cmd, cmd_begin);
+			if (!ft_line_tokenizer(cmd, &cmd_begin, envp))
+			{
+				free(cmd);
+				continue ;
+			}
+			ft_printtab(cmd_begin->cmd);
+			ft_print_file2(cmd_begin->begin_redirs);
 			ft_exec(cmd_begin, envm);
 			ft_free_cmd_list(&cmd_begin);
 			// файловые списки, таблицы команд и список команд)
-			ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
+			if (cmd2)
+				ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
 		}
 		free(cmd);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tkn_creators.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:23 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:24 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 17:56:12 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_tkn	*ft_cmd_tkn_init(char **cmd)
 		return (NULL);
 	}
 	new_tkn->next = NULL;
+	new_tkn->prev = NULL;
 	return (new_tkn);
 }
 

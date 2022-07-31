@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_creator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:06 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:07 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 19:56:05 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_file	**ft_free_file_list(t_file **begin_file)
 	t_file	*active;
 	t_file	*prev;
 
-	if (!*begin_file)
+	if (!begin_file || !*begin_file)
 		return (NULL);
 	active = *begin_file;
 	prev = active;
@@ -77,6 +77,8 @@ t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file)
 	if (!last)
 	{
 		*begin_file = new_file;
+//		printf("%p", begin_file);
+//		ft_print_file2(*begin_file);
 		return (begin_file);
 	}
 	while (last->next)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_tab_creator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:02 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 17:04:48 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 20:53:14 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,20 @@ char	**ft_list_to_tab(t_tkn	**tkn_begin, char ***cmd)
 t_tkn	**ft_cmd_filler_two(t_tkn *tkn, t_tkn **tkn_begin, t_file **redir_begin,
 	char **env)
 {
-	while (tkn->next)
+	while (tkn && tkn->next)
 	{
 		if (ft_is_redir(tkn->type))
 		{
 			if (!ft_file_add_back(ft_file_init(ft_filename(tkn, tkn_begin),
 						tkn->type), redir_begin))
 				return (ft_free_tkn_list(tkn_begin));
-			ft_tkn_del(tkn, tkn_begin);
+			tkn = ft_tkn_del(tkn, tkn_begin);
 		}
-		if (tkn->next)
-			tkn = tkn->next;
+		else
+			if (tkn->next)
+				tkn = tkn->next;
 	}
-	if (ft_is_redir(tkn->type))
+	if (tkn && ft_is_redir(tkn->type))
 	{
 		if (!ft_file_add_back(ft_file_init(ft_filename(tkn, tkn_begin),
 					tkn->type), redir_begin))
@@ -107,6 +108,7 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 	redir_begin = NULL;
 	tkn = *tkn_begin;
 	ft_tkn_prev_setter(*tkn_begin);
+
 	if (!ft_cmd_filler_two(tkn, tkn_begin, &redir_begin, env))
 		return (NULL);
 	if (!ft_dequote_tkn_list(tkn_begin, env))
