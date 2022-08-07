@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:10 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 21:40:10 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 21:35:20 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ int	ft_quotes_checker(char *str)
 	while (*str)
 		quote_type = ft_quotes_identifier(str++, &quote_type);
 	if (quote_type)
-	{
 		error_print(1, "minishell: miss quote");
-		return (0);
-	}
 	return (quote_type);
 }
 

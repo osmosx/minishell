@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:14 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:15 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 19:29:57 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ char	*ft_fill_last_err(char *name, char **str)
 	i = 0;
 	while (num[i])
 		*(name++) = num[i++];
+	*(name++) = num[i++];//последнее исправление тут
 	free(num);
 	return (name);
 }

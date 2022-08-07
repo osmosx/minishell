@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/31 21:34:54 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 21:36:36 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ char	**con_twotab(char **tab, char **tab2);
 //parser utils
 char	**ft_fillcmds(char *str, char **cmds);
 int		ft_quotes_identifier(char *str, int *quote_type);
+int		ft_quotes_checker(char *str);
 t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin);
 char	**ft_pipe_separator(char *str);
 char	**ft_pipe_separator(char *str);
