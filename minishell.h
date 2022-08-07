@@ -40,7 +40,6 @@
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
 
 int	g_error;
-int	g_status;
 
 typedef struct s_env
 {

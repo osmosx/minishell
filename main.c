@@ -52,7 +52,7 @@ void	ft_printtab(char **cmds)
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*envm;
-	t_cmd	*cmd_begin = NULL;
+	t_cmd	*cmd_begin;
 	char	*cmd;
 	char	**cmd2;
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	g_status = 0;
 	envm = NULL;
+    cmd_begin = NULL;
 	envm = init_env(envm, envp);
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);

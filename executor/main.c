@@ -37,10 +37,10 @@ void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 	else if (i == 2)
 	{
 		printf("minishell: %s: is a directory\n", arg);
-//		free_exit(cmd, shell);
+//		free_exit(cmd, envm);
 		exit(126);
 	}
-//	free_exit(cmd, shell);
+//	free_exit(cmd, envm);
 	exit (127);
 }
 
@@ -49,7 +49,7 @@ void	ft_newline(int signal)
 	(void)signal;
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
-//	rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 	g_error = 130;
 }
@@ -82,7 +82,7 @@ void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
 		line = readline("> ");
 	}
 	free(line);
-//	free_exit(cmd, env); !!!!!!!!!!! потом вернуть !!!!!!!!!!!!!
+//	free_exit(cmd, env);
 	exit(EXIT_SUCCESS);
 }
 

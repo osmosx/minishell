@@ -22,11 +22,11 @@ SRC = main.c \
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
-FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+#FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
 # Для отладки
-#FLAGS = -I$(HEADER) -I//usr/local/Cellar/readline/8.1.2/include
+FLAGS =   -I$(HEADER)
 
 
 
