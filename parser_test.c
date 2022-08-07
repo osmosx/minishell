@@ -1,16 +1,16 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 //-----------parser
 
 
-void	ft_printtab(char **cmds)
-{
-	if (!cmds)
-		printf("No cmds tab");
-	else
-		while (*cmds)
-			printf("%s\n", *(cmds++));
-}
+// void	ft_printtab(char **cmds)
+// {
+// 	if (!cmds)
+// 		printf("No cmds tab");
+// 	else
+// 		while (*cmds)
+// 			printf("%s\n", *(cmds++));
+// }
 
 /*
 char	**ft_free(char **arr)
@@ -164,6 +164,7 @@ int	main(int argc, char **argv, char** env)
 	ft_printtab(cmds);
 }*/
 
+/*
 //---------------main
 int	main(int argc, char **argv, char** env)
 {
@@ -181,9 +182,10 @@ int	main(int argc, char **argv, char** env)
 	cmds = ft_line_tokenizer(str, &cmd_begin, env);
 	if (!cmds)
 	{
-		ft_free_cmd_list(cmd_begin);//и ошибку поставить
+		ft_free_cmd_list(&cmd_begin);//и ошибку поставить
 	}
 	ft_printtab(cmds);
 	write (1, "\ncmd\n", 5);
 	ft_print_cmd(cmd_begin);
 }
+*/

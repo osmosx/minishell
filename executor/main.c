@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 18:22:03 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 23:11:37 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
 	line = readline("> ");
 	while (line)
 	{
-		if (ft_strcmp(line, limiter) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(line)) == 0)
 		{
 			close(fd[0]);
 			close(fd[1]);
@@ -118,17 +118,23 @@ int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
 			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
 				return (1);
 		}
+		redir = redir->next;
 	}
 	return (0);
 }
 
 int	make_heredocs(t_cmd *cmd, t_env *env)
 {
-	while (cmd != NULL)
+	t_file	*file;
+
+	file = NULL;
+	if (cmd)
+		file = cmd->begin_redirs;
+	while (file != NULL)
 	{
-		if (check_heredoc(cmd->begin_redirs, cmd->fd[0], cmd, env) == 1)
+		if (check_heredoc(file, cmd->fd[0], cmd, env) == 1)
 			return (1);
-		cmd = cmd->next;
+		file = file->next;
 	}
 	return (0);
 }
@@ -148,10 +154,10 @@ int	open_file(char *name, int i, int quit)
 	{
 		perror(name);
 		g_error = 1;
-		// if (access(argv, F_OK) == 0)
-		// 	printf("minishell: %s Is a directory\n", argv);
-		// else
-		// 	printf("minishell: no such file or directory: %s\n", argv);
+		if (access(name, F_OK) == 0)
+			printf("minishell: %s Is a directory\n", name);
+		else
+			printf("minishell: no such file or directory: %s\n", name);
 		if (quit == 0)
 			exit(1);
 	}
@@ -169,22 +175,40 @@ int	check_redirection(t_cmd *cmd, int quit)
 	while (ptr)
 	{
 		if (ptr->type == 3)
+		{
+			if (fd[0])
+				close(fd[0]);
 			fd[0] = open_file(ptr->name, 2, quit);
+		}
 		else if (ptr->type == 4)
+		{
+			if (fd[1])
+				close(fd[1]);
 			fd[1] = open_file(ptr->name, 1, quit);
+		}
 		else if (ptr->type == 6)
+		{
+			if (fd[1])
+				close(fd[1]);
 			fd[1] = open_file(ptr->name, 0, quit);
+		}
 		else if (ptr->type == 5)
-//			dup2(cmd->fd[0], STDIN_FILENO);
-			fd[0] = cmd->fd[0];
+			dup2(cmd->fd[0], STDIN_FILENO);
+//			fd[0] = cmd->fd[0];
 		ptr = ptr->next;
 	}
 	if (fd[0] == -1 || fd[1] == -1)
 		return (1);
 	if (fd[0])
+	{
+		cmd->fd[0] = fd[0];
 		dup2(fd[0], STDIN_FILENO);
+	}
 	if (fd[1])
+	{
+		cmd->fd[1] = fd[1];
 		dup2(fd[1], STDOUT_FILENO);
+	}
 	return (0);
 }
 
@@ -342,7 +366,7 @@ int	ft_builtin(t_cmd *cmd, t_env *env)
 		if (cmd->cmd && check_builtins(cmd->cmd) == 1)
 			return (0);
 		if (check_redirection(cmd, 1) == 1)
-			return (1);
+		 	return (1);
 		if (builtins(cmd->cmd, cmd, env, 0) == 0)
 		{
 			restore_fd(saved_stdin, saved_stdout);

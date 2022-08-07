@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tkn_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:27 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/17 16:46:32 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 19:41:54 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
 	t_tkn	*active;
 	t_tkn	*prev;
 
-	if (!*begin_tkn)
+	if (!begin_tkn || !*begin_tkn)
 		return (NULL);
 	active = *begin_tkn;
 	prev = active;
@@ -41,7 +41,7 @@ t_tkn	**ft_free_tkn_list(t_tkn **begin_tkn)
 }
 
 //удаление текста из токенов.
-void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
+t_tkn	*ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
 {
 	t_tkn	*prev;
 	t_tkn	*next;
@@ -60,6 +60,7 @@ void	ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
 	if (next)
 		next->prev = prev;
 	ft_free_tkn(tkn);
+	return next;
 }
 
 //проставляет файлам значение поле "предыдущий"

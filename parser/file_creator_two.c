@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_creator_two.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:06 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:07 by keaton           ###   ########.fr       */
+/*   Updated: 2022/07/31 21:12:05 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,43 @@
 int	ft_is_redir(int type)
 {
 	return (type == 3 || type == 4 || type == 5 || type == 6);
+}
+
+char	*ft_deferrtype(t_tkn *tkn)
+{
+	if (!tkn)
+		return (ft_strdup("`newline'"));
+	if (tkn->type == 2)
+		return (ft_strdup("`|'"));
+	if (tkn->type == 3)
+		return (ft_strdup("`<'"));
+	if (tkn->type == 4)
+		return (ft_strdup("`>'"));
+	if (tkn->type == 5)
+		return (ft_strdup("`<<'"));
+	if (tkn->type == 6)
+		return (ft_strdup("`>>'"));
+	return ("");
+}
+
+
+void	*error_near_print(int err_num, t_tkn *tkn)
+{
+	char	*err_char;
+	char	*name;
+
+	g_error = err_num;
+	name = ft_deferrtype(tkn);
+	if (!name)
+		return (NULL);
+	err_char = ft_strjoin("minishell: syntax error near unexpected token ", name);
+	free(name);
+	if (!err_char)
+		return (NULL);
+	write(2, err_char, ft_strlen(err_char));
+	write(2, "\n", 1);
+	free(err_char);
+	return (NULL);
 }
 
 //функция копирует поле имя для файлов из токена в новый маллок
@@ -26,14 +63,14 @@ char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn)
 	int		len;
 
 	if (!tkn->next)
-		return (error_print(1, ""));
+		return (error_near_print(1, tkn->next));
 	tkn_ptr = tkn->next;
 	while (tkn_ptr->type == 7 && tkn_ptr->next)
 		tkn_ptr = tkn_ptr->next;
 	if (tkn_ptr->type == 7)
-		return (error_print(1, ""));
+		return (error_near_print(1, tkn->next));
 	if (tkn_ptr->type != 1)
-		return (error_print(1, ""));
+		return (error_near_print(1, tkn->next));
 	len = ft_strlen(tkn_ptr->value);
 	name = (char *)malloc((len + 1) * sizeof(char));
 	if (!name)

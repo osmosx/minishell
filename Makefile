@@ -18,7 +18,7 @@ SRC = main.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
 	parser/tkn_utils_two.c parser/quotes_two.c \
-	executor/main.c
+	executor/main.c parser_test.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
