@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:06 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 21:12:05 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 21:26:43 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,20 @@ int	ft_file_len_counter(t_file *file, char **env)
 	while (str && *str)
 	{
 		if (ft_is_opening_or_closing_quote(*str, quote_type))
-			quote_type = ft_quotes_identifier(str++, &quote_type);
-		else if (*str == '$' && (!quote_type || quote_type != 2)
-			&& file->type != 5)
+			quote_type = ft_quotes_identifier(str, &quote_type);
+		else if (*str == '$' && quote_type != 1 && file->type != 5)
 		{
 			if (*(++str) == '?')
 				len += ft_numlen(g_error);
-			else
+			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
 				len += ft_var_len(&str, env);
+			else
+				len++;
 		}
 		else
 			len++;
-		str++;
+		if (*str)
+			str++;
 	}
 	return (len);
 }

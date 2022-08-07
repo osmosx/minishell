@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:18 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/16 20:22:19 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 21:05:03 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void	ft_dequote_file_name(t_file *file, char *name, char **env)
 	{
 		if (ft_is_opening_or_closing_quote(*str, quote_type))
 			quote_type = ft_quotes_identifier(str++, &quote_type);
-		else if (*str == '$' && (!quote_type || quote_type != 2)
-			&& file->type != 5)
+		else if (*str == '$' && quote_type != 1 && file->type != 5)
 		{
 			if (*(++str) == '?')
 				name = ft_fill_last_err(name, &str);
-			else
+			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
 				name = ft_fill_var_value(&str, name, env);
+			else
+				*(name++) = '$';
 		}
 		else
 			*(name++) = *(str++);

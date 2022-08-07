@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:50:01 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/07/31 23:11:53 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/07 23:04:08 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,15 @@ int	main(int argc, char **argv, char **envp)
 		add_history(cmd);
 		if (!cmd)
 			ctrl_d(cmd, envm);
-		if (*cmd)
+		if (*cmd && !ft_quotes_checker(cmd))
 		{
-			if (!ft_line_tokenizer(cmd, &cmd_begin, envp))
+			if (!ft_line_tokenizer(cmd, &cmd_begin, envm->cp_env))
 			{
 				free(cmd);
 				continue ;
 			}
-//			ft_printtab(cmd_begin->cmd);
-//			ft_print_file2(cmd_begin->begin_redirs);
+			ft_printtab(cmd_begin->cmd);
+			ft_print_file2(cmd_begin->begin_redirs);
 			ft_exec(cmd_begin, envm);
 			ft_free_cmd_list(&cmd_begin);
 			// файловые списки, таблицы команд и список команд)
