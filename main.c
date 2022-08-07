@@ -58,7 +58,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	g_status = 0;
 	envm = NULL;
     cmd_begin = NULL;
 	envm = init_env(envm, envp);
