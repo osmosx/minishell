@@ -32,10 +32,9 @@ void	ctrl_d(char *line, t_env *envm)
 void	ctrl_backslash(int signal)
 {
 	(void)signal;
-	printf("\n");
 	rl_free_line_state();
-//	rl_cleanup_after_signal();
+	rl_cleanup_after_signal();
+	printf("ˆ\\Quit (core dumped)\n");
 //	rl_on_new_line();
 //	rl_replace_line("", 0);
-
 }
