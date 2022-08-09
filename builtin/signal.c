@@ -34,7 +34,8 @@ void	ctrl_backslash(int signal)
 	(void)signal;
 	rl_free_line_state();
 	rl_cleanup_after_signal();
-	printf("ˆ\\Quit (core dumped)\n");
+	printf("^\\Quit: 3\n");
+	g_error = 131;
 //	rl_on_new_line();
 //	rl_replace_line("", 0);
 }
