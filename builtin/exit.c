@@ -48,11 +48,11 @@ static int	check_exit_arg(char *cmd)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", cmd);
 		g_error = 255;
-		return (g_error);
+		return (1);
 	}
 	exit_code = ft_atoll(cmd);
 	g_error = exit_code % 256;
-	return (g_error);
+	return (0);
 }
 
 int	m_exit(char **cmd, t_cmd *cmd_t, t_env *envm)
@@ -60,21 +60,23 @@ int	m_exit(char **cmd, t_cmd *cmd_t, t_env *envm)
 	int	i;
 
 	i = 0;
-
+	printf("exit\n");
 	if (cmd[1] && !cmd[2])
+		check_exit_arg(cmd[1]);
+	else
+		g_error = 0;
+	if (cmd[1] && cmd[2])
 	{
 		i = check_exit_arg(cmd[1]);
-	}
-	if (cmd[1] && cmd[2] && i != 255)
-	{
-		printf("exit\n");
-		printf("minishell: exit: too many arguments\n");
-		g_error = 1;
-		return (g_error);
+		if (i == 0)
+		{
+			printf("minishell: exit: too many arguments\n");
+			g_error = 1;
+			return (g_error);
+		}
 	}
 	else
 		g_error = 0;
-	printf("exit\n");
 	ft_free_cmd_list(&cmd_t);
 	all_free(envm);
 	exit(g_error);
