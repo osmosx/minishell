@@ -62,7 +62,7 @@ int	main(int argc, char **argv, char **envp)
     cmd_begin = NULL;
 	envm = init_env(envm, envp);
 	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, ctrl_backslash);
 	while (42)
 	{
 		cmd = readline("\001\033[31m\002hellshell$>\001\033[0m\002 ");
