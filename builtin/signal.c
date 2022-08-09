@@ -28,3 +28,14 @@ void	ctrl_d(char *line, t_env *envm)
 	free(envm);
 	exit(0);
 }
+
+void	ctrl_backslash(int signal)
+{
+	(void)signal;
+	printf("\n");
+	rl_free_line_state();
+//	rl_cleanup_after_signal();
+//	rl_on_new_line();
+//	rl_replace_line("", 0);
+
+}
