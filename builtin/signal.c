@@ -12,6 +12,14 @@
 
 #include "../minishell.h"
 
+void	handler(int sig)
+{
+	if (sig == SIGINT)
+		ctrl_c(sig);
+	if (sig == SIGQUIT)
+		ctrl_backslash(sig);
+}
+
 void	ctrl_c(int signal)
 {
 	(void)signal;
