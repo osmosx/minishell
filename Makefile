@@ -28,8 +28,6 @@ OBJ = $(SRC:.c=.o)
 # Для отладки
 FLAGS =   -I$(HEADER)
 
-
-
 NAME = minishell
 #
 .PHONY: all clean fclean re libft
@@ -39,7 +37,7 @@ all: libft $(NAME)
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
 #Для дома
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L//usr/local/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include  -L./libft -lft
 #Для школы
 # 	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
 	@echo "\033[32m\033[1m[minishell compiled]"

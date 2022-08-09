@@ -28,16 +28,16 @@
 # include "./libft/libft.h"
 
 //Для школы
-# include <readline/readline.h>
-# include <readline/history.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
 
 //Для дома
-//# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
-//# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
-
+# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
+# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 //Вариант для Brew
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
+
 
 int	g_error;
 
@@ -82,6 +82,7 @@ char	**unset_remove(t_env *envm, char *cmd);
 // signal utils
 void	ctrl_c(int signal);
 void	ctrl_d(char *line, t_env *envm);
+void	ctrl_backslash(int signal);
 
 //built-in functions
 int		builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i);
