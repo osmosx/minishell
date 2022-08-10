@@ -31,31 +31,69 @@ static void	new_path(char *s, char *c, t_env *envm)
 	}
 }
 
-int	m_cd(t_env *envm, char *path)
+static char	*home_path(t_env *envm, char *str)
+{
+	char	*path;
+	int		i;
+
+	i = 0;
+	path = NULL;
+	while (envm->cp_env[i])
+	{
+		if (!ft_strncmp(envm->cp_env[i], str, ft_strlen(str)))
+		{
+			path = ft_strdup(envm->cp_env[i] + ft_strlen(str));
+			break ;
+		}
+		i++;
+	}
+	if (path == NULL)
+	{
+		printf("cd: HOME not set\n");
+		g_error = 1;
+	}
+	return (path);
+}
+
+static void	get_cwd_new_path(t_env *envm, char *str)
 {
 	char	c[PATH_MAX];
 
+	getcwd(c, sizeof(c));
+	new_path(str, c, envm);
+}
+
+static void	print_error(char *path)
+{
+	write(2, "cd: ", 4);
+	perror(path);
+	g_error = 1;
+}
+
+int	m_cd(t_env *envm, char *path)
+{
+	int		i;
+
 	if (path)
 	{
-		getcwd(c, sizeof(c));
-		new_path("OLDPWD=", c, envm);
-		if (chdir(path) == 0)
-		{
-			getcwd(c, sizeof(c));
-			new_path("PWD=", c, envm);
-		}
+		i = chdir(path);
+		get_cwd_new_path(envm, "OLDPWD=");
+		if (i == 0)
+			get_cwd_new_path(envm, "PWD=");
 		else if (ft_strcmp(path, "~") == 0)
 		{
-			chdir("/");
+			chdir(home_path(envm, "HOME="));
+			get_cwd_new_path(envm, "PWD=");
 		}
 		else
-		{
-			write(2, "cd: ", 4);
-			perror(path);
-			g_error = 1;
-		}
+			print_error(path);
 	}
-	if (!path)
-		chdir("/");
+	if (!path && home_path(envm, "HOME="))
+	{
+		chdir(home_path(envm, "HOME="));
+		get_cwd_new_path(envm, "PWD=");
+	}
+	else
+		return (g_error);
 	return (0);
 }

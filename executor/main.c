@@ -393,5 +393,4 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 		}
 	}
 	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
 }

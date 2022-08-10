@@ -29,10 +29,9 @@ int	builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i)
 		else if (ft_strcmp("unset", cmd2[0]) == 0)
 			g_error = m_unset(env, cmd2);
 		else if (ft_strcmp("cd", cmd2[0]) == 0)
-			m_cd(env, cmd2[1]);
+			g_error = m_cd(env, cmd2[1]);
 		else
 			return (1);
-//		write(1, "builtins\n", 9);
 	}
 	if (i == 0)
 		return (0);
