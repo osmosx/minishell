@@ -44,6 +44,14 @@ void	ctrl_backslash(int signal)
 	rl_cleanup_after_signal();
 	printf("^\\Quit: 3\n");
 	g_error = 131;
-//	rl_on_new_line();
-//	rl_replace_line("", 0);
+}
+
+void	newline(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_error = 130;
 }

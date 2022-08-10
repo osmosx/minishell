@@ -44,15 +44,7 @@ void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 	exit (127);
 }
 
-void	ft_newline(int signal)
-{
-	(void)signal;
-	ft_putstr_fd("\n", STDERR_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_error = 130;
-}
+
 
 void	init_pipe(t_cmd *cmd)
 {
@@ -98,7 +90,7 @@ int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)
 	if (pid == 0)
 		heredoc(limiter, new_fd, cmd, env);
 	wait(&wstatus);
-	signal(SIGINT, ft_newline);
+	signal(SIGINT, newline);
 	if (WIFEXITED(wstatus))
 		g_error = WEXITSTATUS(wstatus);
 	dup2(new_fd[0], fd);
@@ -400,5 +392,6 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 			cmd = cmd->next;
 		}
 	}
-	signal(SIGINT, ctrl_c);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 }
