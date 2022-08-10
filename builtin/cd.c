@@ -44,6 +44,10 @@ int	m_cd(t_env *envm, char *path)
 			getcwd(c, sizeof(c));
 			new_path("PWD=", c, envm);
 		}
+		else if (ft_strcmp(path, "~") == 0)
+		{
+			chdir("/");
+		}
 		else
 		{
 			write(2, "cd: ", 4);
@@ -51,5 +55,7 @@ int	m_cd(t_env *envm, char *path)
 			g_error = 1;
 		}
 	}
+	if (!path)
+		chdir("/");
 	return (0);
 }
