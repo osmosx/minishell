@@ -62,7 +62,7 @@ static void	print_export(char **buf)
 			i++;
 		}
 		else
-			printf("declare -x ,%s\n", buf[i++]);
+			printf("declare -x %s\n", buf[i++]);
 	}
 }
 
