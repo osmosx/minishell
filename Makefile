@@ -37,9 +37,11 @@ all: libft $(NAME)
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
 #Для дома
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include  -L./libft -lft
+	@#$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include  -L./libft -lft
 #Для школы
 # 	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
+#Для Linux
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/lib -I/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include -L./libft -lft
 	@echo "\033[32m\033[1m[minishell compiled]"
 #
 %.o: %.c

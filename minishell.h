@@ -31,19 +31,21 @@
 //# include <readline/readline.h>
 //# include <readline/history.h>
 
-//Для дома
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
-# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
+////Для дома
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
+//# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 //Вариант для Brew
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
 
+//Для Linux
+# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/readline.h"
+# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/history.h"
 
-int	g_error;
+extern int	g_error;
 
 typedef struct s_env
 {
-	int		shlvl;
 	char	**cp_env;
 	char	**cp_path;
 	char	**export;
@@ -83,6 +85,8 @@ char	**unset_remove(t_env *envm, char *cmd);
 void	ctrl_c(int signal);
 void	ctrl_d(char *line, t_env *envm);
 void	ctrl_backslash(int signal);
+void	handler(int sig);
+void	newline(int signal);
 
 //built-in functions
 int		builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i);

@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_error;
+
 int	builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i)
 {
 	if (cmd2)
@@ -54,7 +56,6 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd_begin;
 	char	*cmd;
 	char	**cmd2;
-
 	(void)argc;
 	(void)argv;
 	envm = NULL;
