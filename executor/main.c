@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 22:01:01 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 23:11:37 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/15 03:54:48 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_blanc(int sig)
-{
-	(void)sig;
-}
-
-void	stop_heredoc(int signal)
-{
-	(void)signal;
-	ft_putstr_fd("\n", STDERR_FILENO);
-	exit(130);
-}
 
 void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 {
@@ -44,8 +32,6 @@ void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 	exit (127);
 }
 
-
-
 void	init_pipe(t_cmd *cmd)
 {
 	while (cmd)
@@ -55,85 +41,10 @@ void	init_pipe(t_cmd *cmd)
 	}
 }
 
-void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
-{
-	char	*line;
-
-	signal(SIGINT, stop_heredoc);
-	line = readline("> ");
-	while (line)
-	{
-		if (ft_strncmp(line, limiter, ft_strlen(line)) == 0)
-		{
-			close(fd[0]);
-			close(fd[1]);
-			break ;
-		}
-		ft_putendl_fd(line, fd[1]);
-		free(line);
-		line = readline("> ");
-	}
-	free(line);
-//	free_exit(cmd, env);
-	exit(EXIT_SUCCESS);
-}
-
-int	redir_heredoc(char *limiter, int fd, t_cmd *cmd, t_env *env)
-{
-	int		new_fd[2];
-	pid_t	pid;
-	int		wstatus;
-
-	signal(SIGINT, ft_blanc);
-	pipe(new_fd);
-	pid = fork();
-	if (pid == 0)
-		heredoc(limiter, new_fd, cmd, env);
-	wait(&wstatus);
-	signal(SIGINT, newline);
-	if (WIFEXITED(wstatus))
-		g_error = WEXITSTATUS(wstatus);
-	dup2(new_fd[0], fd);
-	close(new_fd[1]);
-	close(new_fd[0]);
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == 130)
-		return (1);
-	return (0);
-}
-
-int	check_heredoc(t_file *redir, int stdin_fd, t_cmd *cmd, t_env *env)
-{
-	while (redir)
-	{
-		if (redir->type == 5)
-		{
-			if (redir_heredoc(redir->name, stdin_fd, cmd, env) == 1)
-				return (1);
-		}
-		redir = redir->next;
-	}
-	return (0);
-}
-
-int	make_heredocs(t_cmd *cmd, t_env *env)
-{
-	t_file	*file;
-
-	file = NULL;
-	if (cmd)
-		file = cmd->begin_redirs;
-	while (file != NULL)
-	{
-		if (check_heredoc(file, cmd->fd[0], cmd, env) == 1)
-			return (1);
-		file = file->next;
-	}
-	return (0);
-}
-
 int	open_file(char *name, int i, int quit)
 {
-	int	file;
+	int		file;
+	char	*err;
 
 	file = 0;
 	if (i == 0)
@@ -144,12 +55,14 @@ int	open_file(char *name, int i, int quit)
 		file = open(name, O_RDONLY, 0777);
 	if (file == -1)
 	{
-		perror(name);
+		err = ft_strjoin("minishell: ", name);
+		perror(err);
+		free(err);
 		g_error = 1;
-		if (access(name, F_OK) == 0)
-			printf("minishell: %s Is a directory\n", name);
-		else
-			printf("minishell: no such file or directory: %s\n", name);
+		// if (access(name, F_OK) == 0)
+		// 	printf("minishell: %s Is a directory\n", name);
+		// else
+		// 	printf("minishell: no such file or directory: %s\n", name);
 		if (quit == 0)
 			exit(1);
 	}
@@ -185,20 +98,31 @@ int	check_redirection(t_cmd *cmd, int quit)
 			fd[1] = open_file(ptr->name, 0, quit);
 		}
 		else if (ptr->type == 5)
-			dup2(cmd->fd[0], STDIN_FILENO);
+		{
 //			fd[0] = cmd->fd[0];
+			if (fd[0])
+				close(fd[0]);
+			write(1, "\n", 1);//почему-то чинит передачу хердока через пайп, но ставит лишний перенос без пайпа
+//			printf("\n");//почему-то чинит передачу хердока через пайп, но ставит лишний перенос без пайпа
+			dup2(cmd->fd[0], STDIN_FILENO);
+			fd[0] = 0;
+		}
 		ptr = ptr->next;
 	}
 	if (fd[0] == -1 || fd[1] == -1)
 		return (1);
 	if (fd[0])
 	{
+		if (cmd->fd[0])
+			close(cmd->fd[0]);
 		cmd->fd[0] = fd[0];
+//		printf("redir -> <%d\n", cmd->fd[0]);//___________________
 		dup2(fd[0], STDIN_FILENO);
 	}
 	if (fd[1])
 	{
 		cmd->fd[1] = fd[1];
+//		printf("redir -> >%d\n", cmd->fd[0]);//___________________
 		dup2(fd[1], STDOUT_FILENO);
 	}
 	return (0);

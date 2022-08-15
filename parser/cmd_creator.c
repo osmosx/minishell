@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_creator.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:21:49 by keaton            #+#    #+#             */
-/*   Updated: 2022/07/31 22:42:29 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/15 01:32:12 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd)
 	return (begin_cmd);
 }
 
+//проставляет файлам значение поле "предыдущий"
 void ft_cmd_prev_setter(t_cmd *cmd_begin)
 {
-//проставляет файлам значение поле "предыдущий"
 	t_cmd	*prev;
 
 	while (cmd_begin && cmd_begin->next)

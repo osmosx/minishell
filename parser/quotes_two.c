@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_two.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 20:22:18 by keaton            #+#    #+#             */
-/*   Updated: 2022/08/07 21:28:02 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/15 02:34:07 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_dequote_tkn_value(t_tkn *tkn, char *value, char **env)
 
 	quote_type = 0;
 	str = tkn->value;
-	printf("value = %s\n", str);
 	while (str && *str)
 	{
 		if (ft_is_opening_or_closing_quote(*str, quote_type))
@@ -49,7 +48,6 @@ t_tkn	*ft_tkn_dequoter(t_tkn *tkn, char **env)
 	if (tkn && tkn->value)
 	{
 		len = ft_tkn_len_counter(tkn, env);
-		printf ("tknlen = %d\n", len);
 		value = (char *)malloc((len + 1) * sizeof(char));
 		if (!value)
 			return (NULL);
