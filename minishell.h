@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keaton <keaton@student.42.fr>              +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:55:27 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/08/07 21:36:36 by keaton           ###   ########.fr       */
+/*   Updated: 2022/08/15 00:59:06 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@
 # include "./libft/libft.h"
 
 //Для школы
-//# include <readline/readline.h>
-//# include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 ////Для дома
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
-//Вариант для Brew
-//# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
-//# include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
+// Вариант для Brew
+// # include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
+// # include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
 
 //Для Linux
-# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/readline.h"
-# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/history.h"
+//# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/readline.h"
+//# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/history.h"
 
 extern int	g_error;
 
@@ -157,9 +157,11 @@ int		ft_numlen(int n);
 int		ft_var_len(char **str, char **env);
 void	*error_print(int err_num, char *err_char);
 void	*error_near_print(int err_num, t_tkn *tkn);
+void	ft_blanc(int sig);
 
 //executor
 void	ft_exec(t_cmd *cmd, t_env *env);
+int		make_heredocs(t_cmd *cmd, t_env *env);
 
 //tester
 void	ft_print_tkn(t_tkn *tkn_begin);

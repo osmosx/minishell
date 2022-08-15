@@ -6,7 +6,7 @@
 #    By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/26 15:50:13 by nenvoy            #+#    #+#              #
-#    Updated: 2022/06/13 22:38:10 by keaton           ###   ########.fr        #
+#    Updated: 2022/08/15 01:02:33 by keaton           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC = main.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
 	parser/tkn_utils_two.c parser/quotes_two.c \
-	executor/main.c parser_test.c
+	executor/main.c executor/heredoc.c executor/exec_utils.c parser_test.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
