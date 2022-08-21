@@ -71,12 +71,12 @@ char	*find_path(char *cmd, t_cmd *cmdl, t_env *env)
 		path = ft_strjoin_free_s1(path, cmd);
 		if (access(path, F_OK) == 0)
 		{
-//			ft_free_tab(paths);
+			ft_free(paths);
 			return (path);
 		}
 	}
 	free(path);
-//	ft_free_tab(paths);
+	ft_free(paths);
 	return (NULL);
 }
 

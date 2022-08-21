@@ -32,7 +32,7 @@ int	ft_quotes_identifier(char *str, int *quote_type)
 	return (*quote_type);
 }
 
-//функция проверяет, корректно ли закрыты ковычки !!!!!!!!!!!!!!!!ГДЕ?!!!!!!!!!
+//функция проверяет, корректно ли закрыты ковычки
 int	ft_quotes_checker(char *str)
 {
 	int	quote_type;
@@ -88,4 +88,3 @@ char	**ft_fillcmds(char *str, char **cmds)
 	}
 	return (cmds);
 }
-

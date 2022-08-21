@@ -34,7 +34,6 @@ char	*ft_deferrtype(t_tkn *tkn)
 	return ("");
 }
 
-
 void	*error_near_print(int err_num, t_tkn *tkn)
 {
 	char	*err_char;
@@ -44,7 +43,8 @@ void	*error_near_print(int err_num, t_tkn *tkn)
 	name = ft_deferrtype(tkn);
 	if (!name)
 		return (NULL);
-	err_char = ft_strjoin("minishell: syntax error near unexpected token ", name);
+	err_char = ft_strjoin("minishell: syntax error near unexpected token ",
+			name);
 	free(name);
 	if (!err_char)
 		return (NULL);
@@ -71,7 +71,7 @@ char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn)
 		return (error_near_print(1, tkn->next));
 	if (tkn_ptr->type != 1)
 		return (error_near_print(1, tkn->next));
-	len = ft_strlen(tkn_ptr->value);
+	len = (int)ft_strlen(tkn_ptr->value);
 	name = (char *)malloc((len + 1) * sizeof(char));
 	if (!name)
 		return (NULL);
@@ -82,13 +82,11 @@ char	*ft_filename(t_tkn *tkn, t_tkn **begin_tkn)
 
 //считает длину строки, которая получится для имени файла
 // после раскрытия ковычек
-int	ft_file_len_counter(t_file *file, char **env)
+int	ft_file_len_counter(t_file *file, char **env, int quote_type)
 {
 	char	*str;
 	int		len;
-	int		quote_type;
 
-	quote_type = 0;
 	len = 0;
 	str = file->name;
 	while (str && *str)
@@ -99,7 +97,8 @@ int	ft_file_len_counter(t_file *file, char **env)
 		{
 			if (*(++str) == '?')
 				len += ft_numlen(g_error);
-			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
+			else if (*str && !ft_isspace(*str)
+				&& !ft_is_opening_or_closing_quote(*str, quote_type))
 				len += ft_var_len(&str, env);
 			else
 				len++;
@@ -111,4 +110,3 @@ int	ft_file_len_counter(t_file *file, char **env)
 	}
 	return (len);
 }
-

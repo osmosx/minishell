@@ -18,8 +18,8 @@ SRC = main.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
 	parser/tkn_utils_two.c parser/quotes_two.c \
-	executor/exec.c executor/heredoc.c executor/exec_utils.c executor/exec_utils_two.c executor/exec_utils_three.c \
-	parser_test.c
+	executor/exec.c executor/heredoc.c executor/exec_utils.c executor/exec_utils_two.c executor/exec_utils_three.c
+
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
@@ -27,7 +27,7 @@ OBJ = $(SRC:.c=.o)
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
 # Для отладки
-FLAGS =   -I $(HEADER)
+FLAGS =  -Wall -Werror -Wextra -I $(HEADER)
 
 NAME = minishell
 #

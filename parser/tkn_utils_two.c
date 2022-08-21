@@ -25,24 +25,23 @@ int	ft_is_symb_token(char c)
 
 //считает длину строки, которая получится для имени файла
 // после раскрытия ковычек
-int	ft_tkn_len_counter(t_tkn *tkn, char **env)
+int	ft_tkn_len_counter(t_tkn *tkn, char **env, int qt)
 {
 	char	*str;
 	int		len;
-	int		quote_type;
 
-	quote_type = 0;
 	len = 0;
 	str = tkn->value;
 	while (str && *str)
 	{
-		if (ft_is_opening_or_closing_quote(*str, quote_type))
-			quote_type = ft_quotes_identifier(str, &quote_type);
-		else if (*str == '$' && quote_type != 1 && tkn->type != 5)
+		if (ft_is_opening_or_closing_quote(*str, qt))
+			qt = ft_quotes_identifier(str, &qt);
+		else if (*str == '$' && qt != 1 && tkn->type != 5)
 		{
 			if (*(++str) == '?')
 				len += ft_numlen(g_error);
-			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
+			else if (*str && !ft_isspace(*str)
+				&& !ft_is_opening_or_closing_quote(*str, qt))
 				len += ft_var_len(&(str), env);
 			else
 				len++;
@@ -54,4 +53,3 @@ int	ft_tkn_len_counter(t_tkn *tkn, char **env)
 	}
 	return (len);
 }
-

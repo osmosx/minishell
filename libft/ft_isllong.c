@@ -22,4 +22,3 @@ int	ft_isllong(char *str)
 		return (1);
 	return (0);
 }
-

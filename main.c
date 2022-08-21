@@ -37,17 +37,17 @@ int	builtins(char **cmd2, t_cmd *cmd, t_env	*env, int i)
 	}
 	if (i == 0)
 		return (0);
-//	free_exit(first, shell);
+	free_exit(cmd, env);
 	exit(0);
 }
 
-void	ft_printtab(char **cmds)
+void	silly_func(int ac, char **av, t_env **envm, char **envp)
 {
-	if (!cmds)
-		printf("No cmds tab");
-	else
-		while (*cmds)
-			printf("%s\n", *(cmds++));
+	(void)ac;
+	(void)av;
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
+	*envm = init_env(*envm, envp);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -55,18 +55,13 @@ int	main(int argc, char **argv, char **envp)
 	t_env	*envm;
 	t_cmd	*cmd_begin;
 	char	*cmd;
-	char	**cmd2;
 
-	(void)argc;
-	(void)argv;
 	envm = NULL;
 	cmd_begin = NULL;
-	envm = init_env(envm, envp);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
+	silly_func(argc, argv, &envm, envp);
 	while (42)
 	{
-		cmd = readline("\001\033[31m\002hellshell$>\001\033[0m\002 ");
+		cmd = readline("\001\033[31m\002hellshell$\001\033[0m\002 ");
 		add_history(cmd);
 		if (!cmd)
 			ctrl_d(cmd, envm);
@@ -77,13 +72,8 @@ int	main(int argc, char **argv, char **envp)
 				free(cmd);
 				continue ;
 			}
-			ft_printtab(cmd_begin->cmd);
-			ft_print_file2(cmd_begin->begin_redirs);
 			ft_exec(cmd_begin, envm);
 			ft_free_cmd_list(&cmd_begin);
-			// файловые списки, таблицы команд и список команд)
-			if (cmd2)
-				ft_free(cmd2);//не нужно, будет выполняться в ft_free_cmd_list
 		}
 		free(cmd);
 	}

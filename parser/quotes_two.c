@@ -25,11 +25,12 @@ void	ft_dequote_tkn_value(t_tkn *tkn, char *value, char **env)
 	{
 		if (ft_is_opening_or_closing_quote(*str, quote_type))
 			quote_type = ft_quotes_identifier(str++, &quote_type);
-		else if (*str == '$' && quote_type != 1	&& tkn->type != 5)
+		else if (*str == '$' && quote_type != 1 && tkn->type != 5)
 		{
 			if (*(++str) == '?')
 				value = ft_fill_last_err(value, &str);
-			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
+			else if (*str && !ft_isspace(*str)
+				&& !ft_is_opening_or_closing_quote(*str, quote_type))
 				value = ft_fill_var_value(&str, value, env);
 			else
 				*(value++) = '$';
@@ -44,10 +45,12 @@ t_tkn	*ft_tkn_dequoter(t_tkn *tkn, char **env)
 {
 	int		len;
 	char	*value;
+	int		qt;
 
 	if (tkn && tkn->value)
 	{
-		len = ft_tkn_len_counter(tkn, env);
+		qt = 0;
+		len = ft_tkn_len_counter(tkn, env, qt);
 		value = (char *)malloc((len + 1) * sizeof(char));
 		if (!value)
 			return (NULL);
@@ -66,7 +69,7 @@ t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env)
 	t_tkn	*res;
 
 	tkn = *tkn_begin;
-	while (tkn)//->next)
+	while (tkn)
 	{
 		while (tkn->type == 7 && tkn->next)
 		{
@@ -81,15 +84,5 @@ t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env)
 		if (tkn)
 			tkn = tkn->next;
 	}
-	// if (tkn->type == 7)
-	// {
-	// 	res = tkn;
-	// 	tkn = tkn->prev;
-	// 	ft_tkn_del(res, tkn_begin);
-	// }
-	// if (!tkn)
-	// 	return (ft_tkn_add_back(ft_symb_tkn_init('0', 0), tkn_begin));
-	// if (!ft_tkn_dequoter(tkn, env))
-	// 	return (ft_free_tkn_list(tkn_begin));
 	return (tkn_begin);
 }

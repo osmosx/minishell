@@ -99,4 +99,3 @@ char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env)
 	ft_cmd_prev_setter(*cmd_begin);
 	return (first_cmd);
 }
-

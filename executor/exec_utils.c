@@ -30,10 +30,10 @@ void	error(char *arg, int i, t_cmd *cmd, t_env *envm)
 	else if (i == 2)
 	{
 		printf("minishell: %s: is a directory\n", arg);
-//		free_exit(cmd, envm);
+		free_exit(cmd, envm);
 		exit(126);
 	}
-//	free_exit(cmd, envm);
+	free_exit(cmd, envm);
 	exit (127);
 }
 
@@ -64,10 +64,6 @@ int	open_file(char *name, int i, int quit)
 		perror(err);
 		free(err);
 		g_error = 1;
-		// if (access(name, F_OK) == 0)
-		// 	printf("minishell: %s Is a directory\n", name);
-		// else
-		// 	printf("minishell: no such file or directory: %s\n", name);
 		if (quit == 0)
 			exit(1);
 	}
@@ -79,7 +75,7 @@ int	find_path_env(t_env *envm)
 	int	i;
 
 	i = 0;
-	while (envm->cp_env[i] && ft_strnstr(envm->cp_env[i] , "PATH", 4) == 0)
+	while (envm->cp_env[i] && ft_strnstr(envm->cp_env[i], "PATH", 4) == 0)
 		i++;
 	return (i);
 }
