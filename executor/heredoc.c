@@ -14,6 +14,7 @@
 
 void	stop_heredoc(int signal)
 {
+	(void)signal;
 	ft_putstr_fd("\n", STDERR_FILENO);
 	exit(130);
 }

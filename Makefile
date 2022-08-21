@@ -27,7 +27,7 @@ OBJ = $(SRC:.c=.o)
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
 # Для отладки
-FLAGS =   -I $(HEADER)
+FLAGS =  -Wall -Werror -Wextra -I $(HEADER)
 
 NAME = minishell
 #
