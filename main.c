@@ -56,10 +56,11 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd_begin;
 	char	*cmd;
 	char	**cmd2;
+
 	(void)argc;
 	(void)argv;
 	envm = NULL;
-    cmd_begin = NULL;
+	cmd_begin = NULL;
 	envm = init_env(envm, envp);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
