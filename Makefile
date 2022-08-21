@@ -18,7 +18,8 @@ SRC = main.c \
 	parser/parser.c parser/cmd_creator.c parser/cmd_tab_creator.c parser/file_creator.c parser/quotes_utils.c \
 	parser/quotes.c parser/tkn_creators.c parser/tkn_utils.c parser/file_creator_two.c parser/parser_two.c \
 	parser/tkn_utils_two.c parser/quotes_two.c \
-	executor/main.c executor/heredoc.c executor/exec_utils.c parser_test.c
+	executor/exec.c executor/heredoc.c executor/exec_utils.c executor/exec_utils_two.c executor/exec_utils_three.c \
+	parser_test.c
 #
 OBJ = $(SRC:.c=.o)
 #Для дома
@@ -26,7 +27,7 @@ OBJ = $(SRC:.c=.o)
 # Для школы
 # FLAGS = -Wall -Werror -Wextra -I$(HEADER) -I/Users/$(USER)/.brew/Cellar/readline/8.1.2/include
 # Для отладки
-FLAGS =   -I$(HEADER)
+FLAGS =   -I $(HEADER)
 
 NAME = minishell
 #
@@ -36,14 +37,15 @@ all: libft $(NAME)
 		@stty -ctlecho
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
-#Для дома
-	@#$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include  -L./libft -lft
-#Для школы
-# 	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -L/Users/$(USER)/.brew/Cellar/readline/8.1.2/lib/ -lreadline -L./libft -lft
-#Для Linux
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/lib -I/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include -L./libft -lft
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L./libft -lft
 	@echo "\033[32m\033[1m[minishell compiled]"
+#Для дома
+#	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include  -L./libft -lft
+#Для школы
 #
+#Для Linux
+#	@$(CC) $(FLAGS) $(OBJ) -o $(NAME) -lreadline -L/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/lib -I/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include -L./libft -lft
+
 %.o: %.c
 	@$(CC) $(FLAGS) -c $< -o $@
 #

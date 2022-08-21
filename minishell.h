@@ -111,11 +111,9 @@ int		ft_quotes_identifier(char *str, int *quote_type);
 int		ft_quotes_checker(char *str);
 t_tkn	**ft_command_tokenizer(char *cmd, t_tkn **tkn_begin);
 char	**ft_pipe_separator(char *str);
-char	**ft_pipe_separator(char *str);
 char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
 t_tkn	**ft_tkn_add_back(t_tkn *new_tkn, t_tkn **begin_tkn);
 t_tkn	*ft_symb_tkn_init(char symb, int count);
-char	**ft_line_tokenizer(char *str, t_cmd **cmd_begin, char **env);
 
 //tkns
 t_tkn	**ft_tkn(char **cmd, t_tkn **tkn_begin, char symb, int maxlen);
@@ -148,7 +146,6 @@ int		ft_file_len_counter(t_file *file, char **env);
 
 //utils
 char	**ft_free(char **arr);
-char	**add_line(char **arr, char *new_line);
 int		tablen(char **tab);
 int		check_export_arg(char *cmd);
 int		ft_is_redir(int type);
@@ -162,6 +159,13 @@ void	ft_blanc(int sig);
 //executor
 void	ft_exec(t_cmd *cmd, t_env *env);
 int		make_heredocs(t_cmd *cmd, t_env *env);
+int		check_redirection(t_cmd *cmd, int quit);
+void	free_fds(t_cmd *begin_cmd);
+void	executor(char **argv, t_cmd *cmd, t_env *env);
+void	init_pipe(t_cmd *cmd);
+int		open_file(char *name, int i, int quit);
+void	error(char *arg, int i, t_cmd *cmd, t_env *envm);
+int		find_path_env(t_env *envm);
 
 //tester
 void	ft_print_tkn(t_tkn *tkn_begin);

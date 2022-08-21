@@ -87,8 +87,3 @@ int	make_heredocs(t_cmd *cmd, t_env *env)
 	}
 	return (0);
 }
-
-// int main(void)
-// {
-
-// }

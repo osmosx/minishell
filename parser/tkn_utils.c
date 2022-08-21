@@ -60,7 +60,7 @@ t_tkn	*ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn)
 	if (next)
 		next->prev = prev;
 	ft_free_tkn(tkn);
-	return next;
+	return (next);
 }
 
 //проставляет файлам значение поле "предыдущий"

@@ -108,7 +108,6 @@ t_cmd	*ft_cmd_filler(t_tkn **tkn_begin, char **env)
 	redir_begin = NULL;
 	tkn = *tkn_begin;
 	ft_tkn_prev_setter(*tkn_begin);
-
 	if (!ft_cmd_filler_two(tkn, tkn_begin, &redir_begin, env))
 		return (NULL);
 	if (!ft_dequote_tkn_list(tkn_begin, env))

@@ -53,7 +53,8 @@ char	**ft_fill_cmd_tab_line(char *str, char **cmds, char	**cmd_start)
 	if (*(str - 1) == '|' || **cmd_start == '|')
 	{
 		*cmds = NULL;
-		return (error_print(258, "minishell: syntax error near unexpected token `|'"));
+		return (error_print(258,
+				"minishell: syntax error near unexpected token `|'"));
 	}
 	*cmds = (char *)malloc(sizeof(char) * (str - *cmd_start + 1));
 	if (!*cmds)
