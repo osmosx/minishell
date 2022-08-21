@@ -35,12 +35,16 @@
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/readline.h"
 //# include "/usr/local/Cellar/readline/8.1.2/include/readline/history.h"
 // Вариант для Brew
-// # include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/readline.h"
-// # include "/Users/nenvoy/.brew/Cellar/readline/8.1.2/include/readline/history.h"
+// # include "/Users/nenvoy/.brew/
+// Cellar/readline/8.1.2/include/readline/readline.h"
+// # include "/Users/nenvoy/.brew/Cellar/
+// readline/8.1.2/include/readline/history.h"
 
 //Для Linux
-//# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/readline.h"
-//# include "/home/linuxbrew/.linuxbrew/Cellar/readline/8.1.2/include/readline/history.h"
+//# include "/home/linuxbrew/.linuxbrew/Cellar/
+// readline/8.1.2/include/readline/readline.h"
+//# include "/home/linuxbrew/.linuxbrew/Cellar/
+// readline/8.1.2/include/readline/history.h"
 
 extern int	g_error;
 
@@ -125,7 +129,7 @@ t_tkn	*ft_cmd_tkn_init(char **cmd);
 void	ft_tkn_prev_setter(t_tkn *tkn_begin);
 t_tkn	**ft_dequote_tkn_list(t_tkn **tkn_begin, char **env);
 t_tkn	*ft_tkn_del(t_tkn *tkn, t_tkn **begin_tkn);
-int		ft_tkn_len_counter(t_tkn *tkn, char **env);
+int		ft_tkn_len_counter(t_tkn *tkn, char **env, int qt);
 
 //cmds
 t_cmd	**ft_free_cmd_list(t_cmd **begin_cmd);
@@ -142,7 +146,7 @@ t_file	**ft_dequote_file_list(t_file **redir_begin, char **env);
 t_file	**ft_free_file_list(t_file **begin_file);
 char	*ft_fill_last_err(char *name, char **str);
 char	*ft_fill_var_value(char **str, char *name, char **env);
-int		ft_file_len_counter(t_file *file, char **env);
+int		ft_file_len_counter(t_file *file, char **env, int qt);
 
 //utils
 char	**ft_free(char **arr);
@@ -155,6 +159,7 @@ int		ft_var_len(char **str, char **env);
 void	*error_print(int err_num, char *err_char);
 void	*error_near_print(int err_num, t_tkn *tkn);
 void	ft_blanc(int sig);
+void	free_exit(t_cmd *cmd, t_env *envm);
 
 //executor
 void	ft_exec(t_cmd *cmd, t_env *env);
@@ -166,11 +171,5 @@ void	init_pipe(t_cmd *cmd);
 int		open_file(char *name, int i, int quit);
 void	error(char *arg, int i, t_cmd *cmd, t_env *envm);
 int		find_path_env(t_env *envm);
-
-//tester
-void	ft_print_tkn(t_tkn *tkn_begin);
-void	ft_print_file2(t_file *file_begin);
-void	ft_print_cmd(t_cmd *cmd);
-void	ft_printtab(char **cmds);
 
 #endif

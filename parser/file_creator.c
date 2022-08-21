@@ -77,8 +77,6 @@ t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file)
 	if (!last)
 	{
 		*begin_file = new_file;
-//		printf("%p", begin_file);
-//		ft_print_file2(*begin_file);
 		return (begin_file);
 	}
 	while (last->next)
@@ -86,5 +84,3 @@ t_file	**ft_file_add_back(t_file *new_file, t_file **begin_file)
 	last->next = new_file;
 	return (begin_file);
 }
-
-

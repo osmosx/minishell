@@ -30,7 +30,7 @@ static void	process(t_cmd *cmd, t_cmd *begin_cmd, t_env *env)
 		close(cmd->fd[1]);
 		free_fds(begin_cmd);
 		if (cmd->cmd && builtins(cmd->cmd, begin_cmd, env, 1) == 1)
-			executor(cmd->cmd, begin_cmd, env);//заменить на из пайпекса
+			executor(cmd->cmd, begin_cmd, env);
 	}
 	if (cmd->prev)
 		close(cmd->prev->fd[0]);
@@ -90,10 +90,7 @@ void	ft_exec(t_cmd *cmd, t_env *env)
 	begin_cmd = cmd;
 	init_pipe(begin_cmd);
 	if (make_heredocs(cmd, env) == 1 || ft_builtin(cmd, env) == 1)
-	{
-//		perror("file");
 		return ;
-	}
 	if (cmd && cmd->cmd)
 	{
 		while (cmd)

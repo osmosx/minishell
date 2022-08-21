@@ -76,18 +76,6 @@ void	ft_tkn_prev_setter(t_tkn *tkn_begin)
 	}
 }
 
-/*
-заглушка - 0
-текст - 1
-пайп - 2
-< - 3
-> - 4
-<< - 5
->> - 6
-пробел - 7
-*/
-//определяет тип полученного символа для присвоения индекса токену
-
 int	ft_def_token_type(char symb, int count)
 {
 	int	type;

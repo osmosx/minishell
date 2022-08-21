@@ -44,19 +44,14 @@ char	**ft_list_to_tab(t_tkn	**tkn_begin, char ***cmd)
 	t_tkn	*tkn;
 
 	tkn = *tkn_begin;
-	// if (tkn && tkn->type != 0)
-	// 	i = 1;
-	// else
 		i = 0;
-	while (tkn)// && tkn->next)
+	while (tkn)
 	{
 		if (tkn->type == 1)
 			i++;
 		tkn = tkn->next;
 	}
 	*cmd = ft_init_tab(cmd, i, tkn_begin);
-//	if (tkn && tkn->type == 0)
-//		ft_tkn_del(tkn, tkn_begin);
 	if (!*cmd)
 	{
 		ft_free_tkn_list(tkn_begin);

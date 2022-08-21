@@ -54,7 +54,7 @@ int	ft_var_len(char **str, char **env)
 	}
 	(*(str--)) += len;
 	if (ptr)
-		return (ft_strlen(ptr));
+		return ((int)ft_strlen(ptr));
 	else
 		return (0);
 }
@@ -83,7 +83,7 @@ char	*ft_fill_last_err(char *name, char **str)
 	i = 0;
 	while (num[i])
 		*(name++) = num[i++];
-	*(name++) = num[i++];//последнее исправление тут
+	*(name++) = num[i++];
 	free(num);
 	return (name);
 }

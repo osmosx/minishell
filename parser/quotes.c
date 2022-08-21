@@ -29,7 +29,8 @@ void	ft_dequote_file_name(t_file *file, char *name, char **env)
 		{
 			if (*(++str) == '?')
 				name = ft_fill_last_err(name, &str);
-			else if (*str && !ft_isspace(*str) && !ft_is_opening_or_closing_quote(*str, quote_type))
+			else if (*str && !ft_isspace(*str)
+				&& !ft_is_opening_or_closing_quote(*str, quote_type))
 				name = ft_fill_var_value(&str, name, env);
 			else
 				*(name++) = '$';
@@ -44,10 +45,12 @@ t_file	*ft_file_dequoter(t_file *file, char **env)
 {
 	int		len;
 	char	*name;
+	int		qt;
 
 	if (file->name)
 	{
-		len = ft_file_len_counter(file, env);
+		qt = 0;
+		len = ft_file_len_counter(file, env, qt);
 		name = (char *)malloc((len + 1) * sizeof(char));
 		if (!name)
 			return (NULL);

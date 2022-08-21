@@ -79,7 +79,7 @@ t_cmd	**ft_cmd_add_back(t_cmd *new_cmd, t_cmd **begin_cmd)
 }
 
 //проставляет файлам значение поле "предыдущий"
-void ft_cmd_prev_setter(t_cmd *cmd_begin)
+void	ft_cmd_prev_setter(t_cmd *cmd_begin)
 {
 	t_cmd	*prev;
 

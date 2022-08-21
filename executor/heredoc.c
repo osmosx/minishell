@@ -14,7 +14,6 @@
 
 void	stop_heredoc(int signal)
 {
-//	(void)signal; ненужная строка
 	ft_putstr_fd("\n", STDERR_FILENO);
 	exit(130);
 }
@@ -39,7 +38,7 @@ void	heredoc(char *limiter, int *fd, t_cmd *cmd, t_env *env)
 		line = readline("> ");
 	}
 	free(line);
-//	free_exit(cmd, env);
+	free_exit(cmd, env);
 	exit(EXIT_SUCCESS);
 }
 

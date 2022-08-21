@@ -34,4 +34,3 @@ long long	ft_atoll(const char *nptr)
 	}
 	return (num * sign);
 }
-
