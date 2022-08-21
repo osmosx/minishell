@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 15:50:47 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/26 15:50:48 by nenvoy           ###   ########.fr       */
+/*   Updated: 2022/08/21 03:00:06 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static void	print_export(char **buf)
 				ft_putchar_fd(buf[i][j++], 1);
 			ft_putchar_fd('"', 1);
 			if (buf[i][j])
-				printf("%s\"\n", buf[i] + j);
+				printf("%s", buf[i] + j);
+			printf("\"\n");
 			i++;
 		}
 		else
