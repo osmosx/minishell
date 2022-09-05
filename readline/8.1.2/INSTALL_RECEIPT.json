@@ -1,0 +1,48 @@
+{
+  "homebrew_version": "3.3.11-103-g768b172",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "installed_as_dependency": false,
+  "installed_on_request": true,
+  "changed_files": [
+    "lib/pkgconfig/readline.pc"
+  ],
+  "time": 1659553943,
+  "source_modified_time": 1605728412,
+  "compiler": "gcc-5",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+    {
+      "full_name": "ncurses",
+      "version": "6.3",
+      "declared_directly": true
+    }
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "8.1.2",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/readline.rb",
+    "tap_git_head": "f3377e34c4ee29214cf3206031f5cab63d2805af",
+    "tap": "homebrew/core"
+  },
+  "arch": "x86_64",
+  "built_on": {
+    "os": "Linux",
+    "os_version": "Ubuntu 16.04.7",
+    "cpu_family": "broadwell",
+    "glibc_version": "2.23",
+    "oldest_cpu_family": "core2"
+  }
+}
