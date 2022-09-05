@@ -1,5 +1,15 @@
 # minishell
 
+### Compilation:
+```bash
+make
+```
+### Run: 
+```bash
+./minishell
+```
+
+### Implemented
 - Builtins functions:
     - `cd` with only a relative or absolute path.
     - `pwd` with no options.
